@@ -1,8 +1,11 @@
 /* v12：传讯顶栏只留他的名字 + 状态；每句话旁的头像；设置里的开关 */
-.chat-top .pair{justify-content:center;padding-right:44px}
+/* v13：名字按整条顶栏居中，不受左边侧栏按钮和右边通话按钮影响 */
+.chat-top{justify-content:flex-end;min-height:60px;padding-top:11px!important;padding-bottom:11px!important}
+.chat-top .pair{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0!important;margin:0;pointer-events:none}
+.chat-top .pair .who{pointer-events:auto}
 .chat-top .pair .bond,.chat-top .pair .who:last-child,.chat-top .who:first-child .av{display:none!important}
-.chat-top .who:first-child{flex:0 1 auto;gap:3px;padding:4px 10px}
-.chat-top .who:first-child .nm{font-size:16px;letter-spacing:.12em}
+.chat-top .who:first-child{flex:0 0 auto;gap:3px;padding:4px 10px}
+.chat-top .who:first-child .nm{font-size:16px;letter-spacing:.12em;text-indent:.12em}
 .chat-top .who:first-child .st{font-size:10.5px}
 .crow{display:flex;align-items:flex-end;gap:8px;max-width:92%}
 .crow.ta{align-self:flex-start}
