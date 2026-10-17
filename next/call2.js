@@ -1,7 +1,7 @@
-// next 版通话：打过去、打过来还是整屏响铃；接通以后是浮在聊天页上的小窗
+// next 版通话：只有语音通话。打过去、打过来还是整屏响铃；接通以后是浮在聊天页上的小窗
 // 小窗能拖、能改大小（迷你 / 小 / 标准 / 大，右下角也能拉）、能缩成胶囊；位置和大小会记住
-// 语音：深色底、头像外一圈光、声音小条；视频：铺视频壁纸，角上是你的小画面，也能挪
-// 接在旧 call.js 和 v19.js 后面，把通话相关的函数整个换掉，旧的通话界面删掉。「说一句」不要了
+// 深色底、头像外一圈光、声音小条。视频通话已经删掉，「说一句」也不要了
+// 接在旧 call.js 和 v19.js 后面，把通话相关的函数整个换掉，旧的通话界面删掉
 'use strict';
 (function(){['call','callMini'].forEach(function(id){var e=document.getElementById(id);if(e)e.remove()})})();
 (function(){
@@ -21,6 +21,10 @@ var CW_IC={
 };
 function cwIc(k){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+CW_IC[k]+'</svg>'}
 var CW_HANG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+PH+'"/></svg>';
+
+// 只有语音
+C.kind='voice';
+function kindName(){return '语音通话'}
 
 // ── 整屏响铃：打过去、打过来 ──
 callBox=document.createElement('div');callBox.id='call';callBox.hidden=true;
@@ -132,30 +136,29 @@ $('clCancel').addEventListener('click',function(){hang()});
 $('clDecline').addEventListener('click',function(){hang()});
 $('clAccept').addEventListener('click',function(){startLive()});
 
-// 换小窗背景：视频换视频壁纸，语音换语音背景
+// 换小窗背景
 function cwPic(){
-  var k=C.kind==='voice'?'voiceWall':'callWall';
   pickImage(function(src){shrinkSafe(src,1080,false,0.8).then(function(u){
     if(!u){alert('这张读不出来，换一张试试。');return}
-    var old=S.prefs[k];S.prefs[k]=u;
-    if(!save()){S.prefs[k]=old;save();alert('这张太大存不下，换一张试试。');return}
+    var old=S.prefs.voiceWall;S.prefs.voiceWall=u;
+    if(!save()){S.prefs.voiceWall=old;save();alert('这张太大存不下，换一张试试。');return}
     paintWho();
   })});
 }
 
 // ── 下面这些把旧 call.js / v19.js 里的同名函数整个换掉 ──
 function paintWho(){
+  C.kind='voice';
   setAv($('clAv'),S.ta);setAv($('cwAv'),S.ta);setAv($('cwPav'),S.ta);setAv($('cwSelf'),S.me);
   $('clName').textContent=taName();$('cwName').textContent=taName();
-  var video=C.kind!=='voice',wall=video?S.prefs.callWall:S.prefs.voiceWall;
-  callBox.dataset.kind=video?'video':'voice';
-  callBox.classList.toggle('has-wall',!!(video&&wall));
-  var rb=$('clBg'),ri=(video&&wall)?wall:(S.ta.img||'');
+  var wall=S.prefs.voiceWall;
+  callBox.dataset.kind='voice';
+  callBox.classList.remove('has-wall');
+  var rb=$('clBg'),ri=S.ta.img||'';
   rb.style.backgroundImage=ri?'url("'+ri+'")':'';
-  var img=wall||(video?S.ta.img:'');
-  $('cwBg').style.backgroundImage=img?'url("'+img+'")':'';
-  cw.dataset.kind=video?'video':'voice';
-  cw.classList.toggle('has-img',!!img);
+  $('cwBg').style.backgroundImage=wall?'url("'+wall+'")':'';
+  cw.dataset.kind='voice';
+  cw.classList.toggle('has-img',!!wall);
   cw.classList.toggle('own',!!wall);
 }
 function setMode(m){
@@ -172,6 +175,7 @@ function closeCall(){
 function paintTime(){var t=mmss(Date.now()-C.start);$('cwTime').textContent=t;$('cwPt').textContent=t}
 function dial(){
   if(C.state!=='idle')return;
+  C.kind='voice';
   C.state='dial';openRing('dial',kindName()+' · 正在呼叫…');
   var no=S.call.reject!==false&&Math.random()<CALL.rejectRate;
   C.timer=setTimeout(function(){
@@ -182,10 +186,10 @@ function dial(){
     C.timer=setTimeout(closeCall,1600);
   },no?rnd(CALL.rejectMin,CALL.rejectMax):rnd(CALL.connectMin,CALL.connectMax));
 }
-// 他打来：视频语音随机；照 milk 有一定概率响几秒自己挂掉
+// 他打来：照 milk 有一定概率响几秒自己挂掉
 function incoming(){
   if(C.state!=='idle')return;
-  C.kind=Math.random()<0.5?'voice':'video';
+  C.kind='voice';
   C.state='incoming';openRing('incoming','邀请你'+kindName());
   var cancel=Math.random()*100<(+S.prefs.cancelRate||0);
   C.timer=setTimeout(function(){
@@ -218,6 +222,28 @@ function planRing(){
     if(C.state==='idle'&&!document.hidden&&Math.random()<CALL.ringRate)incoming();
     planRing();
   },rnd(CALL.ringMin,CALL.ringMax));
+}
+
+// 顶栏的电话按钮：不再弹「视频 / 语音」，点了直接打语音
+(function(){
+  var ob=$('btnCall');if(!ob)return;
+  var nb=ob.cloneNode(true);nb.setAttribute('aria-label','语音通话');
+  ob.parentNode.replaceChild(nb,ob);
+  nb.addEventListener('click',function(){if(C.state!=='idle')return;dial()});
+})();
+// 设置里去掉「视频通话壁纸」
+if(typeof SET_GROUPS!=='undefined'){
+  SET_GROUPS.forEach(function(g){
+    g[1]=g[1].filter(function(i){return i[0]!=='openCallWall'});
+    if(g[0]==='字卡与通话')g[0]='字卡';
+  });
+}
+if(typeof openReplySet==='function'){
+  var _orsC2=openReplySet;
+  openReplySet=function(){
+    _orsC2();
+    document.querySelectorAll('#sheetBody .hint').forEach(function(p){p.textContent=p.textContent.replace('，视频还是语音随机','')});
+  };
 }
 
 C.state='idle';planRing();
