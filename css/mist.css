@@ -1,0 +1,48 @@
+/* 雾蓝：晨雾一样的灰蓝，配一点沙色。只在「材质与配色」里选了雾蓝才生效，夜间模式不受影响 */
+/* 参考的是杂志排版的思路：一屏只留一个主角（今日一句），其余用细线、留白、衬线小字收住 */
+html[data-theme="mist"]{--bg-a:#eef2f4;--bg-b:#d9e2e8;--ink:#22303c;--sub:#7d8c98;--accent:#3d6a8a;--blob1:rgba(166,198,224,.75);--blob2:rgba(255,255,255,.85);--blob3:rgba(222,204,168,.38);--solid:#f8fafb;--solid-2:#e9eff3;--solid-3:#dce7ef;--line-solid:rgba(34,48,60,.12)}
+html[data-theme="mist"][data-style="glass"]{--surface:rgba(255,255,255,.52);--surface-2:rgba(255,255,255,.3);--surface-3:rgba(255,255,255,.2);--line:rgba(255,255,255,.65);--shadow:0 12px 34px rgba(30,52,72,.11);--card-a:rgba(255,255,255,.56);--card-b:rgba(210,228,242,.6)}
+html[data-theme="mist"][data-style="solid"]{--shadow:0 1px 2px rgba(20,40,60,.05),0 8px 20px rgba(30,52,72,.08)}
+
+/* 一层很淡的纸面颗粒 */
+html[data-theme="mist"] body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.08;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* 开屏 */
+html[data-theme="mist"] .sp-mark{color:var(--ink)}
+html[data-theme="mist"] .sp-line{background:var(--accent);opacity:.4}
+
+/* 主页：日期像刊头，头像下面一道细线 */
+html[data-theme="mist"] .hh-date{font-family:Georgia,"Times New Roman",serif;font-style:italic;letter-spacing:.12em;color:var(--ink);opacity:.72}
+html[data-theme="mist"] .home-head{position:relative;padding-bottom:22px}
+html[data-theme="mist"] .home-head::after{content:"";position:absolute;left:32%;right:32%;bottom:0;height:1px;background:var(--accent);opacity:.35}
+html[data-theme="mist"] .hp-av{box-shadow:0 0 0 1px var(--line),0 14px 30px rgba(30,52,72,.14)}
+html[data-theme="mist"] .hp-cam{background:var(--ink)}
+html[data-theme="mist"] .hh-day{background:transparent;border:1px solid var(--accent);color:var(--accent);backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* 今日一句是这一屏的主角：左边一道深色竖线，大引号压在底下 */
+html[data-theme="mist"] .quote{padding:26px 22px 18px 24px;border-radius:6px 22px 22px 6px;border-left:3px solid var(--ink)}
+html[data-theme="mist"] .quote::before{content:"\201C";font-family:Georgia,"Times New Roman",serif;font-size:72px;line-height:1;left:12px;top:-4px;color:var(--accent);opacity:.16}
+html[data-theme="mist"] .quote p{padding-left:8px;letter-spacing:.04em}
+html[data-theme="mist"] .quote span{padding-left:8px;color:var(--accent)}
+html[data-theme="mist"] .quote::after{color:var(--ink);opacity:.4}
+
+/* 四个入口：右下角浅浅的编号，图标换成描边圆 */
+html[data-theme="mist"] .entries{counter-reset:en}
+html[data-theme="mist"] .entry{counter-increment:en;border-radius:18px}
+html[data-theme="mist"] .entry::after{content:"0" counter(en);position:absolute;right:14px;bottom:10px;font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:28px;line-height:1;color:var(--accent);opacity:.16;pointer-events:none}
+html[data-theme="mist"] .entry .ei{background:transparent;color:var(--accent);border:1px solid var(--accent);box-shadow:none}
+html[data-theme="mist"] .entry em{color:var(--ink)}
+
+/* 按钮：主按钮用深墨蓝，别的保持轻 */
+html[data-theme="mist"] .primary{background:var(--ink);box-shadow:0 8px 20px rgba(30,52,72,.22)}
+html[data-theme="mist"] #navBtn{border-radius:50%}
+
+/* 标题和小节名 */
+html[data-theme="mist"] .mo-bar h3{color:var(--ink);letter-spacing:.32em}
+html[data-theme="mist"] .sec{color:var(--ink);opacity:.72}
+html[data-theme="mist"] .sb-names{letter-spacing:.14em}
+html[data-theme="mist"] .sb-link{color:var(--ink);opacity:.45}
+
+/* 传讯页顶栏和输入栏底下一道细线就够 */
+html[data-theme="mist"] .chat-top,html[data-theme="mist"] .chat-foot{border-color:rgba(34,48,60,.08)}
+html[data-theme="mist"] .chat-top .who:first-child .st::before{background:#5aa58a}
