@@ -4,7 +4,7 @@
 .hh-pair .hp+.hp-link+.hp{margin-left:-22px;z-index:2}
 .hh-pair .hp-av{border:3px solid var(--solid);background:var(--solid)}
 .hh-pair .hp:first-child .hp-cam{right:auto;left:-1px}
-.hh-pair .hp-link{position:absolute;left:50%;top:60px;z-index:3;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;line-height:1;font-size:14px;opacity:1;background:var(--solid);border:1px solid var(--line);box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.hh-pair .hp-link{display:none!important}
 .hh-pair .hp-nm{font-size:13.5px;letter-spacing:.08em}
 #wall{position:fixed;inset:0;z-index:0;pointer-events:none;background:center/cover no-repeat;display:none}
 #wall::after{content:"";position:absolute;inset:0;background:var(--bg-a);opacity:var(--dim,.2)}
