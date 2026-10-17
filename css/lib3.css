@@ -1,0 +1,39 @@
+/* v16：标题栏和左上角侧栏按钮对齐（按钮 fixed，离顶 25px、高 36px），内容从按钮下面开始 */
+.view[data-view="lib"] .mo-bar,.view[data-view="fav"] .mo-bar,.view[data-view="mail"] .mo-bar,.view[data-view="tarot"] .mo-bar{padding:25px 2px 14px 52px!important;align-items:center}
+.view[data-view="lib"] .mo-bar h3,.view[data-view="fav"] .mo-bar h3,.view[data-view="mail"] .mo-bar h3,.view[data-view="tarot"] .mo-bar h3,.view[data-view="lib"] .mo-bar .hh-date,.view[data-view="fav"] .mo-bar .hh-date,.view[data-view="tarot"] .mo-bar .hh-date{line-height:36px}
+
+/* 字卡库：搜索 + ＋ + ⋯ 一行 */
+.lb-tools{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.lb-search{flex:1;min-width:0;position:relative}
+.lb-search::before{content:"⌕";position:absolute;left:14px;top:50%;transform:translateY(-52%);font-family:var(--sans);font-size:16px;color:var(--sub);pointer-events:none}
+.lb-search input{width:100%;height:40px;padding:0 14px 0 36px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--sans);font-size:13.5px;outline:none;-webkit-appearance:none;appearance:none;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.lb-search input:focus{border-color:var(--accent)}
+.lb-search input::-webkit-search-cancel-button{-webkit-appearance:none}
+.lb-ib{flex:0 0 40px;width:40px;height:40px;padding:0;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);color:var(--sub);font-family:var(--sans);font-size:18px;line-height:1;cursor:pointer;box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.lb-ib.lb-add{border:0;background:var(--accent);color:#fff}
+.lb-ib:active{transform:scale(.95)}
+
+/* 分组标签一排，右边淡出 */
+.lb-pills{margin:0 -16px 14px;padding:0 16px 2px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 16px,#000 calc(100% - 28px),transparent)}
+.lb-pills .lb-pill:last-child{margin-right:20px}
+
+/* 每个分组是一块，默认收起 */
+.lb-grp{margin-bottom:8px;padding:0 10px;border-radius:18px;background:var(--surface-3);border:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.lb-gh{gap:8px;padding:12px 4px}
+.lb-gh b{font-size:13.5px}
+.lb-gh .c{margin:0;font-size:11px;color:var(--sub)}
+.lb-gh .sp{flex:1}
+.lb-offtag{padding:1px 7px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);font-family:var(--sans);font-size:10px;color:var(--sub)}
+.lb-grp .lb-cards{padding-bottom:6px}
+
+/* 每一句 */
+.lb-card{align-items:center;gap:6px;padding:9px 4px 9px 13px;margin-bottom:6px;border-radius:12px;background:var(--surface)}
+.lb-card .t{font-size:14px;line-height:1.75}
+.lb-chk{margin-top:0}
+.lb-more{flex:0 0 auto;width:30px;height:30px;border:0;border-radius:50%;background:none;color:var(--sub);font-family:var(--sans);font-size:16px;line-height:1;cursor:pointer;opacity:.6}
+.lb-more:active{background:var(--surface-2);opacity:1}
+.lb-foot{text-align:center;margin-top:14px}
+
+/* 一句的操作面板 */
+.lb-mtext{margin:0 0 14px;padding:12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);font-size:14.5px;line-height:1.8;white-space:pre-wrap;word-break:break-word}
+.lb-danger{color:#d07373}
