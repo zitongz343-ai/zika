@@ -1,7 +1,8 @@
-/* 色板圆点正圆、不被拉伸；表情包和通话收进输入框左边的「⋯」 */
-
-/* ── 材质与配色：五个正圆排一行，长宽锁死 ── */
-html body #sheetBody .swatches{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;width:100%;margin:4px 0 18px!important;padding:0!important;overflow:visible}
+/* 色板：「配色」两个字单独占一行，圆点另起一行，正圆不被拉伸 */
+/* 前面重叠是因为 .field 被别处改成了横排，label 和圆点挤在同一行，这里强制改回竖着排 */
+html body #sheetBody .field{display:block!important;flex-direction:column!important}
+html body #sheetBody .field>label{display:block!important;position:static!important;float:none!important;width:100%!important;margin:0 0 10px!important;line-height:1.6}
+html body #sheetBody .swatches{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:14px!important;clear:both!important;width:100%;margin:0 0 18px!important;padding:0!important;overflow:visible}
 html body #sheetBody .swatches button.sw{flex:0 0 auto!important;width:34px!important;height:34px!important;min-width:34px!important;max-width:34px!important;min-height:34px!important;max-height:34px!important;padding:0!important;border-radius:50%!important;box-sizing:border-box!important;align-self:center!important;aspect-ratio:1/1}
 html body #sheetBody .swatches button.sw i{position:absolute!important;inset:5px!important;border-radius:50%!important}
 html body #sheetBody .swatches button.sw.custom i{inset:10px!important}
