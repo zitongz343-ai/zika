@@ -1,4 +1,5 @@
-// 表情包：字卡库「氛围感 → 表情包」里存图；底栏点一下挑一张递过去；他也会按概率回表情包，概率在设置里调
+// 表情包：字卡库「氛围感 → 表情包」里存图；底栏点一下挑一张递过去；他也会按概率发表情包，概率在设置里调
+// 拍一拍和表情包不代替回字：掲中了先发过来，后面照旧接着回字卡
 'use strict';
 var SK_TAG='表情包';
 (function(){
@@ -40,30 +41,37 @@ l4CardEl=function(x,badge){
   return d;
 };
 
-// 他回一张表情包
+// 他发一张表情包
 function taSticker(){
   var p=skPool();if(!p.length)return false;
-  showTyping(false);
   addReplyCard({id:uid(),from:'ta',type:'sticker',img:pickOne(p),text:'',at:Date.now()});
   return true;
 }
-// 照 v25 那套流程，在拍一拍后面多掲一次表情包
+// 照 v25 那套流程，只是拍一拍和表情包不再代替回字，发完接着回字卡
 simulateReply=function(token){
   if(token!==replyRun)return;
   var p=S.prefs,changed=false;
   S.cards.forEach(function(c){if(c.from==='me'&&!c.read){c.read=true;changed=true}});
   if(changed){save();renderChat()}
   if(p.readNo&&Math.random()*100<(+p.readNoRate)){showTyping(false);return}
-  if(Math.random()*100<(+p.pokeRate)){taPoke();return}
-  if(Math.random()*100<(+p.stickerRate)&&taSticker())return;
-  var pool=libPool();
-  if(!pool.length){showTyping(false);return}
+  var pool=libPool(),delay=0;
+  function pre(fn){
+    delay+=rnd(REPLY.waitMin,REPLY.waitMax);
+    (function(d){setTimeout(function(){
+      if(token!==replyRun)return;
+      showTyping(false);fn();
+      if(pool.length)showTyping(true);
+    },d)})(delay);
+  }
+  if(Math.random()*100<(+p.pokeRate))pre(taPoke);
+  if(Math.random()*100<(+p.stickerRate)&&skPool().length)pre(taSticker);
+  if(!pool.length){if(!delay)showTyping(false);return}
   showTyping(true);
   var mine=S.cards.filter(function(c){return c.from==='me'&&!c.type&&c.text}).slice(-10);
-  var n=replyCount(),delay=0;
+  var n=replyCount();
   for(var i=0;i<n;i++){
     delay+=rnd(REPLY.waitMin,REPLY.waitMax);
-    (function(i){
+    (function(i,d){
       setTimeout(function(){
         if(token!==replyRun)return;
         var c={id:uid(),from:'ta',text:comboText(pool),at:Date.now()};
@@ -72,8 +80,8 @@ simulateReply=function(token){
         }
         addReplyCard(c);
         if(i===n-1)showTyping(false);
-      },delay);
-    })(i);
+      },d);
+    })(i,delay);
   }
 };
 
@@ -135,7 +143,7 @@ openReplySet=function(){
   if(!anchor)return;
   var host=anchor.closest('.field');if(!host)return;
   var box=document.createElement('div');box.className='field';
-  box.innerHTML='<label>改成发表情包</label><div class="rg"><input type="range" min="0" max="100" step="1"><b></b></div>';
+  box.innerHTML='<label>发表情包概率</label><div class="rg"><input type="range" min="0" max="100" step="1"><b></b></div>';
   var r=box.querySelector('input'),v=box.querySelector('b');
   function paint(){r.value=+S.prefs.stickerRate||0;v.textContent=(+S.prefs.stickerRate||0)+'%'}
   r.addEventListener('input',function(){S.prefs.stickerRate=+r.value;paint()});
@@ -143,7 +151,7 @@ openReplySet=function(){
   paint();
   host.parentNode.insertBefore(box,host.nextSibling);
   var h=document.createElement('p');h.className='hint';
-  h.textContent='掲中就不回字，改成从字卡库「氛围感 → 表情包」里挑一张发过来。那里空着就跳过，照旧回字卡。';
+  h.textContent='拍一拍和表情包不代替回字：掲中了先发过来，后面照旧接着回字卡。表情包从字卡库「氛围感 → 表情包」里挑，那里空着就跳过。';
   box.parentNode.insertBefore(h,box.nextSibling);
 };
 renderChat();
