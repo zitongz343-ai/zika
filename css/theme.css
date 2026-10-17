@@ -31,10 +31,14 @@
 .ghost{border-radius:999px}
 .ico{width:36px;height:36px}
 
-/* 传讯页顶栏和输入区（不碰字卡本身） */
-.chat-top{background:var(--surface-3);border-bottom:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+/* 传讯页：顶栏钉在上面，输入栏钉在下面，只有中间字卡滚动（不碰字卡本身） */
+.view[data-view="chat"]{padding:0;overflow:hidden}
+.view[data-view="chat"].on{display:flex;flex-direction:column}
+.chat-top{flex:0 0 auto;position:relative;z-index:5;background:var(--surface-3);border-bottom:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .chat-top .who:first-child .st::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#7bc67e;margin-right:4px;vertical-align:1px}
-.chat-foot{border-radius:24px 24px 0 0;border:1px solid var(--line);border-bottom:0}
+.view[data-view="chat"] #stream{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.view[data-view="chat"] #typing{flex:0 0 auto}
+.chat-foot{flex:0 0 auto;width:100%;margin:0;border-radius:0;border:0;border-top:1px solid var(--line);position:relative;z-index:5}
 #input{border-radius:20px}
 .tab2{letter-spacing:.14em}
 
