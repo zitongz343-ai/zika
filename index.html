@@ -20,9 +20,9 @@ body{margin:0;overflow:hidden;color:var(--ink);background:linear-gradient(165deg
 body::before{content:"";position:fixed;inset:-25%;pointer-events:none;z-index:0;background:radial-gradient(36% 28% at 18% 14%,var(--blob1),transparent 70%),radial-gradient(32% 26% at 84% 26%,var(--blob2),transparent 72%),radial-gradient(42% 30% at 52% 92%,var(--blob3),transparent 70%);filter:blur(34px);opacity:.85;transition:opacity .5s}
 html[data-style="solid"] body::before{opacity:0}
 html[data-style="solid"] body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.016) 0 1px,transparent 1px 3px)}
-#app{position:relative;z-index:1;max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column}
+#app{position:relative;z-index:1;max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
 #views{position:relative;flex:1;overflow:hidden}
-.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 16px 96px;display:none;scrollbar-width:none;animation:vin .3s ease}
+.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 16px 40px;display:none;scrollbar-width:none;animation:vin .3s ease}
 .view::-webkit-scrollbar{display:none}
 .view.on{display:block}
 @keyframes vin{from{opacity:0;transform:translateY(6px)}}
@@ -36,11 +36,31 @@ html[data-style="solid"] body::after{content:"";position:fixed;inset:0;pointer-e
 @keyframes markIn{from{opacity:0;transform:scale(.7)}to{opacity:.92;transform:scale(1)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes lineIn{to{width:120px}}
-#tabbar{position:absolute;left:0;right:0;bottom:0;z-index:15;display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:var(--surface);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-top:1px solid var(--line)}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;padding:5px 0 3px;color:var(--sub);font-family:var(--sans);font-size:10px;letter-spacing:.1em;cursor:pointer;transition:color .2s}
-.tab i{font-style:normal;font-size:17px;line-height:1.1;opacity:.85}
-.tab.on{color:var(--accent)}
-.tab.on i{opacity:1}
+#navBtn{position:fixed;z-index:40;top:calc(env(safe-area-inset-top) + 25px);left:max(12px,calc(50% - 248px));width:36px;height:36px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);transition:opacity .2s}
+#navBtn span{display:block;width:15px;height:1.5px;background:currentColor;border-radius:2px;position:relative}
+#navBtn span::before,#navBtn span::after{content:"";position:absolute;left:0;width:15px;height:1.5px;background:currentColor;border-radius:2px}
+#navBtn span::before{top:-5px}
+#navBtn span::after{top:5px;width:10px}
+body.nav-open #navBtn{opacity:0;pointer-events:none}
+#navMask{position:fixed;inset:0;z-index:90;background:rgba(20,14,10,.32);opacity:0;visibility:hidden;transition:opacity .28s,visibility .28s;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+body.nav-open #navMask{opacity:1;visibility:visible}
+#sidebar{position:fixed;z-index:95;top:0;bottom:0;left:0;width:248px;max-width:78vw;padding:calc(env(safe-area-inset-top) + 26px) 14px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;background:var(--surface);border-right:1px solid var(--line);box-shadow:12px 0 40px rgba(0,0,0,.14);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);transform:translateX(-105%);transition:transform .32s cubic-bezier(.2,.8,.3,1)}
+body.nav-open #sidebar{transform:none}
+.sb-head{display:flex;align-items:center;gap:10px;padding:0 6px}
+.sb-av{width:42px;height:42px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:18px;background:var(--surface-2);border:1px solid var(--line)}
+.sb-av img{width:100%;height:100%;object-fit:cover;display:block}
+.sb-link{color:var(--accent);opacity:.7;font-size:15px}
+.sb-names{margin:12px 6px 0;font-size:14.5px;letter-spacing:.1em}
+.sb-day{margin:5px 6px 0;font-family:var(--sans);font-size:10.5px;color:var(--sub);letter-spacing:.1em}
+.sb-nav{margin-top:22px;display:flex;flex-direction:column;gap:4px;flex:1;overflow-y:auto}
+.tab{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:0;border-radius:12px;background:none;color:var(--sub);font-family:var(--serif);font-size:15px;letter-spacing:.12em;text-align:left;cursor:pointer;transition:background .2s,color .2s}
+.tab i{font-style:normal;width:20px;text-align:center;font-size:16px;font-family:var(--sans)}
+.tab span{flex:1}
+.tab em{font-style:normal;font-family:var(--sans);font-size:10.5px;color:var(--accent);opacity:.8;letter-spacing:0}
+.tab.on{background:var(--surface-2);color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.sb-foot{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.sb-mini{flex:1;padding:9px 0;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--sub);font-family:var(--sans);font-size:12px;letter-spacing:.06em;cursor:pointer}
+.sb-close{margin-top:8px;border:0;background:none;color:var(--sub);font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;padding:8px;cursor:pointer}
 .ico{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);color:var(--sub);font-size:15px;line-height:1;display:grid;place-items:center;cursor:pointer;font-family:var(--sans);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .ghost{padding:8px 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);color:var(--sub);font-family:var(--sans);font-size:12.5px;letter-spacing:.06em;cursor:pointer;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .primary{padding:9px 20px;border-radius:999px;border:0;background:var(--accent);color:#fff;font-family:var(--sans);font-size:13.5px;letter-spacing:.12em;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.14)}
@@ -49,7 +69,7 @@ html[data-style="solid"] body::after{content:"";position:fixed;inset:0;pointer-e
 .empty{font-family:var(--sans);text-align:center;color:var(--sub);font-size:13px;line-height:2.1;border:1px dashed var(--line);border-radius:16px;padding:28px 20px;margin:18px 0;background:var(--surface-3);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .empty b{display:block;font-family:var(--serif);font-size:15px;color:var(--ink);font-weight:400;margin-bottom:6px;letter-spacing:.08em}
 .home-head{padding:26px 2px 6px}
-.hh-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hh-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-left:46px}
 .hh-date{font-family:var(--sans);font-size:11px;color:var(--sub);letter-spacing:.16em}
 .hh-acts{display:flex;gap:7px}
 .hh-pair{display:flex;align-items:flex-start;justify-content:center;gap:22px;margin:24px 0 2px}
@@ -74,7 +94,7 @@ html[data-style="solid"] body::after{content:"";position:fixed;inset:0;pointer-e
 .entry em{position:absolute;right:13px;top:13px;font-style:normal;font-family:var(--sans);font-size:10.5px;color:var(--accent);opacity:.85}
 .home-foot{margin-top:28px;text-align:center;font-family:var(--sans);font-size:10.5px;color:var(--sub);letter-spacing:.1em;opacity:.8}
 #v-chat{padding:0}
-.chat-top{padding:14px 16px 8px;display:flex;align-items:center;gap:10px}
+.chat-top{padding:14px 16px 8px 58px;display:flex;align-items:center;gap:10px}
 .pair{display:flex;align-items:center;gap:8px;flex:1}
 .who{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;padding:2px;color:inherit;font:inherit;cursor:pointer}
 .who:active{opacity:.6}
@@ -109,6 +129,7 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .mo-cover .cname{position:absolute;left:20px;bottom:16px;font-size:20px;letter-spacing:.14em}
 .mo-cover .cdot{position:absolute;right:18px;bottom:16px;font-family:var(--sans);font-size:10px;color:var(--sub);letter-spacing:.14em}
 .mo-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 2px 8px}
+.view[data-view="mail"] .mo-bar,.view[data-view="tarot"] .mo-bar{padding-left:48px}
 .mo-bar h3{margin:0;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.2em;color:var(--sub)}
 .mo{display:flex;gap:11px;padding:16px 2px;border-bottom:1px solid var(--line)}
 .mo-av{flex:0 0 auto;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:17px;overflow:hidden;background:var(--surface);border:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
@@ -261,14 +282,23 @@ textarea::placeholder{color:var(--sub);opacity:.7}
       <div class="draws"><h4>抽 过 的</h4><div id="drawList"></div></div>
     </section>
   </div>
-  <nav id="tabbar">
-    <button class="tab on" data-view="home"><i>⌂</i>主页</button>
-    <button class="tab" data-view="chat"><i>▤</i>传讯</button>
-    <button class="tab" data-view="moments"><i>◍</i>朋友圈</button>
-    <button class="tab" data-view="mail"><i>✉</i>回信</button>
-    <button class="tab" data-view="tarot"><i>✦</i>塔罗</button>
-  </nav>
 </div>
+<button id="navBtn" aria-label="打开侧栏"><span></span></button>
+<div id="navMask"></div>
+<aside id="sidebar" aria-label="导航">
+  <div class="sb-head"><span class="sb-av" id="sbMe">🌙</span><span class="sb-link">∞</span><span class="sb-av" id="sbTa">✦</span></div>
+  <div class="sb-names" id="sbNames">江月棠 × 顾时夜</div>
+  <div class="sb-day" id="sbDay"></div>
+  <nav class="sb-nav" id="tabbar">
+    <button class="tab on" data-view="home"><i>⌂</i><span>主页</span><em></em></button>
+    <button class="tab" data-view="chat"><i>▤</i><span>传讯</span><em id="sbcChat"></em></button>
+    <button class="tab" data-view="moments"><i>◍</i><span>朋友圈</span><em id="sbcMo"></em></button>
+    <button class="tab" data-view="mail"><i>✉</i><span>回信</span><em id="sbcMail"></em></button>
+    <button class="tab" data-view="tarot"><i>✦</i><span>塔罗</span><em id="sbcTarot"></em></button>
+  </nav>
+  <div class="sb-foot"><button class="sb-mini" id="sbStyle">◐ 材质</button><button class="sb-mini" id="sbSet">⚙ 设置</button></div>
+  <button class="sb-close" id="sbClose">‹ 收 起</button>
+</aside>
 <div class="sheet" id="sheet" hidden><div class="inner"><div class="sh"><h2 id="sheetTitle"></h2><button class="x" id="sheetX">×</button></div><div id="sheetBody"></div></div></div>
 <div class="reader" id="reader" hidden><div class="letter"><div class="letter-head"><h3 id="rTitle"></h3><button class="x" id="rClose">×</button></div><div class="letter-body" id="rBody"></div><div class="letter-foot"><span class="from" id="rFrom"></span><div class="acts"><button class="ghost" id="rReply">回一封</button><button class="ghost" id="rDel">撕掉</button></div></div></div></div>
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
@@ -376,6 +406,12 @@ function applySkin(){
   var meta=document.querySelector('meta[name="theme-color"]');
   if(meta)meta.setAttribute('content',S.style==='glass'?'#efe4d4':'#fdf7ec');
 }
+function toggleStyle(){
+  S.style=S.style==='glass'?'solid':'glass';
+  applySkin();save();
+  document.getElementById('btnStyle').textContent=S.style==='glass'?'◐':'◼';
+  document.getElementById('sbStyle').textContent=(S.style==='glass'?'◐ ':'◼ ')+'材质';
+}
 function applyBubbleCSS(){
   var el=document.getElementById('bubbleCustom');
   var css=(S.bubbleCSS||'').trim();
@@ -396,7 +432,22 @@ function paintNames(){
   input.placeholder=S.from==='me'?'写一句，递过去…':'替'+taName()+'写一句…';
   document.getElementById('moCoverName').textContent=(S.me.name||'我')+' 的朋友圈';
   document.title=taName()+' · 字卡传讯';
+  updateNav();
 }
+function updateNav(){
+  setAv(document.getElementById('sbMe'),S.me);
+  setAv(document.getElementById('sbTa'),S.ta);
+  document.getElementById('sbNames').textContent=(S.me.name||'我')+' × '+taName();
+  var nd=nearDay();
+  document.getElementById('sbDay').textContent=nd?(nd.item.title+' · '+(nd.n>=0?'第 '+(nd.n+1)+' 天':'还有 '+(-nd.n)+' 天')):'';
+  document.getElementById('sbcChat').textContent=S.cards.length||'';
+  document.getElementById('sbcMo').textContent=S.moments.length||'';
+  var unread=S.mails.filter(function(m){return !m.read}).length;
+  document.getElementById('sbcMail').textContent=unread?unread+' 未读':(S.mails.length||'');
+  document.getElementById('sbcTarot').textContent=S.draws.length||'';
+}
+function openNav(){updateNav();document.body.classList.add('nav-open')}
+function closeNav(){document.body.classList.remove('nav-open')}
 function pickAvatar(k){
   pickFor=k;
   var f=document.getElementById('avIn');
@@ -617,6 +668,7 @@ function draw(){
   }
 }
 function openSheet(title,node){
+  closeNav();
   sheetTitle.textContent=title;sheetBody.innerHTML='';sheetBody.appendChild(node);sheet.hidden=false;
 }
 function closeSheet(){sheet.hidden=true}
@@ -706,7 +758,7 @@ function openSettings(){
   wrap.querySelectorAll('#styleSeg button').forEach(function(b){
     b.classList.toggle('on',b.dataset.s===S.style);
     b.addEventListener('click',function(){
-      S.style=b.dataset.s;applySkin();save();
+      if(S.style!==b.dataset.s)toggleStyle();
       wrap.querySelectorAll('#styleSeg button').forEach(function(x){x.classList.toggle('on',x===b)});
     });
   });
@@ -826,11 +878,7 @@ document.getElementById('btnSend').addEventListener('click',send);
 document.getElementById('btnLib').addEventListener('click',openLib);
 document.getElementById('btnBubble').addEventListener('click',openBubble);
 document.getElementById('btnSet').addEventListener('click',openSettings);
-document.getElementById('btnStyle').addEventListener('click',function(){
-  S.style=S.style==='glass'?'solid':'glass';
-  applySkin();save();
-  this.textContent=S.style==='glass'?'◐':'◼';
-});
+document.getElementById('btnStyle').addEventListener('click',toggleStyle);
 document.getElementById('btnDraw').addEventListener('click',draw);
 document.getElementById('rClose').addEventListener('click',closeReader);
 document.getElementById('rDel').addEventListener('click',function(){
@@ -844,9 +892,30 @@ document.getElementById('rReply').addEventListener('click',function(){
   closeReader();setTimeout(function(){newMail(pre)},120);
 });
 reader.addEventListener('click',function(e){if(e.target===reader)closeReader()});
+document.getElementById('navBtn').addEventListener('click',openNav);
+document.getElementById('navMask').addEventListener('click',closeNav);
+document.getElementById('sbClose').addEventListener('click',closeNav);
+document.getElementById('sbStyle').addEventListener('click',toggleStyle);
+document.getElementById('sbSet').addEventListener('click',function(){closeNav();setTimeout(openSettings,180)});
 document.getElementById('tabbar').addEventListener('click',function(e){
-  var b=e.target.closest('.tab');if(b)go(b.dataset.view);
+  var b=e.target.closest('.tab');if(!b)return;
+  go(b.dataset.view);closeNav();
 });
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeNav()});
+(function(){
+  var sx=0,sy=0,mode=null;
+  document.addEventListener('touchstart',function(e){
+    var t=e.touches[0];sx=t.clientX;sy=t.clientY;
+    if(document.body.classList.contains('nav-open'))mode='close';
+    else mode=(sx<22&&sheet.hidden&&reader.hidden)?'open':null;
+  },{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(!mode)return;
+    var t=e.changedTouches[0],dx=t.clientX-sx,dy=Math.abs(t.clientY-sy);
+    if(dy<60){if(mode==='open'&&dx>50)openNav();if(mode==='close'&&dx<-50)closeNav()}
+    mode=null;
+  },{passive:true});
+})();
 document.addEventListener('click',function(e){
   var pk=e.target.closest('[data-pick]');if(pk){pickAvatar(pk.dataset.pick);return}
   var g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
@@ -912,6 +981,7 @@ input.addEventListener('keydown',function(e){
 });
 applySkin();applyBubbleCSS();paintNames();
 document.getElementById('btnStyle').textContent=S.style==='glass'?'◐':'◼';
+document.getElementById('sbStyle').textContent=(S.style==='glass'?'◐ ':'◼ ')+'材质';
 for(var q=0;q<tabs2.length;q++)tabs2[q].classList.toggle('on',tabs2[q].dataset.from===S.from);
 go('home');renderChat();splash();
 window.addEventListener('beforeunload',save);
