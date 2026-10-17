@@ -1,0 +1,17 @@
+/* v25：普通气泡的时间和已读挪到气泡外；拼字卡面板 */
+.pcol{display:flex;flex-direction:column;min-width:0;max-width:var(--bub-max,78%)}
+.pcol.ta{align-self:flex-start;align-items:flex-start}
+.pcol.me{align-self:flex-end;align-items:flex-end}
+.pcol>.card{max-width:100%!important;align-self:auto!important}
+.crow .pcol{max-width:calc(100% - var(--cav-s,34px) - 8px)}
+.pmeta{display:none;align-items:center;gap:6px;margin:4px 6px 0;font-family:var(--sans);font-size:calc(10.5px * var(--fz,1));line-height:1.4;color:var(--sub);letter-spacing:.04em}
+html[data-bubble="plain"] .pmeta{display:flex}
+html[data-bubble="plain"] .pcol .card .head{display:none!important}
+html[data-bubble="plain"][data-bubtime="0"] .pmeta .tm{display:none}
+html[data-bubble="plain"] .crow{align-items:flex-start}
+html[data-bubble="plain"] .crow .cav{margin-bottom:0;margin-top:1px}
+.pmeta .rd2,.pmeta .fv{color:var(--accent)}
+.v25-dis{opacity:.4;pointer-events:none}
+.v25-demo{margin:12px 0 0;padding:12px 14px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line);font-size:15px;line-height:1.8;word-break:break-word}
+.v25-demo[hidden]{display:none}
+#taSt{cursor:default!important}
