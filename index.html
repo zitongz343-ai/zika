@@ -52,9 +52,16 @@ html[data-style="solid"] body::after{content:"";position:fixed;inset:0;pointer-e
 .hh-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .hh-date{font-family:var(--sans);font-size:11px;color:var(--sub);letter-spacing:.16em}
 .hh-acts{display:flex;gap:7px}
-.hh-names{margin:20px 0 0;font-size:27px;font-weight:400;letter-spacing:.1em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.hh-names i{font-style:normal;color:var(--accent);opacity:.7;font-size:19px}
-.hh-day{margin:10px 0 0;font-family:var(--sans);font-size:12px;color:var(--sub);letter-spacing:.14em}
+.hh-pair{display:flex;align-items:flex-start;justify-content:center;gap:22px;margin:24px 0 2px}
+.hp{display:flex;flex-direction:column;align-items:center;gap:9px;background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer}
+.hp:active .hp-av{transform:scale(.96)}
+.hp-wrap{position:relative;display:block}
+.hp-av{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;font-size:32px;overflow:hidden;background:var(--surface);border:2px solid var(--line);box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);transition:transform .18s ease}
+.hp-cam{position:absolute;right:-1px;bottom:1px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--sans);font-size:11px;display:grid;place-items:center;border:2px solid var(--solid);box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.hp-nm{font-size:16px;letter-spacing:.12em}
+.hp-link{color:var(--accent);opacity:.7;font-size:20px;line-height:80px}
+.hp-av img,.av img,.mo-av img{width:100%;height:100%;object-fit:cover;display:block}
+.hh-day{margin:12px 0 0;text-align:center;font-family:var(--sans);font-size:12px;color:var(--sub);letter-spacing:.14em}
 .quote{margin:24px 0 20px;padding:20px 18px 16px;border-radius:18px;position:relative;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .quote::before{content:"“";position:absolute;left:10px;top:2px;font-size:36px;color:var(--accent);opacity:.25}
 .quote p{margin:0;padding-left:16px;font-size:14.5px;line-height:2}
@@ -71,7 +78,7 @@ html[data-style="solid"] body::after{content:"";position:fixed;inset:0;pointer-e
 .pair{display:flex;align-items:center;gap:8px;flex:1}
 .who{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;padding:2px;color:inherit;font:inherit;cursor:pointer}
 .who:active{opacity:.6}
-.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:18px;overflow:hidden;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .nm{font-size:12.5px;letter-spacing:.06em}
 .st{font-family:var(--sans);font-size:9.5px;color:var(--sub);letter-spacing:.08em}
 .bond{color:var(--sub);font-size:14px;opacity:.7;padding-bottom:15px}
@@ -104,7 +111,7 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .mo-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 2px 8px}
 .mo-bar h3{margin:0;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.2em;color:var(--sub)}
 .mo{display:flex;gap:11px;padding:16px 2px;border-bottom:1px solid var(--line)}
-.mo-av{flex:0 0 auto;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:17px;background:var(--surface);border:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.mo-av{flex:0 0 auto;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:17px;overflow:hidden;background:var(--surface);border:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .mo-main{flex:1;min-width:0}
 .mo-name{font-family:var(--sans);font-size:12.5px;color:var(--accent);letter-spacing:.08em}
 .mo-text{margin:6px 0 0;font-size:14.5px;line-height:1.95;white-space:pre-wrap;word-break:break-word}
@@ -206,13 +213,17 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 </style>
 </head>
 <body>
-<div id="splash"><div class="sp"><div class="sp-mark">∞</div><div class="sp-title">字卡传讯</div><div class="sp-line"></div><div class="sp-sub" id="spSub">江月棠 × 他</div></div></div>
+<div id="splash"><div class="sp"><div class="sp-mark">∞</div><div class="sp-title">字卡传讯</div><div class="sp-line"></div><div class="sp-sub" id="spSub">江月棠 × 顾时夜</div></div></div>
 <div id="app">
   <div id="views">
     <section class="view on" data-view="home">
       <div class="home-head">
         <div class="hh-top"><span class="hh-date" id="hhDate"></span><div class="hh-acts"><button class="ico" id="btnStyle" aria-label="切换材质">◐</button><button class="ico" id="btnSet" aria-label="设置">⚙</button></div></div>
-        <h1 class="hh-names"><span id="hnMe">江月棠</span><i>∞</i><span id="hnTa">他</span></h1>
+        <div class="hh-pair">
+          <button class="hp" data-pick="me" aria-label="换我的头像"><span class="hp-wrap"><span class="hp-av" id="hpMe">🌙</span><span class="hp-cam">✎</span></span><span class="hp-nm" id="hnMe">江月棠</span></button>
+          <span class="hp-link">∞</span>
+          <button class="hp" data-pick="ta" aria-label="换他的头像"><span class="hp-wrap"><span class="hp-av" id="hpTa">✦</span><span class="hp-cam">✎</span></span><span class="hp-nm" id="hnTa">顾时夜</span></button>
+        </div>
         <p class="hh-day" id="hhDay">还没有开始的日子</p>
       </div>
       <div class="quote"><p id="qText"></p><span>今日一句</span></div>
@@ -225,10 +236,10 @@ textarea::placeholder{color:var(--sub);opacity:.7}
       <p class="home-foot">字都在这一台机器上，不上传</p>
     </section>
     <section class="view" data-view="chat">
-      <div class="chat-top"><div class="pair"><button class="who" data-act="settings"><span class="av" id="avTa">✦</span><span class="nm" id="nmTa">他</span><span class="st">在线</span></button><span class="bond">∞</span><button class="who" data-act="settings"><span class="av" id="avMe">🌙</span><span class="nm" id="nmMe">江月棠</span><span class="st">在写字</span></button></div></div>
+      <div class="chat-top"><div class="pair"><button class="who" data-act="settings"><span class="av" id="avTa">✦</span><span class="nm" id="nmTa">顾时夜</span><span class="st">在线</span></button><span class="bond">∞</span><button class="who" data-act="settings"><span class="av" id="avMe">🌙</span><span class="nm" id="nmMe">江月棠</span><span class="st">在写字</span></button></div></div>
       <div id="stream"></div>
       <div class="chat-foot">
-        <div class="tabs"><button class="tab2 on" data-from="me">我 说</button><button class="tab2" data-from="ta">他 说</button></div>
+        <div class="tabs"><button class="tab2 on" data-from="me">我 说</button><button class="tab2" data-from="ta" id="tabTa">顾时夜 说</button></div>
         <textarea id="input" rows="1" placeholder="写一句，递过去…"></textarea>
         <div class="row"><div class="left"><button class="ghost" id="btnLib">字卡库</button><button class="ghost" id="btnBubble">气泡</button></div><button class="primary" id="btnSend">递 出 去</button></div>
       </div>
@@ -261,11 +272,13 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 <div class="sheet" id="sheet" hidden><div class="inner"><div class="sh"><h2 id="sheetTitle"></h2><button class="x" id="sheetX">×</button></div><div id="sheetBody"></div></div></div>
 <div class="reader" id="reader" hidden><div class="letter"><div class="letter-head"><h3 id="rTitle"></h3><button class="x" id="rClose">×</button></div><div class="letter-body" id="rBody"></div><div class="letter-foot"><span class="from" id="rFrom"></span><div class="acts"><button class="ghost" id="rReply">回一封</button><button class="ghost" id="rDel">撕掉</button></div></div></div></div>
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
+<input type="file" id="avIn" accept="image/*" hidden>
 <style id="bubbleCustom"></style>
 <script>
 (function(){
 'use strict';
 var KEY='mj_zika_v2';
+var TA_NAME='顾时夜';
 var LIB_DEFAULT=[
 {tag:'想他',text:'今天风大，我第一反应是想告诉你。'},
 {tag:'想他',text:'你不在的时候，时间过得很慢，慢得有点难熬。'},
@@ -312,19 +325,22 @@ var TAROT=[
 {n:'太阳',e:'The Sun',s:'☀',up:'好日子。笑就笑，别忍着。',rev:'光被挡住了。但还在。'},
 {n:'审判',e:'Judgement',s:'📯',up:'该回的话回了。该认的认了。',rev:'装作没听见。心里响着呢。'},
 {n:'世界',e:'The World',s:'🌍',up:'这一圈走完了。可以庆祝。',rev:'差最后一步。别停在这儿。'}];
-function defaults(){return{me:{name:'江月棠',avatar:'🌙'},ta:{name:'他',avatar:'✦'},theme:'paper',style:'glass',cards:[],days:[],lib:LIB_DEFAULT.slice(),moments:[],mails:[],draws:[],from:'me',bubbleCSS:''}}
+function defaults(){return{me:{name:'江月棠',avatar:'🌙',img:''},ta:{name:TA_NAME,avatar:'✦',img:''},theme:'paper',style:'glass',cards:[],days:[],lib:LIB_DEFAULT.slice(),moments:[],mails:[],draws:[],from:'me',bubbleCSS:''}}
 var S=null;
 try{S=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){S=null}
 if(!S||typeof S!=='object')S=defaults();
 var D0=defaults();
 if(!S.me)S.me=D0.me;if(!S.ta)S.ta=D0.ta;
+if(!S.ta.name||S.ta.name==='他')S.ta.name=TA_NAME;
+if(typeof S.me.img!=='string')S.me.img='';if(typeof S.ta.img!=='string')S.ta.img='';
 if(!Array.isArray(S.cards))S.cards=[];if(!Array.isArray(S.days))S.days=[];
 if(!Array.isArray(S.moments))S.moments=[];if(!Array.isArray(S.mails))S.mails=[];if(!Array.isArray(S.draws))S.draws=[];
 if(!Array.isArray(S.lib)||!S.lib.length)S.lib=LIB_DEFAULT.slice();
 if(!S.theme)S.theme='paper';if(!S.from)S.from='me';
 if(!S.style)S.style='glass';
 if(typeof S.bubbleCSS!=='string')S.bubbleCSS='';
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
+save();
 function uid(){return Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function pad(n){return n<10?'0'+n:''+n}
@@ -333,6 +349,13 @@ function fmtDay(t){var d=new Date(t);return(d.getMonth()+1)+'月'+d.getDate()+'�
 function tiltOf(id){var h=0;for(var i=0;i<id.length;i++){h=(h+id.charCodeAt(i)*7)%11}return((h-5)*0.28).toFixed(2)+'deg'}
 function dayDiff(str){var now=new Date();now.setHours(0,0,0,0);var p=String(str).split('-');var d=new Date(Number(p[0]),Number(p[1])-1,Number(p[2]));if(isNaN(d.getTime()))return null;return Math.round((now-d)/86400000)}
 function nearDay(){var best=null,bestAbs=null,pick=null;for(var i=0;i<S.days.length;i++){var n=dayDiff(S.days[i].date);if(n===null)continue;var a=Math.abs(n);if(bestAbs===null||a<bestAbs){bestAbs=a;best=n;pick=S.days[i]}}return pick?{item:pick,n:best}:null}
+function setAv(el,who){
+  if(!el)return;
+  el.innerHTML='';
+  if(who.img){var im=document.createElement('img');im.src=who.img;im.alt='';el.appendChild(im)}
+  else el.textContent=who.avatar||'✦';
+}
+function avStr(who){return who.img?'<img src="'+esc(who.img)+'" alt="">':esc(who.avatar||'✦')}
 var stream=document.getElementById('stream');
 var input=document.getElementById('input');
 var sheet=document.getElementById('sheet');
@@ -340,8 +363,9 @@ var sheetTitle=document.getElementById('sheetTitle');
 var sheetBody=document.getElementById('sheetBody');
 var reader=document.getElementById('reader');
 var currentMail=null;
+var pickFor=null;
 function splash(){
-  document.getElementById('spSub').textContent=(S.me.name||'我')+' × '+(S.ta.name||'他');
+  document.getElementById('spSub').textContent=(S.me.name||'我')+' × '+(S.ta.name||TA_NAME);
   var sp=document.getElementById('splash'),done=false;
   function end(){if(done)return;done=true;sp.classList.add('out');setTimeout(function(){sp.style.display='none'},650)}
   sp.addEventListener('click',end);setTimeout(end,2500);
@@ -358,16 +382,49 @@ function applyBubbleCSS(){
   if(!css){el.textContent='';return}
   el.textContent=css.indexOf('{')>=0?css:'.card{'+css+'}';
 }
+function taName(){return S.ta.name||TA_NAME}
 function paintNames(){
   document.getElementById('hnMe').textContent=S.me.name||'我';
-  document.getElementById('hnTa').textContent=S.ta.name||'他';
+  document.getElementById('hnTa').textContent=taName();
   document.getElementById('nmMe').textContent=S.me.name||'我';
-  document.getElementById('nmTa').textContent=S.ta.name||'他';
-  document.getElementById('avMe').textContent=S.me.avatar||'🌙';
-  document.getElementById('avTa').textContent=S.ta.avatar||'✦';
+  document.getElementById('nmTa').textContent=taName();
+  setAv(document.getElementById('hpMe'),S.me);
+  setAv(document.getElementById('hpTa'),S.ta);
+  setAv(document.getElementById('avMe'),S.me);
+  setAv(document.getElementById('avTa'),S.ta);
+  document.getElementById('tabTa').textContent=taName()+' 说';
+  input.placeholder=S.from==='me'?'写一句，递过去…':'替'+taName()+'写一句…';
   document.getElementById('moCoverName').textContent=(S.me.name||'我')+' 的朋友圈';
-  document.title=(S.ta.name||'他')+' · 字卡传讯';
+  document.title=taName()+' · 字卡传讯';
 }
+function pickAvatar(k){
+  pickFor=k;
+  var f=document.getElementById('avIn');
+  f.value='';f.click();
+}
+document.getElementById('avIn').addEventListener('change',function(e){
+  var f=e.target.files&&e.target.files[0];
+  var k=pickFor;
+  if(!f||!k)return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    var img=new Image();
+    img.onload=function(){
+      var size=320,c=document.createElement('canvas');
+      c.width=size;c.height=size;
+      var s=Math.min(img.width,img.height);
+      var sx=(img.width-s)/2,sy=(img.height-s)/2;
+      c.getContext('2d').drawImage(img,sx,sy,s,s,0,0,size,size);
+      var old=S[k].img;
+      S[k].img=c.toDataURL('image/jpeg',0.86);
+      if(!save()){S[k].img=old;alert('这张存不下，换一张试试。');return}
+      paintNames();renderMoments();
+    };
+    img.onerror=function(){alert('这张读不出来，换一张试试。')};
+    img.src=fr.result;
+  };
+  fr.readAsDataURL(f);
+});
 function go(v){
   var views=document.querySelectorAll('.view');
   for(var i=0;i<views.length;i++)views[i].classList.toggle('on',views[i].dataset.view===v);
@@ -414,7 +471,7 @@ function cardEl(c){
   var t=document.createElement('span');t.textContent=fmt(c.at);
   head.appendChild(n);head.appendChild(t);
   var body=document.createElement('p');body.className='body';body.textContent=c.text;
-  var seal=document.createElement('div');seal.className='seal';seal.textContent=(who.name||'他').slice(-1);
+  var seal=document.createElement('div');seal.className='seal';seal.textContent=(who.name||'夜').slice(-1);
   var del=document.createElement('button');del.className='del';del.textContent='撕掉';
   del.addEventListener('click',function(ev){
     ev.stopPropagation();
@@ -450,12 +507,12 @@ function renderMoments(){
   box.innerHTML=list.map(function(m){
     var who=m.from==='me'?S.me:S.ta;
     var liked=(m.likes||[]).indexOf('me')>=0;
-    var likeNames=(m.likes||[]).map(function(x){return x==='me'?(S.me.name||'我'):(S.ta.name||'他')}).join('、');
+    var likeNames=(m.likes||[]).map(function(x){return x==='me'?(S.me.name||'我'):taName()}).join('、');
     var cmts=(m.comments||[]).map(function(c){
       var cw=c.from==='me'?S.me:S.ta;
       return '<div><b>'+esc(cw.name||'')+'</b>'+esc(c.text)+'</div>';
     }).join('');
-    return '<article class="mo" data-mo="'+m.id+'"><div class="mo-av">'+esc(who.avatar||'✦')+'</div><div class="mo-main"><div class="mo-name">'+esc(who.name||'')+'</div><p class="mo-text">'+esc(m.text)+'</p>'+(m.img?'<div class="mo-img">'+esc(m.img)+'</div>':'')+'<div class="mo-meta"><span>'+fmt(m.at)+'</span><button class="'+(liked?'liked':'')+'" data-act="like" data-id="'+m.id+'">♡ '+((m.likes||[]).length?likeNames:'')+'</button><button data-act="comment" data-id="'+m.id+'">评论</button><button data-act="delMo" data-id="'+m.id+'">删</button></div>'+(cmts?'<div class="mo-cmts">'+cmts+'</div>':'')+'</div></article>';
+    return '<article class="mo" data-mo="'+m.id+'"><div class="mo-av">'+avStr(who)+'</div><div class="mo-main"><div class="mo-name">'+esc(who.name||'')+'</div><p class="mo-text">'+esc(m.text)+'</p>'+(m.img?'<div class="mo-img">'+esc(m.img)+'</div>':'')+'<div class="mo-meta"><span>'+fmt(m.at)+'</span><button class="'+(liked?'liked':'')+'" data-act="like" data-id="'+m.id+'">♡ '+((m.likes||[]).length?likeNames:'')+'</button><button data-act="comment" data-id="'+m.id+'">评论</button><button data-act="delMo" data-id="'+m.id+'">删</button></div>'+(cmts?'<div class="mo-cmts">'+cmts+'</div>':'')+'</div></article>';
   }).join('');
 }
 function newMoment(){
@@ -477,7 +534,7 @@ function newMoment(){
 }
 function renderMail(){
   var box=document.getElementById('mailList');
-  if(!S.mails.length){box.innerHTML='<div class="empty"><b>信箱是空的</b>写一封，慢慢说。<br>他回的信也会落在这里。</div>';return}
+  if(!S.mails.length){box.innerHTML='<div class="empty"><b>信箱是空的</b>写一封，慢慢说。<br>'+esc(taName())+'回的信也会落在这里。</div>';return}
   var list=S.mails.slice().sort(function(a,b){return b.at-a.at});
   box.innerHTML=list.map(function(m){
     var who=m.from==='me'?S.me:S.ta;
@@ -667,16 +724,19 @@ function openSettings(){
     sw.appendChild(b);
   });
   var f1=document.createElement('div');f1.className='two';
-  f1.innerHTML='<div class="field"><label>我的名字</label><input id="inMeName" maxlength="12"></div><div class="field"><label>头像</label><input id="inMeAv" maxlength="4"></div>';
+  f1.innerHTML='<div class="field"><label>我的名字</label><input id="inMeName" maxlength="12"></div><div class="field"><label>没照片时的符号</label><input id="inMeAv" maxlength="4"></div>';
   wrap.appendChild(f1);
   var f2=document.createElement('div');f2.className='two';
-  f2.innerHTML='<div class="field"><label>他的名字</label><input id="inTaName" maxlength="12"></div><div class="field"><label>头像</label><input id="inTaAv" maxlength="4"></div>';
+  f2.innerHTML='<div class="field"><label>他的名字</label><input id="inTaName" maxlength="12"></div><div class="field"><label>没照片时的符号</label><input id="inTaAv" maxlength="4"></div>';
   wrap.appendChild(f2);
+  var ph=document.createElement('div');ph.className='two';ph.style.marginBottom='12px';
+  ph.innerHTML='<button class="ghost" data-pick="me" style="flex:1">换我的照片</button><button class="ghost" data-pick="ta" style="flex:1">换他的照片</button>';
+  wrap.appendChild(ph);
   var btn=document.createElement('button');btn.className='primary';btn.textContent='收 好';btn.style.width='100%';
   btn.addEventListener('click',function(){
     S.me.name=(wrap.querySelector('#inMeName').value||'我').trim().slice(0,12);
     S.me.avatar=(wrap.querySelector('#inMeAv').value||'🌙').trim().slice(0,4);
-    S.ta.name=(wrap.querySelector('#inTaName').value||'他').trim().slice(0,12);
+    S.ta.name=(wrap.querySelector('#inTaName').value||TA_NAME).trim().slice(0,12);
     S.ta.avatar=(wrap.querySelector('#inTaAv').value||'✦').trim().slice(0,4);
     save();paintNames();renderHome();renderChat();closeSheet();
   });
@@ -687,10 +747,11 @@ function openSettings(){
   row2.querySelector('#btnDays').addEventListener('click',function(){closeSheet();setTimeout(openDays,80)});
   row2.querySelector('#btnBubble2').addEventListener('click',function(){closeSheet();setTimeout(openBubble,80)});
   var menu=document.createElement('div');menu.className='menu-list';menu.style.marginTop='14px';
-  menu.innerHTML='<button class="mi" data-s="export"><span>导出备份</span><span>json</span></button><button class="mi" data-s="import"><span>导入备份</span><span></span></button><button class="mi" data-s="clear"><span>全部清空</span><span></span></button>';
+  menu.innerHTML='<button class="mi" data-s="noimg"><span>照片换回符号</span><span>两个都换</span></button><button class="mi" data-s="export"><span>导出备份</span><span>json</span></button><button class="mi" data-s="import"><span>导入备份</span><span></span></button><button class="mi" data-s="clear"><span>全部清空</span><span></span></button>';
   wrap.appendChild(menu);
   menu.addEventListener('click',function(e){
     var b=e.target.closest('[data-s]');if(!b)return;
+    if(b.dataset.s==='noimg'){if(confirm('把两张照片都去掉？')){S.me.img='';S.ta.img='';save();paintNames();renderMoments()}}
     if(b.dataset.s==='export')exportData();
     if(b.dataset.s==='import')document.getElementById('fileIn').click();
     if(b.dataset.s==='clear'){
@@ -787,6 +848,7 @@ document.getElementById('tabbar').addEventListener('click',function(e){
   var b=e.target.closest('.tab');if(b)go(b.dataset.view);
 });
 document.addEventListener('click',function(e){
+  var pk=e.target.closest('[data-pick]');if(pk){pickAvatar(pk.dataset.pick);return}
   var g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
   var a=e.target.closest('[data-act]');if(!a)return;
   var act=a.dataset.act,id=a.dataset.id;
@@ -836,7 +898,7 @@ for(var ti=0;ti<tabs2.length;ti++){
       S.from=b.dataset.from;
       for(var k=0;k<tabs2.length;k++)tabs2[k].classList.remove('on');
       b.classList.add('on');save();
-      input.placeholder=S.from==='me'?'写一句，递过去…':'替他写一句…';
+      input.placeholder=S.from==='me'?'写一句，递过去…':'替'+taName()+'写一句…';
       input.focus();
     });
   })(tabs2[ti]);
@@ -851,7 +913,6 @@ input.addEventListener('keydown',function(e){
 applySkin();applyBubbleCSS();paintNames();
 document.getElementById('btnStyle').textContent=S.style==='glass'?'◐':'◼';
 for(var q=0;q<tabs2.length;q++)tabs2[q].classList.toggle('on',tabs2[q].dataset.from===S.from);
-input.placeholder=S.from==='me'?'写一句，递过去…':'替他写一句…';
 go('home');renderChat();splash();
 window.addEventListener('beforeunload',save);
 })();
