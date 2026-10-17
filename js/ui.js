@@ -1,4 +1,4 @@
-// 界面：弹层、字卡库、气泡、设置、纪念日、备份、事件绑定、启动
+// 界面：弹层、字卡库页、气泡、设置、纪念日、备份、事件绑定、启动
 function openSheet(title,node){
   closeNav();
   sheetTitle.textContent=title;sheetBody.innerHTML='';sheetBody.appendChild(node);sheet.hidden=false;
@@ -10,62 +10,65 @@ function fillInput(t){
   input.value=t;input.focus();input.style.height='auto';
   input.style.height=Math.min(input.scrollHeight,120)+'px';
 }
-function openLib(){
-  var wrap=document.createElement('div');
-  var searchRow=document.createElement('div');searchRow.className='lib-search';
-  searchRow.innerHTML='<input id="libQ" placeholder="搜一句…"><button id="libRand">随机一句</button>';
-  var tags=document.createElement('div');tags.className='lib-tags';
-  var list=document.createElement('div');
-  var active='全部',q='';
-  function drawLib(){
-    tags.innerHTML='';
-    var all=['全部'],seen={};
-    S.lib.forEach(function(x){if(!seen[x.tag]){seen[x.tag]=1;all.push(x.tag)}});
-    all.forEach(function(tag){
-      var b=document.createElement('button');
-      b.className='lt'+(tag===active?' on':'');b.textContent=tag;
-      b.addEventListener('click',function(){active=tag;drawLib()});
-      tags.appendChild(b);
+// 字卡库：侧栏里单独一页。点一句就带去传讯页填进输入框
+var LIB={active:'全部',q:'',built:false};
+function libItems(){
+  return S.lib.filter(function(x){
+    if(LIB.active!=='全部'&&x.tag!==LIB.active)return false;
+    if(LIB.q&&x.text.toLowerCase().indexOf(LIB.q.toLowerCase())<0)return false;
+    return true;
+  });
+}
+function useLine(t){go('chat');fillInput(t)}
+function drawLib(){
+  var tags=$('libTags'),list=$('libList');
+  tags.innerHTML='';
+  var all=['全部'],seen={};
+  S.lib.forEach(function(x){if(!seen[x.tag]){seen[x.tag]=1;all.push(x.tag)}});
+  if(all.indexOf(LIB.active)<0)LIB.active='全部';
+  all.forEach(function(tag){
+    var b=document.createElement('button');
+    b.className='lt'+(tag===LIB.active?' on':'');b.textContent=tag;
+    b.addEventListener('click',function(){LIB.active=tag;drawLib()});
+    tags.appendChild(b);
+  });
+  list.innerHTML='';
+  var items=libItems();
+  if(!items.length){var p=document.createElement('p');p.className='hint';p.textContent='没找到。换个词，或者在下面加一句。';list.appendChild(p)}
+  items.forEach(function(x){
+    var row=document.createElement('div');row.className='librow';
+    var b=document.createElement('button');b.className='li';b.textContent=x.text;
+    b.addEventListener('click',function(){useLine(x.text)});
+    var rm=document.createElement('button');rm.className='rm';rm.textContent='×';rm.setAttribute('aria-label','删掉这句');
+    rm.addEventListener('click',function(ev){ev.stopPropagation();S.lib=S.lib.filter(function(y){return y!==x});save();drawLib();updateNav()});
+    row.appendChild(b);row.appendChild(rm);list.appendChild(row);
+  });
+  $('libCount').textContent=S.lib.length+' 句';
+}
+function renderLibPage(){
+  var box=$('libPage');if(!box)return;
+  if(!LIB.built){
+    box.innerHTML='<div class="lib-search"><input id="libQ" placeholder="搜一句…"><button id="libRand">随机一句</button></div><div class="lib-tags" id="libTags"></div><div id="libList"></div>'
+      +'<div class="field" style="margin-top:16px"><label>加几句（一行一条）</label><textarea id="newLibText" placeholder="第一句&#10;第二句" style="min-height:88px;font-family:var(--serif);font-size:13.5px"></textarea></div>'
+      +'<div class="two"><div class="field"><label>归到哪类</label><input id="newLibTag" maxlength="6" placeholder="我的"></div><div class="field" style="display:flex;align-items:flex-end"><button class="ghost" id="addLibBtn" style="width:100%">＋ 收进库</button></div></div>'
+      +'<p class="hint">点一句就带去传讯页，填进输入框。× 从库里删掉。顾时夜回你的字卡也从这里抽。</p>';
+    $('libQ').addEventListener('input',function(){LIB.q=this.value.trim();drawLib()});
+    $('libRand').addEventListener('click',function(){
+      var items=libItems();if(!items.length)return;
+      useLine(items[Math.floor(Math.random()*items.length)].text);
     });
-    list.innerHTML='';
-    var items=S.lib.filter(function(x){
-      if(active!=='全部'&&x.tag!==active)return false;
-      if(q&&x.text.toLowerCase().indexOf(q.toLowerCase())<0)return false;
-      return true;
+    $('addLibBtn').addEventListener('click',function(){
+      var raw=$('newLibText').value;
+      var g=$('newLibTag').value.trim()||'我的';
+      var lines=raw.split('\n').map(function(x){return x.trim()}).filter(Boolean);
+      if(!lines.length)return;
+      lines.forEach(function(t){S.lib.push({tag:g,text:t})});
+      save();drawLib();updateNav();
+      $('newLibText').value='';
     });
-    if(!items.length){var p=document.createElement('p');p.className='hint';p.textContent='没找到。换个词，或者直接写。';list.appendChild(p)}
-    items.forEach(function(x){
-      var row=document.createElement('div');row.className='librow';
-      var b=document.createElement('button');b.className='li';b.textContent=x.text;
-      b.addEventListener('click',function(){fillInput(x.text);closeSheet()});
-      var rm=document.createElement('button');rm.className='rm';rm.textContent='×';
-      rm.addEventListener('click',function(ev){ev.stopPropagation();S.lib=S.lib.filter(function(y){return y!==x});save();drawLib()});
-      row.appendChild(b);row.appendChild(rm);list.appendChild(row);
-    });
+    LIB.built=true;
   }
   drawLib();
-  wrap.appendChild(searchRow);wrap.appendChild(tags);wrap.appendChild(list);
-  searchRow.querySelector('#libQ').addEventListener('input',function(){q=this.value.trim();drawLib()});
-  searchRow.querySelector('#libRand').addEventListener('click',function(){
-    var items=S.lib.filter(function(x){return (active==='全部'||x.tag===active)&&(!q||x.text.indexOf(q)>=0)});
-    if(!items.length)return;
-    fillInput(items[Math.floor(Math.random()*items.length)].text);closeSheet();
-  });
-  var adder=document.createElement('div');
-  adder.innerHTML='<div class="field" style="margin-top:12px"><label>加几句（一行一条）</label><textarea id="newLibText" placeholder="第一句&#10;第二句" style="min-height:88px;font-family:var(--serif);font-size:13.5px"></textarea></div><div class="two"><div class="field"><label>归到哪类</label><input id="newLibTag" maxlength="6" placeholder="我的"></div><div class="field" style="display:flex;align-items:flex-end"><button class="ghost" id="addLibBtn" style="width:100%">＋ 收进库</button></div></div>';
-  wrap.appendChild(adder);
-  adder.querySelector('#addLibBtn').addEventListener('click',function(){
-    var raw=adder.querySelector('#newLibText').value;
-    var g=adder.querySelector('#newLibTag').value.trim()||'我的';
-    var lines=raw.split('\n').map(function(x){return x.trim()}).filter(Boolean);
-    if(!lines.length)return;
-    lines.forEach(function(t){S.lib.push({tag:g,text:t})});
-    save();drawLib();
-    adder.querySelector('#newLibText').value='';
-  });
-  var h=document.createElement('p');h.className='hint';h.textContent='点一句填进输入框。× 从库里删掉。一次可以贴好几行。';
-  wrap.appendChild(h);
-  openSheet('字卡库',wrap);
 }
 function openBubble(){
   var wrap=document.createElement('div');
@@ -83,6 +86,22 @@ function openBubble(){
     S.bubbleCSS='';box.value='';save();applyBubbleCSS();
   });
 }
+// 传讯页顶栏的设置，放在视频通话右边
+function openChatSet(){
+  var wrap=document.createElement('div');wrap.className='menu-list';
+  wrap.innerHTML='<button class="mi" data-c="bubble"><span>聊天气泡</span><span>CSS ›</span></button><button class="mi" data-c="all"><span>名字、头像和外观</span><span>›</span></button>';
+  wrap.addEventListener('click',function(e){
+    var b=e.target.closest('[data-c]');if(!b)return;
+    closeSheet();setTimeout(b.dataset.c==='bubble'?openBubble:openSettings,80);
+  });
+  openSheet('聊天设置',wrap);
+}
+(function(){
+  var b=document.createElement('button');
+  b.className='ico';b.id='btnChatSet';b.setAttribute('aria-label','聊天设置');b.textContent='⚙';
+  b.addEventListener('click',openChatSet);
+  document.querySelector('.chat-top').appendChild(b);
+})();
 function openSettings(){
   var wrap=document.createElement('div');
   wrap.innerHTML='<div class="field"><label>材质</label><div class="seg" id="styleSeg"><button data-s="glass">毛玻璃</button><button data-s="solid">纯色</button></div></div><div class="field"><label>配色</label><div class="swatches" id="swWrap"></div></div>';
@@ -198,17 +217,16 @@ $('fileIn').addEventListener('change',function(e){
       var d=JSON.parse(fr.result);
       if(!d||!Array.isArray(d.cards))throw new Error('bad');
       if(!confirm('导入会覆盖现在的数据，确定？'))return;
-      S=Object.assign(defaults(),d);
+      S=Object.assign(defaults(),d);S.from='me';S.autoReply=true;
       save();applySkin();applyBubbleCSS();paintNames();paintStyleBtns();renderHome();renderChat();renderMoments();renderMail();renderDraws();
+      if(LIB.built)drawLib();
       alert('回来了。');
     }catch(err){alert('这个文件读不出来。')}
   };
   fr.readAsText(f);e.target.value='';
 });
 // 按钮
-$('btnSend').addEventListener('click',send);
-$('btnLib').addEventListener('click',openLib);
-$('btnBubble').addEventListener('click',openBubble);
+$('btnSend').addEventListener('click',function(){send()});
 $('btnSet').addEventListener('click',openSettings);
 $('btnStyle').addEventListener('click',toggleStyle);
 $('btnDraw').addEventListener('click',draw);
@@ -293,19 +311,6 @@ document.addEventListener('click',function(e){
     box.querySelector('input').focus();
   }
 });
-// 我说/他说
-var tabs2=document.querySelectorAll('.tab2');
-for(var ti=0;ti<tabs2.length;ti++){
-  (function(b){
-    b.addEventListener('click',function(){
-      S.from=b.dataset.from;
-      for(var k=0;k<tabs2.length;k++)tabs2[k].classList.remove('on');
-      b.classList.add('on');save();
-      input.placeholder=S.from==='me'?'写一句，递过去…':'替'+taName()+'写一句…';
-      input.focus();
-    });
-  })(tabs2[ti]);
-}
 input.addEventListener('input',function(){
   input.style.height='auto';
   input.style.height=Math.min(input.scrollHeight,120)+'px';
@@ -315,6 +320,5 @@ input.addEventListener('keydown',function(e){
 });
 // 启动
 applySkin();applyBubbleCSS();paintNames();paintStyleBtns();
-for(var q=0;q<tabs2.length;q++)tabs2[q].classList.toggle('on',tabs2[q].dataset.from===S.from);
 go('home');renderChat();splash();
 window.addEventListener('beforeunload',save);

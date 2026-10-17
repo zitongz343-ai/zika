@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#efe4d4">
 <title>字卡传讯</title>
-<link rel="stylesheet" href="css/style.css?v=7">
-<link rel="stylesheet" href="css/reply.css?v=7">
-<link rel="stylesheet" href="css/call.css?v=7">
-<link rel="stylesheet" href="css/theme.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
+<link rel="stylesheet" href="css/reply.css?v=8">
+<link rel="stylesheet" href="css/call.css?v=8">
+<link rel="stylesheet" href="css/theme.css?v=8">
 </head>
 <body>
 <div id="splash"><div class="sp"><div class="sp-mark">∞</div><div class="sp-title">字卡传讯</div><div class="sp-line"></div><div class="sp-sub" id="spSub">江月棠 × 顾时夜</div></div></div>
@@ -37,10 +37,12 @@
       <div class="chat-top"><div class="pair"><button class="who" data-act="settings"><span class="av" id="avTa">✦</span><span class="nm" id="nmTa">顾时夜</span><span class="st">在线</span></button><span class="bond">∞</span><button class="who" data-act="settings"><span class="av" id="avMe">🌙</span><span class="nm" id="nmMe">江月棠</span><span class="st">在写字</span></button></div></div>
       <div id="stream"></div>
       <div class="chat-foot">
-        <div class="tabs"><button class="tab2 on" data-from="me">我 说</button><button class="tab2" data-from="ta" id="tabTa">顾时夜 说</button></div>
-        <textarea id="input" rows="1" placeholder="写一句，递过去…"></textarea>
-        <div class="row"><div class="left"><button class="ghost" id="btnLib">字卡库</button><button class="ghost" id="btnBubble">气泡</button></div><button class="primary" id="btnSend">递 出 去</button></div>
+        <div class="send-row"><textarea id="input" rows="1" placeholder="写一句，递过去…"></textarea><button class="primary" id="btnSend">递出去</button></div>
       </div>
+    </section>
+    <section class="view" data-view="lib">
+      <div class="mo-bar" style="padding-top:24px"><h3>字 卡 库</h3><span class="hh-date" id="libCount"></span></div>
+      <div id="libPage"></div>
     </section>
     <section class="view" data-view="moments">
       <div class="mo-cover"><span class="cname" id="moCoverName">朋友圈</span><span class="cdot" id="moCount"></span></div>
@@ -69,6 +71,7 @@
   <nav class="sb-nav" id="tabbar">
     <button class="tab on" data-view="home"><i>⌂</i><span>主页</span><em></em></button>
     <button class="tab" data-view="chat"><i>▤</i><span>传讯</span><em id="sbcChat"></em></button>
+    <button class="tab" data-view="lib"><i>❏</i><span>字卡库</span><em id="sbcLib"></em></button>
     <button class="tab" data-view="moments"><i>◍</i><span>朋友圈</span><em id="sbcMo"></em></button>
     <button class="tab" data-view="mail"><i>✉</i><span>回信</span><em id="sbcMail"></em></button>
     <button class="tab" data-view="tarot"><i>✦</i><span>塔罗</span><em id="sbcTarot"></em></button>
@@ -81,12 +84,12 @@
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 <input type="file" id="avIn" accept="image/*" hidden>
 <style id="bubbleCustom"></style>
-<script src="js/data.js?v=7"></script>
-<script src="js/theme.js?v=7"></script>
-<script src="js/core.js?v=7"></script>
-<script src="js/features.js?v=7"></script>
-<script src="js/reply.js?v=7"></script>
-<script src="js/call.js?v=7"></script>
-<script src="js/ui.js?v=7"></script>
+<script src="js/data.js?v=8"></script>
+<script src="js/theme.js?v=8"></script>
+<script src="js/core.js?v=8"></script>
+<script src="js/features.js?v=8"></script>
+<script src="js/reply.js?v=8"></script>
+<script src="js/call.js?v=8"></script>
+<script src="js/ui.js?v=8"></script>
 </body>
 </html>

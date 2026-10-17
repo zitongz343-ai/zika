@@ -10,7 +10,8 @@ if(typeof S.me.img!=='string')S.me.img='';if(typeof S.ta.img!=='string')S.ta.img
 if(!Array.isArray(S.cards))S.cards=[];if(!Array.isArray(S.days))S.days=[];
 if(!Array.isArray(S.moments))S.moments=[];if(!Array.isArray(S.mails))S.mails=[];if(!Array.isArray(S.draws))S.draws=[];
 if(!Array.isArray(S.lib)||!S.lib.length)S.lib=LIB_DEFAULT.slice();
-if(!S.theme)S.theme='paper';if(!S.from)S.from='me';
+if(!S.theme)S.theme='paper';
+S.from='me'; // 聊天页只剩“我说”，他的话由自动回字卡来
 if(!S.style)S.style='glass';
 if(typeof S.bubbleCSS!=='string')S.bubbleCSS='';
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
@@ -74,8 +75,7 @@ function paintNames(){
   $('nmTa').textContent=taName();
   setAv($('hpMe'),S.me);setAv($('hpTa'),S.ta);
   setAv($('avMe'),S.me);setAv($('avTa'),S.ta);
-  $('tabTa').textContent=taName()+' 说';
-  input.placeholder=S.from==='me'?'写一句，递过去…':'替'+taName()+'写一句…';
+  input.placeholder='写一句，递过去…';
   $('moCoverName').textContent=(S.me.name||'我')+' 的朋友圈';
   document.title=taName()+' · 字卡传讯';
   updateNav();
@@ -86,6 +86,7 @@ function updateNav(){
   var nd=nearDay();
   $('sbDay').textContent=nd?dayText(nd):'';
   $('sbcChat').textContent=S.cards.length||'';
+  $('sbcLib').textContent=S.lib.length||'';
   $('sbcMo').textContent=S.moments.length||'';
   var unread=S.mails.filter(function(m){return !m.read}).length;
   $('sbcMail').textContent=unread?unread+' 未读':(S.mails.length||'');
@@ -128,6 +129,7 @@ function go(v){
   for(var j=0;j<tabs.length;j++)tabs[j].classList.toggle('on',tabs[j].dataset.view===v);
   if(v==='home')renderHome();
   if(v==='chat')renderChat();
+  if(v==='lib')renderLibPage();
   if(v==='moments')renderMoments();
   if(v==='mail')renderMail();
   if(v==='tarot')renderDraws();
@@ -190,7 +192,7 @@ function send(){
     openBubble();
     return;
   }
-  S.cards.push({id:uid(),from:S.from,text:text,at:Date.now()});
+  S.cards.push({id:uid(),from:'me',text:text,at:Date.now()});
   input.value='';input.style.height='auto';
   save();renderChat();input.focus();
 }

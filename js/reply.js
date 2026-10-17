@@ -9,7 +9,7 @@ var REPLY={
 };
 var POKES=['拍了拍你的脑袋','拍了拍你的肩膀','戳了戳你的脸','捏了捏你的手','揉了揉你的头发','轻轻拽了拽你的袖子'];
 var replyTimer=null,replyRun=0;
-if(typeof S.autoReply!=='boolean')S.autoReply=true;
+S.autoReply=true; // 开关已去掉，一直自动回
 function rnd(a,b){return a+Math.random()*(b-a)}
 function pickOne(a){return a[Math.floor(Math.random()*a.length)]}
 // milk 原版：75% 回 1 张，剩下的里 95% 回 2 张，其余 3 张
@@ -29,7 +29,6 @@ function addReplyCard(c){S.cards.push(c);save();renderChat();updateNav()}
 
 // 你又递了一张，就打断他正在回的，重新等
 function scheduleReply(){
-  if(!S.autoReply)return;
   clearTimeout(replyTimer);
   var token=++replyRun;
   showTyping(false);
@@ -84,21 +83,10 @@ cardEl=function(c){
   return el;
 };
 
-// 只有“我说”递出去的才会触发他回
+// 你递出去一张，他就准备回
 var _send=send;
 send=function(){
-  var before=S.cards.length,from=S.from;
+  var before=S.cards.length;
   _send();
-  if(S.cards.length>before&&from==='me')scheduleReply();
+  if(S.cards.length>before)scheduleReply();
 };
-
-// 输入框下面加个开关
-var arBtn=document.createElement('button');
-arBtn.className='ghost';arBtn.id='btnAuto';
-function paintAuto(){arBtn.textContent=S.autoReply?'自动回 开':'自动回 关';arBtn.classList.toggle('on',S.autoReply)}
-arBtn.addEventListener('click',function(){
-  S.autoReply=!S.autoReply;save();paintAuto();
-  if(!S.autoReply){replyRun++;clearTimeout(replyTimer);showTyping(false)}
-});
-document.querySelector('.chat-foot .row .left').appendChild(arBtn);
-paintAuto();

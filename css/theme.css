@@ -34,13 +34,17 @@
 /* 传讯页：顶栏钉在上面，输入栏钉在下面，只有中间字卡滚动（不碰字卡本身） */
 .view[data-view="chat"]{padding:0!important;overflow:hidden!important}
 .view[data-view="chat"].on{display:flex!important;flex-direction:column;height:100%}
-.chat-top{flex:0 0 auto;position:relative;z-index:5;background:var(--surface-3);border-bottom:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.chat-top{flex:0 0 auto;position:relative;z-index:5;gap:8px;background:var(--surface-3);border-bottom:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.chat-top .ico{flex:0 0 auto}
+#btnChatSet{font-size:16px}
 .chat-top .who:first-child .st::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#7bc67e;margin-right:4px;vertical-align:1px}
 .view[data-view="chat"] #stream{flex:1 1 0;height:0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .view[data-view="chat"] #typing{flex:0 0 auto}
 .chat-foot{flex:0 0 auto;width:100%;margin:0;border-radius:0;border:0;border-top:1px solid var(--line);position:relative;z-index:5}
-#input{border-radius:20px}
-.tab2{letter-spacing:.14em}
+/* 输入框 + 递出去在同一行 */
+.send-row{display:flex;align-items:flex-end;gap:8px}
+.send-row #input{flex:1 1 auto;min-width:0;border-radius:20px}
+.send-row .primary{flex:0 0 auto;height:46px;padding:0 18px;letter-spacing:.08em;white-space:nowrap}
 
 /* 侧栏 */
 #sidebar{border-radius:0 26px 26px 0}
@@ -48,6 +52,10 @@
 .tab{border-radius:14px}
 .tab.on{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.12)}
 .tab.on em{color:#fff;opacity:.9}
+
+/* 字卡库页 */
+.view[data-view="lib"] .mo-bar{padding-left:48px}
+#libPage .li{background:var(--surface)}
 
 /* 底部弹层 */
 .inner{border-radius:26px 26px 0 0;padding-top:28px;position:relative}
