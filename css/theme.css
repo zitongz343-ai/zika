@@ -1,0 +1,68 @@
+/* 第 5 步美化：往 milk 那边靠。字卡气泡（.card / .head / .body / .seal / .qt / .rd / .poke）一律不碰 */
+:root{--r-lg:22px;--r-md:16px}
+
+/* 开屏 */
+#splash{background:radial-gradient(120% 70% at 50% 0%,var(--card-b),transparent 62%),linear-gradient(165deg,var(--bg-a),var(--bg-b))}
+.sp-mark{font-size:42px;font-family:Georgia,"Times New Roman",serif;font-style:italic;letter-spacing:.04em;max-width:86vw;margin:0 auto;word-break:break-word}
+.sp-title{font-size:14.5px;letter-spacing:.3em;text-indent:.3em;opacity:.9}
+.sp-sub{color:var(--accent);opacity:.8}
+
+/* 主页 */
+.home-head{padding-top:30px}
+.hh-pair{gap:26px;margin-top:28px}
+.hp-av{width:84px;height:84px;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--line),0 14px 30px rgba(0,0,0,.12)}
+.hp-link{display:inline-block;line-height:84px;animation:zkBeat 2.4s ease-in-out infinite}
+@keyframes zkBeat{0%,100%{transform:scale(1)}14%{transform:scale(1.2)}28%{transform:scale(1)}42%{transform:scale(1.12)}56%{transform:scale(1)}}
+.hh-day{display:table;margin:16px auto 0;padding:6px 15px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--accent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.quote{border-radius:var(--r-lg);padding:24px 20px 16px;overflow:hidden}
+.quote::after{content:"TODAY";position:absolute;right:16px;top:14px;font-family:var(--sans);font-size:9.5px;letter-spacing:.32em;color:var(--accent);opacity:.55}
+.entries{gap:12px}
+.entry{border-radius:var(--r-lg);padding:56px 16px 16px;min-height:112px}
+.entry::before{position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-family:var(--sans);font-size:14px;font-style:normal;box-shadow:0 6px 14px rgba(0,0,0,.12)}
+.entry:nth-child(1)::before{content:"▤"}
+.entry:nth-child(2)::before{content:"◍"}
+.entry:nth-child(3)::before{content:"✉"}
+.entry:nth-child(4)::before{content:"✦"}
+.entry em{top:18px;right:15px;padding:2px 8px;border-radius:999px;background:var(--surface-2)}
+.entry em:empty{display:none}
+
+/* 按钮 */
+.primary{background:var(--accent);background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 68%,#fff));box-shadow:0 8px 20px color-mix(in srgb,var(--accent) 32%,transparent)}
+.ghost{border-radius:999px}
+.ico{width:36px;height:36px}
+
+/* 传讯页顶栏和输入区（不碰字卡本身） */
+.chat-top{background:var(--surface-3);border-bottom:1px solid var(--line);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.chat-top .who:first-child .st::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#7bc67e;margin-right:4px;vertical-align:1px}
+.chat-foot{border-radius:24px 24px 0 0;border:1px solid var(--line);border-bottom:0}
+#input{border-radius:20px}
+.tab2{letter-spacing:.14em}
+
+/* 侧栏 */
+#sidebar{border-radius:0 26px 26px 0}
+.sb-av{width:46px;height:46px;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line)}
+.tab{border-radius:14px}
+.tab.on{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.tab.on em{color:#fff;opacity:.9}
+
+/* 底部弹层 */
+.inner{border-radius:26px 26px 0 0;padding-top:28px;position:relative}
+.inner::before{content:"";position:absolute;top:10px;left:50%;width:38px;height:4px;margin-left:-19px;border-radius:4px;background:var(--sub);opacity:.3}
+.sh h2{font-size:16px}
+.field input,.field textarea,.lib-search input{border-radius:14px}
+.li{border-radius:14px}
+
+/* 朋友圈 */
+.mo-cover{height:180px;background:radial-gradient(70% 90% at 80% 10%,var(--card-b),transparent 70%),linear-gradient(160deg,var(--surface),var(--surface-3))}
+.mo-cover .cname{font-size:21px}
+.mo-av{border-radius:12px}
+.mo-img{border-radius:var(--r-md)}
+.mo-cmts{border-radius:12px}
+
+/* 回信和塔罗 */
+.mail{border-radius:var(--r-lg)}
+.mail-from::before{content:"✉ ";opacity:.8}
+.letter{border-radius:24px}
+.letter::before{border-radius:24px}
+.tface{border-radius:18px}
+.empty{border-radius:var(--r-lg)}
