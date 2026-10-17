@@ -1,17 +1,18 @@
 /* v9：主页头像叠放、主页壁纸、板块图标、设置面板控件 */
-.hh-pair{position:relative;gap:0;align-items:flex-start}
+.hh-pair{position:relative;gap:0!important;align-items:flex-start}
 .hh-pair .hp{position:relative;z-index:1}
-.hh-pair .hp+.hp-link+.hp{margin-left:-22px;z-index:2}
+.hh-pair .hp+.hp-link+.hp,.hh-pair .hp+.hp{margin-left:-22px;z-index:2}
 .hh-pair .hp-av{border:3px solid var(--solid);background:var(--solid)}
 .hh-pair .hp:first-child .hp-cam{right:auto;left:-1px}
-.hh-pair .hp-link{display:none!important}
+.hh-pair .hp-link,.hp-link{display:none!important;animation:none!important}
 .hh-pair .hp-nm{font-size:13.5px;letter-spacing:.08em}
 #wall{position:fixed;inset:0;z-index:0;pointer-events:none;background:center/cover no-repeat;display:none}
 #wall::after{content:"";position:absolute;inset:0;background:var(--bg-a);opacity:var(--dim,.2)}
 body.has-wall.on-home #wall{display:block}
 body.has-wall.on-home::before{opacity:0}
-.entry{padding-right:48px}
-.entry .ei{position:absolute;right:12px;bottom:11px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:19px;line-height:1;color:var(--accent);opacity:.85;overflow:hidden;font-family:var(--sans);font-style:normal}
+/* 主页入口：只留左上角那个圆，里面放可换的图标 */
+.entry::before{display:none!important;content:none!important}
+.entry .ei{position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:14px;line-height:1;overflow:hidden;font-family:var(--sans);font-style:normal;box-shadow:0 6px 14px rgba(0,0,0,.12)}
 .entry .ei img,.tab i img,.icprev img{width:100%;height:100%;object-fit:cover;display:block}
 .tab i{display:grid;place-items:center;height:20px}
 .tab i img{width:20px;height:20px;border-radius:6px}
