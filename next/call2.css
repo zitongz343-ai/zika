@@ -1,0 +1,75 @@
+/* next 版通话：接通后的浮动小窗和缩小后的胶囊。响铃整屏还用 call.css 那套 */
+#cw{position:fixed;z-index:140;left:0;top:0;width:290px;height:420px;border-radius:26px;overflow:hidden;color:#fff;font-family:var(--sans);background:#161a26;box-shadow:0 24px 60px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08);touch-action:none;user-select:none;-webkit-user-select:none;display:flex;flex-direction:column;animation:cwIn .25s ease}
+#cw[hidden],#cwPill[hidden],.cw-menu[hidden]{display:none!important}
+@keyframes cwIn{from{opacity:0;transform:scale(.94)}}
+.cw-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(170deg,#1d2234,#121520 55%,#25314b);background-size:cover;background-position:center}
+#cw[data-kind="voice"].has-img .cw-bg{inset:-6px;filter:brightness(.5) blur(2px)}
+#cw[data-kind="video"].has-img:not(.own) .cw-bg{inset:-40px;filter:blur(26px) brightness(.5) saturate(1.2)}
+#cw.own .cw-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.4),transparent 30%,transparent 60%,rgba(0,0,0,.55))}
+.cw-top{position:relative;z-index:2;display:flex;align-items:center;gap:8px;padding:14px 14px 0}
+.cw-time{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1);font-size:13px;letter-spacing:.08em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cw-time i{width:7px;height:7px;border-radius:50%;background:#3ccf6e;box-shadow:0 0 6px #3ccf6e}
+.cw-time b{font-weight:400}
+.cw-top .sp{flex:1}
+.cw-ib{flex:0 0 auto;width:36px;height:36px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;cursor:pointer;transition:opacity .2s}
+.cw-ib:active{transform:scale(.92)}
+.cw-ib svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cw-menu{position:absolute;z-index:5;right:12px;top:58px;min-width:132px;padding:6px;border-radius:16px;background:rgba(14,17,28,.95);border:1px solid rgba(255,255,255,.1);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.cw-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:0;border-radius:10px;background:none;color:#fff;font-family:var(--sans);font-size:14px;cursor:pointer;text-align:left}
+.cw-menu button.on{background:rgba(255,255,255,.1)}
+.cw-menu i{display:grid;place-items:center;width:18px;height:18px;flex:0 0 auto}
+.cw-menu i::after{content:"";border:2px solid #c9a6e8;border-radius:3px}
+.cw-menu .sz-mini::after{width:5px;height:5px}
+.cw-menu .sz-sm::after{width:8px;height:8px}
+.cw-menu .sz-std::after{width:11px;height:11px}
+.cw-menu .sz-lg::after{width:14px;height:14px;border-style:dashed}
+.cw-mid{position:relative;z-index:1;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:0 10px}
+.cw-ring{position:relative;display:grid;place-items:center}
+.cw-ring::before,.cw-ring::after{content:"";position:absolute;inset:-14px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);animation:cwPulse 2.4s ease-out infinite;pointer-events:none}
+.cw-ring::after{animation-delay:1.2s}
+@keyframes cwPulse{from{transform:scale(.9);opacity:.9}to{transform:scale(1.4);opacity:0}}
+.cw-av{width:var(--cwav,112px);height:var(--cwav,112px);border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:40px;background:rgba(255,255,255,.12);border:3px solid rgba(255,255,255,.75);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.cw-av img,.cw-self img,.cw-pav img{width:100%;height:100%;object-fit:cover;display:block}
+.cw-name{font-family:var(--serif);font-weight:400;font-size:20px;letter-spacing:.12em;text-shadow:0 1px 8px rgba(0,0,0,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cw-wave{display:flex;align-items:center;gap:4px;height:18px}
+.cw-wave i{width:4px;height:6px;border-radius:2px;background:rgba(255,255,255,.55);animation:cwWave 1.1s ease-in-out infinite}
+.cw-wave i:nth-child(2){animation-delay:.15s}
+.cw-wave i:nth-child(3){animation-delay:.3s}
+.cw-wave i:nth-child(4){animation-delay:.45s}
+.cw-wave i:nth-child(5){animation-delay:.6s}
+@keyframes cwWave{0%,100%{height:5px;opacity:.5}50%{height:16px;opacity:1}}
+.cw-hint{min-height:16px;font-size:11.5px;opacity:.7;letter-spacing:.08em}
+.cw-bot{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:0 16px 18px}
+.cw-hang{flex:0 0 auto;width:64px;height:64px;padding:0;border-radius:50%;border:0;background:linear-gradient(135deg,#ff6161,#d63131);display:grid;place-items:center;box-shadow:0 8px 24px rgba(230,60,60,.55);cursor:pointer}
+.cw-hang:active{transform:scale(.93)}
+.cw-hang svg{width:28px;height:28px;fill:#fff;transform:rotate(135deg)}
+.cw-self{position:absolute;z-index:3;left:0;top:0;width:30%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;display:grid;place-items:center;font-size:24px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);box-shadow:0 8px 20px rgba(0,0,0,.3);touch-action:none}
+#cw[data-kind="voice"] .cw-self{display:none}
+#cw[data-kind="video"] .cw-wave,#cw[data-kind="video"] .cw-ring::before,#cw[data-kind="video"] .cw-ring::after{display:none}
+#cw[data-kind="video"].own .cw-ring{display:none}
+#cw[data-kind="video"].own .cw-mid{justify-content:flex-end;padding-bottom:6px}
+.cw-rs{position:absolute;z-index:4;right:2px;bottom:2px;width:26px;height:26px;touch-action:none;cursor:nwse-resize}
+.cw-rs::after{content:"";position:absolute;right:7px;bottom:7px;width:9px;height:9px;border-right:2px solid rgba(255,255,255,.45);border-bottom:2px solid rgba(255,255,255,.45);border-radius:0 0 3px 0}
+/* 只看画面：按钮都藏起来，点一下窗口就回来 */
+.cw-top>.cw-ib,.cw-bot,.cw-rs,.cw-hint{transition:opacity .2s}
+#cw.clean .cw-top>.cw-ib,#cw.clean .cw-bot,#cw.clean .cw-rs,#cw.clean .cw-hint{opacity:0;pointer-events:none}
+/* 尺寸 */
+#cw[data-size="lg"]{--cwav:132px}
+#cw[data-size="sm"]{--cwav:84px}
+#cw[data-size="sm"] .cw-name{font-size:16px}
+#cw[data-size="sm"] .cw-hang{width:52px;height:52px}
+#cw[data-size="sm"] .cw-hang svg{width:23px;height:23px}
+#cw[data-size="sm"] .cw-ib{width:32px;height:32px}
+#cw[data-size="mini"]{--cwav:58px;border-radius:20px}
+#cw[data-size="mini"] .cw-name,#cw[data-size="mini"] .cw-wave,#cw[data-size="mini"] .cw-hint,#cw[data-size="mini"] #cwEye,#cw[data-size="mini"] #cwPic,#cw[data-size="mini"] #cwSz{display:none}
+#cw[data-size="mini"] .cw-top{padding:10px 10px 0}
+#cw[data-size="mini"] .cw-time{padding:4px 9px;font-size:11px}
+#cw[data-size="mini"] .cw-ib{width:28px;height:28px}
+#cw[data-size="mini"] .cw-ring::before,#cw[data-size="mini"] .cw-ring::after{inset:-8px}
+#cw[data-size="mini"] .cw-bot{justify-content:center;padding-bottom:12px}
+#cw[data-size="mini"] .cw-hang{width:44px;height:44px}
+#cw[data-size="mini"] .cw-hang svg{width:20px;height:20px}
+/* 缩小后的胶囊 */
+#cwPill{position:fixed;z-index:141;left:0;top:0;display:flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(18,21,32,.93);color:#fff;font-family:var(--sans);box-shadow:0 10px 26px rgba(0,0,0,.3);touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer;animation:cwIn .2s ease}
+.cw-pav{width:34px;height:34px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:15px;background:rgba(255,255,255,.14);box-shadow:0 0 0 2px #3ccf6e}
+#cwPill b{font-weight:400;font-size:13px;letter-spacing:.06em;font-variant-numeric:tabular-nums}
