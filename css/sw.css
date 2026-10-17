@@ -1,6 +1,7 @@
 /* 开屏：名字像被写出来一样从左到右浮现，笔尖带一点光。底色、墨色、装饰都跟配色走 */
+/* 外层用 .spw：不能叫 .sw，设置里的色点按钮已经占了 .sw */
 #splash{background:radial-gradient(120% 70% at 50% 0%,var(--card-b),transparent 62%),linear-gradient(165deg,var(--bg-a),var(--bg-b))}
-.sw{position:relative;padding:34px 30px;text-align:center;transform:translateY(-3vh)}
+.spw{position:relative;padding:34px 30px;text-align:center;transform:translateY(-3vh)}
 
 /* 四角的相角 */
 .sw-c{position:absolute;width:20px;height:20px;border:1px solid var(--accent);opacity:0;animation:swFade .6s ease .05s forwards}
@@ -19,7 +20,7 @@
 /* 名字：毛笔字，遮罩从左往右推 */
 .sw-wrap{position:relative;display:inline-block;margin:16px 0 0;transform:rotate(-3deg)}
 .sw-nm{font-family:"Ma Shan Zheng","Kaiti SC","STKaiti","KaiTi",serif;font-size:clamp(27px,8.6vw,40px);line-height:1.5;letter-spacing:.06em;color:var(--deep);white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 38%,rgba(0,0,0,.4) 46%,transparent 54%,transparent 100%);mask-image:linear-gradient(90deg,#000 0,#000 38%,rgba(0,0,0,.4) 46%,transparent 54%,transparent 100%);-webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:100% 0;mask-position:100% 0;animation:swWrite 1.5s cubic-bezier(.42,.04,.38,1) .34s forwards}
-.sw.long .sw-nm{font-size:clamp(22px,6.8vw,32px)}
+.spw.long .sw-nm{font-size:clamp(22px,6.8vw,32px)}
 @keyframes swWrite{to{-webkit-mask-position:0 0;mask-position:0 0}}
 .sw-nm em{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:.56em;color:var(--accent);letter-spacing:0;margin:0 .22em;vertical-align:.12em}
 /* 笔尖那点光 */
