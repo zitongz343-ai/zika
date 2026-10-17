@@ -1,0 +1,19 @@
+/* 主页名字做成标题字：横细竖粗的宋体，两边缀四角星，上面一行很细的英文小字，下面一道线中间一颗星 */
+/* 宋体粗体用 iPhone 自带的，不联网 */
+.hh-pair .hp-nm{display:none!important}
+.home-head::after{display:none!important}
+.zt{position:relative;margin:20px auto 2px;text-align:center;color:var(--deep)}
+.zt-en{display:flex;align-items:center;justify-content:center;gap:10px;font-family:Georgia,"Times New Roman",serif;font-size:9.5px;letter-spacing:.42em;text-indent:.42em;color:var(--accent);opacity:.85;white-space:nowrap}
+.zt-en i{flex:0 0 30px;height:1px;background:currentColor;opacity:.55}
+.zt-nm{position:relative;display:inline-flex;align-items:center;gap:10px;margin-top:10px;padding:0 6px;font-family:"Songti SC","STSongti-SC-Black","Noto Serif SC","Source Han Serif SC",serif;font-weight:900;font-size:calc(32px * var(--fz,1));line-height:1.15;letter-spacing:.08em;white-space:nowrap;text-shadow:0 2px 14px color-mix(in srgb,var(--deep) 18%,transparent)}
+.zt.long .zt-nm{font-size:calc(25px * var(--fz,1));letter-spacing:.04em}
+.zt-nm em{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:.6em;color:var(--accent);letter-spacing:0;text-shadow:none}
+svg.zs{position:absolute;display:block;fill:currentColor;pointer-events:none;animation:ztTw 3.2s ease-in-out infinite}
+.zs1{width:15px;height:15px;left:-14px;top:-8px}
+.zs2{width:9px;height:9px;right:-8px;top:-2px;animation-delay:1.1s}
+.zs3{width:7px;height:7px;right:-16px;bottom:2px;animation-delay:2s;color:var(--accent)}
+@keyframes ztTw{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.78)}}
+.zt-ft{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:10px;color:var(--accent)}
+.zt-ft i{flex:0 0 56px;height:1px;background:currentColor;opacity:.5}
+.zt-ft svg.zs{position:static;width:13px;height:13px;animation-delay:.5s}
+.zt+.hh-day{margin-top:14px}
