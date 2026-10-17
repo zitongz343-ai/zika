@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#efe4d4">
 <title>字卡传讯</title>
-<link rel="stylesheet" href="css/style.css?v=10">
-<link rel="stylesheet" href="css/reply.css?v=10">
-<link rel="stylesheet" href="css/call.css?v=10">
-<link rel="stylesheet" href="css/theme.css?v=10">
-<link rel="stylesheet" href="css/prefs.css?v=10">
+<link rel="stylesheet" href="css/style.css?v=11">
+<link rel="stylesheet" href="css/reply.css?v=11">
+<link rel="stylesheet" href="css/call.css?v=11">
+<link rel="stylesheet" href="css/theme.css?v=11">
+<link rel="stylesheet" href="css/prefs.css?v=11">
+<link rel="stylesheet" href="css/chat-plus.css?v=11">
 </head>
 <body>
 <div id="splash"><div class="sp"><div class="sp-mark">∞</div><div class="sp-title">字卡传讯</div><div class="sp-line"></div><div class="sp-sub" id="spSub">江月棠 × 顾时夜</div></div></div>
@@ -45,6 +46,10 @@
       <div class="mo-bar" style="padding-top:24px"><h3>字 卡 库</h3><span class="hh-date" id="libCount"></span></div>
       <div id="libPage"></div>
     </section>
+    <section class="view" data-view="fav">
+      <div class="mo-bar" style="padding-top:24px"><h3>收 藏</h3><span class="hh-date" id="favCount"></span></div>
+      <div id="favList"></div>
+    </section>
     <section class="view" data-view="moments">
       <div class="mo-cover"><span class="cname" id="moCoverName">朋友圈</span><span class="cdot" id="moCount"></span></div>
       <div class="mo-bar"><h3>动 态</h3><button class="ghost" data-act="newMoment">＋ 发一条</button></div>
@@ -73,6 +78,7 @@
     <button class="tab on" data-view="home"><i>⌂</i><span>主页</span><em></em></button>
     <button class="tab" data-view="chat"><i>▤</i><span>传讯</span><em id="sbcChat"></em></button>
     <button class="tab" data-view="lib"><i>❏</i><span>字卡库</span><em id="sbcLib"></em></button>
+    <button class="tab" data-view="fav"><i>☆</i><span>收藏</span><em id="sbcFav"></em></button>
     <button class="tab" data-view="moments"><i>◍</i><span>朋友圈</span><em id="sbcMo"></em></button>
     <button class="tab" data-view="mail"><i>✉</i><span>回信</span><em id="sbcMail"></em></button>
     <button class="tab" data-view="tarot"><i>✦</i><span>塔罗</span><em id="sbcTarot"></em></button>
@@ -85,16 +91,17 @@
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 <input type="file" id="avIn" accept="image/*" hidden>
 <style id="bubbleCustom"></style>
-<script src="js/data.js?v=10"></script>
-<script src="js/theme.js?v=10"></script>
-<script src="js/core.js?v=10"></script>
-<script src="js/features.js?v=10"></script>
-<script src="js/reply.js?v=10"></script>
-<script src="js/call.js?v=10"></script>
-<script src="js/ui.js?v=10"></script>
-<script src="js/prefs.js?v=10"></script>
-<script src="js/prefs-ui.js?v=10"></script>
-<script src="js/lib-groups.js?v=10"></script>
-<script src="js/backup.js?v=10"></script>
+<script src="js/data.js?v=11"></script>
+<script src="js/theme.js?v=11"></script>
+<script src="js/core.js?v=11"></script>
+<script src="js/features.js?v=11"></script>
+<script src="js/reply.js?v=11"></script>
+<script src="js/call.js?v=11"></script>
+<script src="js/ui.js?v=11"></script>
+<script src="js/prefs.js?v=11"></script>
+<script src="js/prefs-ui.js?v=11"></script>
+<script src="js/lib-groups.js?v=11"></script>
+<script src="js/backup.js?v=11"></script>
+<script src="js/chat-plus.js?v=11"></script>
 </body>
 </html>
