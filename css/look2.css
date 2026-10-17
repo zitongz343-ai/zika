@@ -1,0 +1,102 @@
+/* 杂志感 UI：所有配色共用。一屏一个主角，其余用细线、留白、衬线小字收住。字卡气泡不碰 */
+:root{--deep:var(--ink)}
+
+/* ── 三个老配色重新调：颜色压低一点，去掉紫色光斑 ── */
+html[data-theme="paper"]{--bg-a:#f4efe6;--bg-b:#e6dccd;--ink:#2f2720;--sub:#8c7d6c;--accent:#9a6b4f;--deep:#3a2e24;--blob1:rgba(232,200,160,.6);--blob2:rgba(255,252,245,.85);--blob3:rgba(196,210,200,.35);--solid:#fbf8f2;--solid-2:#efe8dc;--solid-3:#ece2d3;--line-solid:rgba(60,45,30,.12)}
+html[data-theme="paper"][data-style="glass"]{--card-b:rgba(240,226,206,.55);--shadow:0 12px 34px rgba(70,52,34,.11)}
+html[data-theme="rose"]{--bg-a:#f6ecea;--bg-b:#e9d6d3;--ink:#3b2427;--sub:#9a8183;--accent:#a4565e;--deep:#4a2a2f;--blob1:rgba(232,180,180,.55);--blob2:rgba(255,250,248,.85);--blob3:rgba(226,206,180,.35);--solid:#fcf7f6;--solid-2:#f2e4e2;--solid-3:#efdcd9;--line-solid:rgba(80,40,44,.12)}
+html[data-theme="rose"][data-style="glass"]{--card-b:rgba(240,214,212,.55);--shadow:0 12px 34px rgba(80,44,48,.11)}
+html[data-theme="sage"]{--bg-a:#eef1ea;--bg-b:#dbe3d6;--ink:#25302a;--sub:#7c8a7e;--accent:#557258;--deep:#26372b;--blob1:rgba(180,210,176,.6);--blob2:rgba(250,252,246,.85);--blob3:rgba(220,206,170,.32);--solid:#f8faf5;--solid-2:#e7ede3;--solid-3:#dde7da;--line-solid:rgba(38,55,43,.12)}
+html[data-theme="sage"][data-style="glass"]{--card-b:rgba(214,230,212,.55);--shadow:0 12px 34px rgba(38,55,43,.11)}
+html[data-theme="night"]{--deep:#c99c8b}
+
+/* 很淡的纸面颗粒（夜间换成提亮的） */
+html[data-theme] body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.08;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+html[data-theme="night"] body::after{mix-blend-mode:screen;opacity:.05}
+
+/* ── 开屏 ── */
+.sp-mark{color:var(--deep)}
+.sp-line{background:var(--accent);opacity:.4}
+
+/* ── 圆形小按钮统一 ── */
+#navBtn,.ico{border-radius:50%;background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 12%,transparent);color:var(--deep)}
+#navBtn{width:38px;height:38px}
+
+/* ── 主页 ── */
+.hh-date{font-family:Georgia,"Times New Roman",serif;font-style:italic;letter-spacing:.12em;color:var(--ink);opacity:.72}
+.home-head{position:relative;padding-bottom:22px}
+.home-head::after{content:"";position:absolute;left:32%;right:32%;bottom:0;height:1px;background:var(--accent);opacity:.35}
+.hp-cam{background:var(--deep)}
+.hh-pair .hp-nm{letter-spacing:.14em}
+.hh-day{background:transparent;border:1px solid var(--accent);color:var(--accent);backdrop-filter:none;-webkit-backdrop-filter:none}
+.quote{padding:26px 22px 18px 24px;border-radius:6px 22px 22px 6px;border-left:3px solid var(--deep)}
+.quote::before{content:"\201C";font-family:Georgia,"Times New Roman",serif;font-size:72px;line-height:1;left:12px;top:-4px;color:var(--accent);opacity:.16}
+.quote p{padding-left:8px;letter-spacing:.04em}
+.quote span{padding-left:8px;color:var(--accent)}
+.quote::after{color:var(--ink);opacity:.4}
+.entries{counter-reset:en}
+.entry{counter-increment:en;border-radius:18px}
+.entry::after{content:"0" counter(en);position:absolute;right:14px;bottom:10px;font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:28px;line-height:1;color:var(--accent);opacity:.16;pointer-events:none}
+.entry .ei{background:transparent;color:var(--accent);border:1px solid var(--accent);box-shadow:none}
+.entry em{color:var(--ink)}
+
+/* ── 按钮：主按钮用每个配色最深的那个颜色 ── */
+.primary{background:var(--deep);background-image:none;box-shadow:0 8px 20px rgba(0,0,0,.16)}
+.ghost{background:transparent;border-color:color-mix(in srgb,var(--ink) 18%,transparent);color:var(--ink)}
+.seg button.on,.l4-seg button.on{background:var(--deep);border-color:var(--deep)}
+.l4-ib{border-radius:50%}
+.l4-ib.on{background:var(--deep);border-color:var(--deep)}
+
+/* ── 侧栏：像目录页，每项前面一道线，后面一个小编号 ── */
+#sidebar{border-radius:0 28px 28px 0}
+.sb-names{margin-top:16px;font-size:19px;letter-spacing:.14em;color:var(--deep)}
+.sb-day{font-family:Georgia,"Times New Roman",serif;font-style:italic;color:var(--accent);opacity:.9}
+.sb-link{color:var(--ink);opacity:.4}
+.sb-nav{counter-reset:tb;gap:0;margin-top:20px;border-top:1px solid color-mix(in srgb,var(--ink) 10%,transparent)}
+.tab{counter-increment:tb;padding:14px 10px;border-radius:0;border-bottom:1px solid color-mix(in srgb,var(--ink) 8%,transparent);color:var(--sub)}
+.tab::after{content:"0" counter(tb);font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:12px;color:var(--sub);opacity:.55;margin-left:4px}
+.tab.on{background:transparent;color:var(--deep);box-shadow:inset 3px 0 0 var(--deep);padding-left:16px}
+.tab.on em{color:var(--accent);opacity:1}
+.tab.on::after{color:var(--deep);opacity:.8}
+.sb-foot{border-top:0}
+.sb-mini{border-radius:999px;background:transparent;border-color:color-mix(in srgb,var(--ink) 14%,transparent);color:var(--ink)}
+
+/* ── 页面标题：衬线大字，下面一道细线 ── */
+.mo-bar{border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent);margin-bottom:12px;padding-bottom:12px}
+.mo-bar h3{font-family:var(--serif);font-size:15px;color:var(--deep);letter-spacing:.4em}
+
+/* ── 传讯页：顶栏和输入栏只留一道细线 ── */
+.chat-top{background:color-mix(in srgb,var(--solid) 72%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 8%,transparent)}
+.chat-top .who:first-child .nm{color:var(--deep);letter-spacing:.18em}
+.chat-top .ts{background:transparent;border-color:var(--accent);backdrop-filter:none;-webkit-backdrop-filter:none}
+.chat-foot{background:color-mix(in srgb,var(--solid) 72%,transparent);border-top:1px solid color-mix(in srgb,var(--ink) 8%,transparent)}
+.send-row #input{border-radius:999px;padding:11px 18px;background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 12%,transparent)}
+.send-row #input:focus{border-color:var(--deep)}
+
+/* ── 弹层和设置 ── */
+.sh{padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent)}
+.sh h2{font-family:var(--serif);font-size:18px;letter-spacing:.16em;color:var(--deep)}
+.sheet.full .sh h2{font-size:19px}
+.sec{display:flex;align-items:center;gap:8px;color:var(--deep);opacity:.75;letter-spacing:.24em}
+.sec::before{content:"";flex:0 0 14px;height:1px;background:currentColor}
+.menu-list.set-grp{padding:0 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.mi{border-bottom-color:color-mix(in srgb,var(--ink) 8%,transparent)}
+.mi b{font-weight:400;letter-spacing:.04em}
+.sh-back{color:var(--deep)}
+
+/* ── 信箱：左边一道竖线，日期用斜体 ── */
+.mail{border-radius:6px 18px 18px 6px;border-left:3px solid var(--accent)}
+.mail.unread{border-left-color:var(--deep)}
+.mail-title{font-family:var(--serif);color:var(--deep)}
+.mail-date{font-family:Georgia,"Times New Roman",serif;font-style:italic}
+.letter-head h3{color:var(--deep);letter-spacing:.12em}
+
+/* ── 朋友圈封面 ── */
+.mo-cover{background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 22%,var(--bg-a)),var(--bg-b))}
+.mo-cover .cname{font-family:var(--serif);color:var(--deep);letter-spacing:.16em}
+.mo-cover .cdot{font-family:Georgia,"Times New Roman",serif;font-style:italic}
+
+/* ── 塔罗、空状态 ── */
+.tarot-info .ti-name{color:var(--deep)}
+.empty{border-style:solid;border-color:color-mix(in srgb,var(--ink) 10%,transparent)}
+.empty b{color:var(--deep)}
