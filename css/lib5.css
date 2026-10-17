@@ -1,0 +1,9 @@
+/* v21：字卡库底部。原来的 sticky 渐变遮不住下面的字卡，改成钉在屏幕底下的一整条栏 */
+.view[data-view="lib"].on{animation:l5in .3s ease}
+@keyframes l5in{from{opacity:0}}
+.view[data-view="lib"] #libPage{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.view[data-view="lib"] .l4-foot{position:fixed!important;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:520px;margin:0!important;z-index:30;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;background:var(--surface)!important;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(0,0,0,.06);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.view[data-view="lib"] .l4-foot:empty{display:none}
+.view[data-view="lib"] .l4-new{height:46px;border-radius:16px;font-size:15px;letter-spacing:.3em;box-shadow:0 6px 16px rgba(0,0,0,.1)}
+.view[data-view="lib"] .l4-foot .l4-bar{padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.view[data-view="lib"] .l4-foot .l4-bar button{padding:9px 10px}
