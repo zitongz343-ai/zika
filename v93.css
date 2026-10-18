@@ -1,0 +1,32 @@
+/* v93：顶栏底下不要硬线，往下渐渐淡掉；字号预览卡 */
+
+/* 顶栏：去掉底线，底色往下延一截渐变，跟下面的内容化开 */
+html body .sheet.full .sh{
+  border-bottom:0!important;
+  margin-bottom:0!important;
+  background:color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 84%,transparent);
+}
+html[data-style="glass"] body .sheet.full .sh{background:color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 62%,transparent)}
+html body .sheet.full .sh::after{
+  content:"";position:absolute;left:0;right:0;top:100%;height:26px;pointer-events:none;
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 84%,transparent),transparent);
+  -webkit-backdrop-filter:saturate(160%) blur(10px);backdrop-filter:saturate(160%) blur(10px);
+  -webkit-mask-image:linear-gradient(to bottom,#000,transparent);mask-image:linear-gradient(to bottom,#000,transparent);
+}
+html[data-style="glass"] body .sheet.full .sh::after{
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 62%,transparent),transparent);
+}
+/* 渐变那一截占了位置，正文往下让一点，第一行不被盖住 */
+html body .sheet.full #sheetBody{padding-top:18px}
+
+/* 字号预览卡 */
+html body #sheetBody .v93-fzprev{
+  margin:4px 0 14px;padding:14px 16px;border-radius:16px;
+  background:var(--surface-2);
+  border:1px solid color-mix(in srgb,var(--ink) 9%,transparent);
+}
+html body #sheetBody .v93-fzprev .v93-fz-l{display:block;margin-bottom:8px;font-family:var(--sans);font-size:11px;letter-spacing:.18em;color:var(--accent)}
+html body #sheetBody .v93-fzprev p{margin:0;color:var(--ink);line-height:1.6}
+html body #sheetBody .v93-fzprev .v93-fz-a{font-size:calc(17px * var(--fz,1));font-weight:600;letter-spacing:.06em}
+html body #sheetBody .v93-fzprev .v93-fz-b{margin-top:4px;font-size:calc(15px * var(--fz,1))}
+html body #sheetBody .v93-fzprev .v93-fz-c{margin-top:8px;font-size:calc(11.5px * var(--fz,1));color:var(--sub)}
