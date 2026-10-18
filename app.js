@@ -8563,3 +8563,98 @@ muBodyClick=function(e){
 };
 
 }catch(e){console.error("[zika] js/v78.js",e)}
+
+/* ===== js/v82.js ===== */
+try{
+
+// v82：毛玻璃透明度自己调。设置 → 外观 → 材质与配色，选毛玻璃时下面多出一排拉条
+// 分开的几项：传讯顶底栏、输入框、音乐页、字卡页、设置弹层、模糊程度
+
+var GL_KEYS=[
+  ['glChat','\u4f20\u8baf\u9876\u680f\u5e95\u680f',10],
+  ['glInput','\u8f93\u5165\u6846',6],
+  ['glMusic','\u97f3\u4e50\u9875',10],
+  ['glLib','\u5b57\u5361\u9875',10],
+  ['glSheet','\u8bbe\u7f6e\u548c\u5f39\u5c42',10],
+  ['glBlur','\u6a21\u7cca\u7a0b\u5ea6',26]
+];
+
+glEnsure=function(){
+  var p=S.prefs;
+  GL_KEYS.forEach(function(x){
+    if(!(+p[x[0]]>=0))p[x[0]]=x[2];
+  });
+  return p;
+};
+
+applyGlass=function(){
+  var p=glEnsure(),st=document.documentElement.style,dark=!!p.dark;
+  function col(v){
+    var a=Math.max(0,Math.min(100,+v||0))/100;
+    return dark?'rgba(46,42,56,'+(a*2).toFixed(3)+')':'rgba(255,255,255,'+a.toFixed(3)+')';
+  }
+  st.setProperty('--gl-chat',col(p.glChat));
+  st.setProperty('--gl-input',col(p.glInput));
+  st.setProperty('--gl-music',col(p.glMusic));
+  st.setProperty('--gl-lib',col(p.glLib));
+  st.setProperty('--gl-sheet',col(p.glSheet));
+  st.setProperty('--gl-blur','saturate(185%) blur('+Math.max(0,+p.glBlur||0)+'px)');
+};
+
+// 跟着配色一起刷
+var _alV82=applyLook;
+applyLook=function(){var r=_alV82.apply(this,arguments);applyGlass();return r};
+
+// 材质与配色里多一排拉条
+var _olV82=openLook;
+openLook=function(){
+  var r=_olV82.apply(this,arguments);
+  glMount();
+  return r;
+};
+glMount=function(){
+  var sb=typeof sheetBody!=='undefined'&&sheetBody;if(!sb)return;
+  var old=sb.querySelector('#glBox');if(old)old.remove();
+  if(S.style!=='glass')return;
+  var segs=sb.querySelectorAll('.seg[data-g="style"]');
+  var after=segs.length?segs[segs.length-1].closest('.field'):null;
+  if(!after)return;
+  glEnsure();
+  var box=document.createElement('div');box.id='glBox';
+  box.innerHTML='<div class="sec">\u900f\u660e\u5ea6</div>'
+    +GL_KEYS.map(function(x){
+      var unit=x[0]==='glBlur'?'px':'%';
+      var mx=x[0]==='glBlur'?40:60;
+      return '<div class="field"><label>'+x[1]+'</label><div class="rg">'
+        +'<input type="range" data-gl="'+x[0]+'" min="0" max="'+mx+'" step="1" value="'+(+S.prefs[x[0]])+'">'
+        +'<b data-glv="'+x[0]+'">'+(+S.prefs[x[0]])+unit+'</b></div></div>';
+    }).join('')
+    +'<p class="hint">\u6570\u5b57\u8d8a\u5c0f\u8d8a\u900f\uff0c0 \u5c31\u662f\u53ea\u5269\u6a21\u7cca\u548c\u8fb9\u7ebf\u3002\u53ea\u5728\u6bdb\u73bb\u7483\u6750\u8d28\u4e0b\u751f\u6548\u3002</p>'
+    +'<button type="button" class="ghost" id="glRs" style="width:100%;margin-bottom:6px">\u6062\u590d\u9ed8\u8ba4\u900f\u660e\u5ea6</button>';
+  after.parentNode.insertBefore(box,after.nextSibling);
+  box.addEventListener('input',function(e){
+    var r=e.target.closest('[data-gl]');if(!r)return;
+    var k=r.dataset.gl,v=+r.value;
+    S.prefs[k]=v;applyGlass();
+    var b=box.querySelector('[data-glv="'+k+'"]');
+    if(b)b.textContent=v+(k==='glBlur'?'px':'%');
+  });
+  box.addEventListener('change',function(e){if(e.target.closest('[data-gl]'))save()});
+  box.querySelector('#glRs').addEventListener('click',function(){
+    GL_KEYS.forEach(function(x){S.prefs[x[0]]=x[2]});
+    save();applyGlass();glMount();
+  });
+};
+
+// 切材质时这排拉条跟着出来或者收起去
+(function(){
+  var sb=typeof sheetBody!=='undefined'&&sheetBody;if(!sb||sb.dataset.v82)return;
+  sb.dataset.v82='1';
+  sb.addEventListener('click',function(e){
+    if(e.target.closest('.seg[data-g="style"] [data-v]'))setTimeout(glMount,30);
+  });
+})();
+
+glEnsure();save();applyGlass();
+
+}catch(e){console.error("[zika] js/v82.js",e)}

@@ -1821,3 +1821,42 @@ html[data-style="glass"] .view[data-view="lib"] .l4-foot{background:var(--gl-a)!
 html[data-style="glass"] body .menu-list.set-grp,
 html[data-style="glass"] body #sheetBody .sh-back{background:var(--gl-a)}
 html[data-style="glass"] .inner{background:var(--gl-a)}
+
+/* ===== css/v82.css 毛玻璃透明度跟着拉条走 ===== */
+
+html[data-style="glass"]{--gl-chat:rgba(255,255,255,.1);--gl-input:rgba(255,255,255,.06);--gl-music:rgba(255,255,255,.1);--gl-lib:rgba(255,255,255,.1);--gl-sheet:rgba(255,255,255,.1);--gl-blur:saturate(185%) blur(26px)}
+
+/* 传讯页 */
+html[data-style="glass"] .chat-top,
+html[data-style="glass"] .chat-foot{background:var(--gl-chat)!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+html[data-style="glass"] body .chat-foot .send-row #input{background:var(--gl-input)!important}
+
+/* 音乐页 */
+html[data-style="glass"] .mu-bar,
+html[data-style="glass"] #muNow,
+html[data-style="glass"] .mu-big,
+html[data-style="glass"] .mu-hb,
+html[data-style="glass"] .mu-rd,
+html[data-style="glass"] .mu-jump button,
+html[data-style="glass"] .mu-np.lyr .mu-tr{background:var(--gl-music)!important}
+html body[data-x] #muPlay{background:var(--gl-music)}
+html[data-style="glass"] html body #muPlay{background:var(--gl-music)!important}
+html[data-style="glass"] .mu-cov,
+html[data-style="glass"] .mu-art{background:var(--gl-input)!important}
+
+/* 字卡页 */
+html[data-style="glass"] .l4-gh,
+html[data-style="glass"] .l4-seg,
+html[data-style="glass"] .lb-pill,
+html[data-style="glass"] .l4-card,
+html[data-style="glass"] .li{background:var(--gl-lib)!important}
+html[data-style="glass"] .view[data-view="lib"] .l4-foot{background:var(--gl-lib)!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+
+/* 设置和弹层 */
+html[data-style="glass"] body .menu-list.set-grp,
+html[data-style="glass"] body #sheetBody .sh-back,
+html[data-style="glass"] .inner{background:var(--gl-sheet)!important}
+
+/* 透明度那排拉条 */
+#glBox .field{margin-bottom:10px}
+#glBox .rg b{min-width:46px;text-align:right}
