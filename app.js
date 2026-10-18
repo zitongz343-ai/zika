@@ -1,4 +1,6 @@
-// 字卡传讯 · 合并版。从原来的 58 个文件按加载顺序拼成，每段开头写着原来的文件名
+// 字卡传讯 · app.js
+// 按原来的加载顺序合成一个文件，每段开头的 ===== 写着它原来是哪个文件
+// 每段包了 try：一段出错不连累后面的段，跟以前分文件时一样
 
 /* ===== js/data.js ===== */
 try{
@@ -6800,7 +6802,7 @@ var NT={reg:null};
 
 
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('../notify-sw.js').then(function(r){NT.reg=r}).catch(function(){});
+  navigator.serviceWorker.register('notify-sw.js').then(function(r){NT.reg=r}).catch(function(){});
   navigator.serviceWorker.addEventListener('message',function(e){var d=e.data||{};if(d.zika==='go')ntGo(d.to)});
 }
 (function(){var m=/[?&]go=(chat|mail)/.exec(location.search);if(m)setTimeout(function(){ntGo(m[1])},900)})();

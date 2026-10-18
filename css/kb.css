@@ -1,6 +1,0 @@
-/* v17：iOS 输入框字号小于 16px 会自动放大页面，这里统一成 16px */
-input,textarea,select{font-size:16px!important}
-html,body{overscroll-behavior:none}
-/* 整个页面跟着「看得见的那一块」走：键盘弹起来时高度变矮，顶栏留在最上面，输入栏贴着键盘 */
-#app{position:fixed;top:0;left:0;right:0;margin:0 auto;height:var(--app-h,100dvh);transform:translateY(var(--app-top,0px))}
-#navBtn{transform:translateY(var(--app-top,0px))}

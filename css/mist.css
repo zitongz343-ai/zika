@@ -1,5 +1,0 @@
-/* 雾蓝：只放颜色。版式在 look2.css 里，所有配色共用 */
-html[data-theme="mist"]{--bg-a:#eef2f4;--bg-b:#d9e2e8;--ink:#22303c;--sub:#7d8c98;--accent:#3d6a8a;--deep:#22303c;--blob1:rgba(166,198,224,.75);--blob2:rgba(255,255,255,.85);--blob3:rgba(222,204,168,.38);--solid:#f8fafb;--solid-2:#e9eff3;--solid-3:#dce7ef;--line-solid:rgba(34,48,60,.12)}
-html[data-theme="mist"][data-style="glass"]{--surface:rgba(255,255,255,.52);--surface-2:rgba(255,255,255,.3);--surface-3:rgba(255,255,255,.2);--line:rgba(255,255,255,.65);--shadow:0 12px 34px rgba(30,52,72,.11);--card-a:rgba(255,255,255,.56);--card-b:rgba(210,228,242,.6)}
-html[data-theme="mist"][data-style="solid"]{--shadow:0 1px 2px rgba(20,40,60,.05),0 8px 20px rgba(30,52,72,.08)}
-html[data-theme="mist"] .chat-top .who:first-child .st::before{background:#5aa58a}

@@ -1,8 +1,0 @@
-/* v22：「新增」栏挂在 body 上，不再受滚动容器的 padding 影响。底色不透明，字卡滑到这里就被挡住 */
-#l4Foot{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:0!important;transform:translateX(-50%);width:100%;max-width:520px;margin:0!important;z-index:30;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;background:var(--solid)!important;border-top:1px solid var(--line);border-radius:22px 22px 0 0;box-shadow:0 -6px 20px rgba(0,0,0,.06);display:none}
-body.on-lib #l4Foot{display:block}
-body.on-lib.lib-typing #l4Foot{display:none}
-#l4Foot .l4-new{height:46px;border-radius:16px;font-size:15px;letter-spacing:.3em;box-shadow:0 6px 16px rgba(0,0,0,.1)}
-#l4Foot .l4-bar{padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
-#l4Foot .l4-bar button{padding:9px 10px}
-.view[data-view="lib"] #libPage{padding-bottom:calc(90px + env(safe-area-inset-bottom))}

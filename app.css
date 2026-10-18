@@ -1,4 +1,4 @@
-/* 字卡传讯 · 合并版。从原来的 38 个文件按加载顺序拼成 */
+/* 字卡传讯 · app.css。按原来的加载顺序合成一个文件，每段开头的 ===== 写着它原来是哪个文件 */
 
 /* ===== css/style.css ===== */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
