@@ -1773,3 +1773,16 @@ html[data-style="glass"] .mu-np.lyr .mu-tr{background:color-mix(in srgb,var(--so
 .mu-lrc{transform:translateZ(0)}
 .mu-lrc p{transition:color .25s,opacity .25s}
 .mu-lrc p span{transition:font-size .22s ease,opacity .25s,color .25s}
+
+/* ===== css/v77.css 设置里上下滑时不再闪 ===== */
+
+/* 弹层的滑动条跟全站其他地方一样藏起来 */
+.sheet .inner,#sheetBody{scrollbar-width:none;-ms-overflow-style:none}
+.sheet .inner::-webkit-scrollbar,#sheetBody::-webkit-scrollbar{display:none;width:0;height:0}
+
+/* 滑动区里面的卡片不再各自开一层实时模糊：模糊底跟着滑动重算，就是闪的原因 */
+html body .menu-list.set-grp{backdrop-filter:none;-webkit-backdrop-filter:none;background:color-mix(in srgb,var(--solid) 82%,transparent)}
+html body #sheetBody .sh-back{backdrop-filter:none;-webkit-backdrop-filter:none;background:color-mix(in srgb,var(--solid) 88%,transparent)}
+
+/* 滑动容器自己固定成一层，滑的时候不重建 */
+.sheet .inner{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;transform:translateZ(0)}
