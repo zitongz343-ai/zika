@@ -9210,3 +9210,51 @@ glMount=function(){
 glEnsure();save();applyGlass();
 
 }catch(e){console.error("[zika] js/v86.js",e)}
+
+
+/* ===== js/v87.js ===== */
+try{
+
+// 一、主页大标题那几处补进「文字颜色」
+var home87=null;
+TX_GROUPS.forEach(function(g){if(g[1].some(function(x){return x[0]==='txHname'}))home87=g[1]});
+if(home87){
+  var at=0;
+  home87.forEach(function(x,i){if(x[0]==='txHname')at=i+1});
+  var add87=[['txHx','\u540d\u5b57\u4e2d\u95f4\u7684 \u00d7'],['txHen','ALWAYS TOGETHER'],['txHft','\u540d\u5b57\u4e0b\u9762\u90a3\u9053\u7ebf']];
+  add87.reverse().forEach(function(x){
+    if(!home87.some(function(y){return y[0]===x[0]}))home87.splice(at,0,x);
+  });
+  TX_ALL.length=0;
+  TX_GROUPS.forEach(function(g){g[1].forEach(function(x){TX_ALL.push(x)})});
+  TX_ALL.forEach(function(x){
+    V85_DEF[x[0]]='';
+    if(typeof P_DEF==='object')P_DEF[x[0]]='';
+    if(S.prefs[x[0]]===undefined||S.prefs[x[0]]===null)S.prefs[x[0]]='';
+  });
+  save();applyText();
+}
+
+// 二、拖拉条时暂停毛玻璃，松手再恢复
+(function(){
+  var r=document.documentElement,t=null;
+  function isRg(el){return el&&el.tagName==='INPUT'&&el.type==='range'}
+  function on(ev){if(!isRg(ev.target))return;if(t){clearTimeout(t);t=null}r.setAttribute('data-dragging','1')}
+  function off(){if(t)clearTimeout(t);t=setTimeout(function(){r.removeAttribute('data-dragging');t=null},140)}
+  ['pointerdown','touchstart','mousedown'].forEach(function(e){document.addEventListener(e,on,true)});
+  ['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(function(e){document.addEventListener(e,off,true)});
+})();
+
+// 三、透明度/气泡那些 setProperty 按帧合并，一次手势不再算几十次
+function raf87(name){
+  if(typeof window[name]!=='function')return;
+  var fn=window[name],q=false;
+  window[name]=function(){
+    if(q)return;q=true;
+    requestAnimationFrame(function(){q=false;try{fn()}catch(e){}});
+  };
+}
+raf87('applyGlass');
+raf87('applyBub84');
+
+}catch(e){console.error("[zika] js/v87.js",e)}

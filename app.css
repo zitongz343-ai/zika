@@ -1960,3 +1960,16 @@ html[data-style="glass"] .sb-mini{background:var(--gl-home-day)!important}
 /* 透明度那排里的小分组标题 */
 #glBox .gl-h{margin:14px 0 8px;padding:0 2px;font-family:var(--sans);font-size:10.5px;letter-spacing:.18em;color:var(--sub);opacity:.9}
 #glBox .gl-h:first-of-type{margin-top:6px}
+
+
+/* ===== css/v87.css 主页大标题接上文字颜色；拖拉条时先关毛玻璃 ===== */
+
+/* 截图里那个「我 × 顾时夜」是 .zt-nm，不是 .hp-nm（.hp-nm 被 display:none 了）*/
+html body .zt-nm,html body .zt-nm span{color:var(--tx-hname,var(--deep))!important}
+html body .zt-nm em{color:var(--tx-hx,var(--accent))!important}
+html body .zt-en{color:var(--tx-hen,var(--accent))!important}
+html body .zt-ft{color:var(--tx-hft,var(--accent))!important}
+
+/* 拖拉条的时候暂时摆掉 backdrop-filter，松手再回来 */
+html[data-dragging="1"] *,html[data-dragging="1"] *::before,html[data-dragging="1"] *::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-dragging="1"] .card,html[data-dragging="1"] .entry,html[data-dragging="1"] .quote{box-shadow:none!important}
