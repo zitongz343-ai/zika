@@ -1904,3 +1904,38 @@ html[data-bubglass="1"] .card{
   border:1px solid rgba(255,255,255,.3)!important;
 }
 html[data-theme="night"][data-bubglass="1"] .card{border-color:rgba(255,255,255,.12)!important}
+
+/* ===== css/v85.css 文字颜色：压过旧样式 + 主页也能调 ===== */
+
+/* ── 传讯页：这几处以前被后面几层旧样式盖死了 ── */
+html body .chat-top .ts{color:var(--tx-stat,var(--accent))!important}
+html body .chat-top .who:first-child .nm{color:var(--tx-title,var(--deep))!important}
+html body .card .head .n{color:var(--tx-name,var(--accent))!important}
+html body .card .head>span:not([class]){color:var(--tx-time,inherit)!important}
+html body .pmeta .tm{color:var(--tx-time,var(--sub))!important}
+html body .card .head .rd{color:var(--tx-read,var(--accent))!important}
+html body .pmeta .rd2{color:var(--tx-read,var(--accent))!important}
+html body .card .head .fv,html body .card .head .tafv{color:var(--tx-fav,var(--accent))!important}
+html body .pmeta .fv{color:var(--tx-fav,var(--accent))!important}
+html body #typing,html body .chat-foot #typing{color:var(--tx-typing,var(--accent))!important}
+html body #typing i,html body .chat-foot #typing i{background:var(--tx-typing,var(--accent))!important}
+html body .poke{color:var(--tx-poke,var(--sub))!important}
+html body .card .qt{color:var(--tx-quote,var(--sub))!important}
+html body .hint,html body .bs-none{color:var(--tx-hint,var(--sub))!important}
+
+/* ── 主页 ── */
+html body .hh-date{color:var(--tx-hdate,var(--ink))!important}
+html body .hh-pair .hp-nm,html body .hp-nm{color:var(--tx-hname,var(--ink))!important}
+html body .hh-day{color:var(--tx-hday,var(--accent))!important}
+html body .quote p{color:var(--tx-quo,var(--ink))!important}
+html body .quote span{color:var(--tx-quolab,var(--sub))!important}
+html body .entry b{color:var(--tx-ent,var(--ink))!important}
+html body .entry span{color:var(--tx-entsub,var(--sub))!important}
+html body .entry em{color:var(--tx-entnum,var(--accent))!important}
+
+/* ── 侧栏和页面标题 ── */
+html body .sb-names{color:var(--tx-sbnm,var(--ink))!important}
+html body .sb-day{color:var(--tx-sbday,var(--sub))!important}
+html body .tab{color:var(--tx-tab,var(--sub))!important}
+html body .tab.on{color:var(--tx-tabon,var(--deep))!important}
+html body .mo-bar h3{color:var(--tx-h3,var(--deep))!important}

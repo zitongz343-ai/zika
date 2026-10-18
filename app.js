@@ -8917,3 +8917,206 @@ if(typeof bubApply==='function'){
 v84Ensure();save();applyChat();
 
 }catch(e){console.error("[zika] js/v84.js",e)}
+
+/* ===== js/v85.js ===== */
+try{
+
+// v85：文字颜色按区分组、主页也能调；气泡面板重新分类、删掉重复的
+
+// ──── 文字颜色：分区 + 主页 ────
+var TX_GROUPS=[
+  ['\u4e3b\u9875',[
+    ['txHdate','\u65e5\u671f'],
+    ['txHname','\u4e24\u4e2a\u540d\u5b57'],
+    ['txHday','\u5728\u4e00\u8d77\u591a\u5c11\u5929'],
+    ['txQuo','\u4eca\u65e5\u4e00\u53e5'],
+    ['txQuolab','\u300c\u4eca\u65e5\u4e00\u53e5\u300d\u6807\u7b7e'],
+    ['txEnt','\u5165\u53e3\u6807\u9898'],
+    ['txEntsub','\u5165\u53e3\u5c0f\u5b57'],
+    ['txEntnum','\u5165\u53e3\u89d2\u6807']
+  ]],
+  ['\u4f20\u8baf\u9875',[
+    ['txTitle','\u9876\u680f\u540d\u5b57'],
+    ['txStat','\u72b6\u6001'],
+    ['txName','\u6c14\u6ce1\u4e0a\u7684\u540d\u5b57'],
+    ['txTime','\u65f6\u95f4'],
+    ['txRead','\u5df2\u8bfb'],
+    ['txFav','\u6536\u85cf\u661f'],
+    ['txTyping','\u6b63\u5728\u8f93\u5165'],
+    ['txPoke','\u62cd\u4e00\u62cd'],
+    ['txQuote','\u5f15\u7528\u7684\u8bdd']
+  ]],
+  ['\u4fa7\u680f\u4e0e\u5176\u4ed6',[
+    ['txSbnm','\u4fa7\u680f\u540d\u5b57'],
+    ['txSbday','\u4fa7\u680f\u5929\u6570'],
+    ['txTab','\u4fa7\u680f\u83dc\u5355'],
+    ['txTabon','\u83dc\u5355\u9009\u4e2d'],
+    ['txH3','\u9875\u9762\u6807\u9898'],
+    ['txHint','\u8bf4\u660e\u5c0f\u5b57']
+  ]]
+];
+var TX_ALL=[];
+TX_GROUPS.forEach(function(g){g[1].forEach(function(x){TX_ALL.push(x)})});
+
+var V85_DEF={};
+TX_ALL.forEach(function(x){V85_DEF[x[0]]=''});
+
+v85Ensure=function(){
+  var p=S.prefs;
+  for(var k in V85_DEF){
+    if(p[k]===undefined||p[k]===null)p[k]=V85_DEF[k];
+    if(typeof P_DEF==='object')P_DEF[k]=V85_DEF[k];
+  }
+  return p;
+};
+
+// txHdate → --tx-hdate
+function txVar(k){return '--'+k.replace(/([A-Z])/g,function(m){return '-'+m.toLowerCase()})}
+
+applyText=function(){
+  var p=v85Ensure(),st=document.documentElement.style;
+  TX_ALL.forEach(function(x){
+    var v=p[x[0]],n=txVar(x[0]);
+    if(v23isHex(v))st.setProperty(n,v);else st.removeProperty(n);
+  });
+};
+
+openTextColor=function(){
+  var w=document.createElement('div');w.className='v23';
+  function row(k,label){
+    var own=v23isHex(S.prefs[k]);
+    return '<div class="v23-crow"><span>'+label+'</span><em>'+(own?'':'\u8df3\u968f\u914d\u8272')+'</em>'
+      +'<input type="color" data-tx="'+k+'" value="'+(own?S.prefs[k]:'#999999')+'">'
+      +'<button type="button" data-txf="'+k+'">\u8df3\u968f</button></div>';
+  }
+  function draw(){
+    w.innerHTML=TX_GROUPS.map(function(g){
+      return '<div class="sec">'+g[0]+'</div><div class="v23-card">'
+        +g[1].map(function(x){return row(x[0],x[1])}).join('')+'</div>';
+    }).join('')
+      +'<p class="hint">\u70b9\u300c\u8df3\u968f\u300d\u6539\u56de\u8ddf\u914d\u8272\u8d70\u3002\u8fd9\u91cc\u53ea\u7ba1\u989c\u8272\uff0c\u5b57\u53f7\u5728\u5916\u89c2 \u2192 \u5168\u5c40\u5b57\u4f53\u91cc\u6539\u3002</p>'
+      +'<button type="button" class="ghost" id="txRs" style="width:100%;margin-top:12px">\u5168\u90e8\u6062\u590d\u8df3\u968f</button>';
+    w.querySelector('#txRs').addEventListener('click',function(){
+      TX_ALL.forEach(function(x){S.prefs[x[0]]=''});save();applyText();draw();
+    });
+  }
+  w.addEventListener('input',function(e){
+    var k=e.target.dataset.tx;if(!k)return;
+    S.prefs[k]=e.target.value;applyText();
+    var em=e.target.parentNode.querySelector('em');if(em)em.textContent='';
+  });
+  w.addEventListener('change',function(e){if(e.target.dataset.tx)save()});
+  w.addEventListener('click',function(e){
+    var b=e.target.closest('[data-txf]');if(!b)return;
+    S.prefs[b.dataset.txf]='';save();applyText();draw();
+  });
+  draw();openSheet('\u6587\u5b57\u989c\u8272',w);
+};
+
+// 设置里那一项的右边字
+SET_GROUPS.forEach(function(g){g[1].forEach(function(i){
+  if(i[0]==='openTextColor')i[2]=function(){
+    var n=TX_ALL.filter(function(x){return v23isHex(S.prefs[x[0]])}).length;
+    return n?n+' \u5904\u81ea\u5b9a':'\u5168\u90e8\u8df3\u968f';
+  };
+})});
+
+// 方案里也带上这批
+if(typeof bubSnap==='function'){
+  var _snapV85=bubSnap;
+  bubSnap=function(){var o=_snapV85.apply(this,arguments);TX_ALL.forEach(function(x){o[x[0]]=S.prefs[x[0]]});return o};
+}
+if(typeof bubApply==='function'){
+  var _applyV85=bubApply;
+  bubApply=function(o){
+    var r=_applyV85.apply(this,arguments);
+    if(o){TX_ALL.forEach(function(x){if(o[x[0]]!==undefined)S.prefs[x[0]]=o[x[0]]});save();applyText()}
+    return r;
+  };
+}
+
+// ──── 气泡面板：重新分类，重复的删掉 ────
+// 旧的「圆角」跟「尾巴开关」跟 v84 的「尾巴 %/位置」重了，这里全部换成一套
+bub84Mount=function(){
+  var sb=typeof sheetBody!=='undefined'&&sheetBody;if(!sb)return;
+  v84Ensure();v85Ensure();
+
+  var seg=sb.querySelector('#bkSeg');
+  if(seg&&!seg.querySelector('[data-k="glass"]')){
+    var gb=document.createElement('button');
+    gb.type='button';gb.dataset.k='glass';gb.textContent='\u6bdb\u73bb\u7483';
+    seg.appendChild(gb);
+  }
+  var kind=S.prefs.bubKind,isP=kind==='plain'||kind==='glass';
+  if(seg)seg.querySelectorAll('[data-k]').forEach(function(x){x.classList.toggle('on',x.dataset.k===kind)});
+
+  var plainBox=sb.querySelector('#bkPlain'),noteTip=sb.querySelector('#bkNote');
+  if(noteTip)noteTip.hidden=isP;
+  var old=sb.querySelector('#bk84');if(old)old.remove();
+  if(!plainBox)return;
+  plainBox.hidden=!isP;
+  if(!isP)return;
+
+  // 旧面板里重复的那几项收起来：圆角、尾巴开关、阴影开关
+  plainBox.querySelectorAll('.sec').forEach(function(s){
+    var t=s.textContent||'';
+    if(t.indexOf('\u5f62\u72b6')>=0)s.hidden=true;
+  });
+  plainBox.querySelectorAll('input[type=range][data-k]').forEach(function(r){
+    var k=r.dataset.k,f=r.closest('.field');if(!f)return;
+    f.hidden=(k==='bubR');
+  });
+  var chk=plainBox.querySelector('.chk');
+  if(chk)chk.querySelectorAll('[data-bt]').forEach(function(i){
+    var lab=i.closest('label');if(!lab)return;
+    lab.hidden=(i.dataset.bt==='bubTail'||i.dataset.bt==='bubShadow');
+  });
+
+  function rg(k,label,min,max,unit){
+    return '<div class="field"><label>'+label+'</label><div class="rg">'
+      +'<input type="range" data-b84="'+k+'" min="'+min+'" max="'+max+'" step="1" value="'+(+S.prefs[k])+'">'
+      +'<b data-b84v="'+k+'">'+(+S.prefs[k])+unit+'</b></div></div>';
+  }
+  var box=document.createElement('div');box.id='bk84';
+  box.innerHTML=
+    '<div class="sec">\u8d28\u611f</div>'
+    +rg('bubAlpha','\u900f\u660e\u5ea6',0,100,'%')
+    +rg('bubTint','\u67d3\u8272',0,100,'%')
+    +rg('bubShN','\u9634\u5f71',0,100,'%')
+    +(kind==='glass'?rg('bubBlur','\u6a21\u7cca',0,40,'px'):'')
+    +'<div class="sec">\u5f62\u72b6</div>'
+    +rg('bubR2','\u5706\u6da6\u5ea6',0,28,'px')
+    +rg('bubTailN','\u5c3e\u5df4\u6536\u5c16',0,100,'%')
+    +'<div class="field"><label>\u5c3e\u5df4\u4f4d\u7f6e</label><div class="seg" id="bkTp">'
+    +[['bottom','\u9760\u5e95'],['top','\u9760\u9876'],['none','\u4e0d\u6536\u5c16']].map(function(x){
+        return '<button type="button" data-tp="'+x[0]+'"'+(S.prefs.bubTailPos===x[0]?' class="on"':'')+'>'+x[1]+'</button>';
+      }).join('')+'</div></div>'
+    +'<div class="sec">\u5c3a\u5bf8\u4e0e\u95f4\u8ddd</div>'
+    +rg('bubGap','\u6c14\u6ce1\u95f4\u8ddd',4,34,'px')
+    +rg('bubFill','\u9971\u6ee1\u5ea6',0,100,'%');
+  plainBox.appendChild(box);
+
+  box.addEventListener('input',function(e){
+    var r2=e.target.closest('[data-b84]');if(!r2)return;
+    var k=r2.dataset.b84,v=+r2.value;
+    if(k==='bubR2')S.prefs.bubR=v;else S.prefs[k]=v;
+    applyChat();
+    var bb=box.querySelector('[data-b84v="'+k+'"]');
+    if(bb)bb.textContent=v+(k==='bubBlur'||k==='bubGap'||k==='bubR2'?'px':'%');
+  });
+  box.addEventListener('change',function(e){if(e.target.closest('[data-b84]'))save()});
+  box.querySelector('#bkTp').addEventListener('click',function(e){
+    var t=e.target.closest('[data-tp]');if(!t)return;
+    S.prefs.bubTailPos=t.dataset.tp;
+    S.prefs.bubTail=t.dataset.tp!=='none';
+    save();applyChat();
+    box.querySelectorAll('#bkTp [data-tp]').forEach(function(x){x.classList.toggle('on',x.dataset.tp===S.prefs.bubTailPos)});
+  });
+  // 圆润度读的是 bubR
+  var rr2=box.querySelector('[data-b84="bubR2"]');
+  if(rr2){rr2.value=+S.prefs.bubR;box.querySelector('[data-b84v="bubR2"]').textContent=(+S.prefs.bubR)+'px'}
+};
+
+v85Ensure();save();applyText();applyChat();
+
+}catch(e){console.error("[zika] js/v85.js",e)}
