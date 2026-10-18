@@ -8306,3 +8306,51 @@ muJumpHide=function(){
 };
 
 }catch(e){console.error("[zika] js/v73.js",e)}
+
+/* ===== js/v75.js ===== */
+try{
+
+// v75：传讯页顶上那条小播放条能关；名字下面不要「在线 / 正在输入」，只留自己的状态
+
+// ── 名字下面：把「在线」那一格抽掉 ──
+(function(){
+  var st=document.querySelector('.chat-top .who .st');
+  if(st)st.remove();
+})();
+
+// ── 小播放条：右边加一个 ×，点了就停下来并收起这条 ──
+(function(){
+  var el=$('muNow');if(!el||el.querySelector('[data-mu="close"]'))return;
+  var x=document.createElement('button');
+  x.type='button';x.className='mu-x';x.dataset.mu='close';
+  x.setAttribute('aria-label','不听了');x.textContent='\u00d7';
+  el.appendChild(x);
+})();
+
+var _barV75=muBarClick;
+muBarClick=function(e){
+  var t=e.target.closest('[data-mu]');
+  if(t&&t.dataset.mu==='close'){
+    e.stopPropagation();
+    var a=MU.a;if(a&&!a.paused)a.pause();
+    MU.barOff=1;
+    var el=$('muNow');if(el)el.hidden=true;
+    return;
+  }
+  return _barV75.call(this,e);
+};
+
+var _loadV75=muLoad;
+muLoad=function(){MU.barOff=0;return _loadV75.apply(this,arguments)};
+
+var _paintV75=muPaintNow;
+muPaintNow=function(){
+  var r=_paintV75.apply(this,arguments);
+  var el=$('muNow');if(el&&MU.barOff)el.hidden=true;
+  return r;
+};
+
+MU.barOff=0;
+muPaintNow();
+
+}catch(e){console.error("[zika] js/v75.js",e)}

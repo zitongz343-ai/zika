@@ -1743,3 +1743,14 @@ html body #muPlay .mu-st em{font-size:10.5px}
 .mu-lrc p.pick span{color:var(--sub)!important;opacity:.34!important}
 .mu-lrc p.pick.on span{color:var(--deep)!important;opacity:1!important}
 .mu-jump i{display:none}
+
+/* ===== css/v75.css 顶条状态去框；小播放条加一个 × ===== */
+
+/* 名字下面只留状态，没有框也没有底 */
+.chat-top .who .st{display:none!important}
+.chat-top .strow{margin-top:3px}
+.chat-top .ts{padding:0!important;border:0!important;background:none!important;max-width:min(72vw,300px);backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-size:10.5px;letter-spacing:.06em}
+
+/* 小播放条的关闭 */
+#muNow .mu-x{flex:0 0 26px;width:26px;height:26px;margin-left:1px;border:0;border-radius:50%;background:none;color:var(--sub);font-family:var(--sans);font-size:17px;line-height:1;display:grid;place-items:center;cursor:pointer;padding:0}
+#muNow .mu-x:active{background:color-mix(in srgb,var(--ink) 8%,transparent)}
