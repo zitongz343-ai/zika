@@ -7345,3 +7345,86 @@ SET_GROUPS.forEach(function(g){g[1].forEach(function(i){
   };
 })});
 }catch(e){console.error('[zika] v65',e)}
+
+/* ===== js/v66.js ===== */
+try{
+
+// v66：信箱里每封都是封好的信，点一下封口掀开、信纸抽出来；写信也直接写在信纸上
+
+var envDate=function(t){var d=new Date(t);return (d.getMonth()+1)+' 月 '+d.getDate()+' 日'};
+var letterSlip=function(){
+  var L=reader&&reader.querySelector('.letter');if(!L)return;
+  L.classList.remove('slip');void L.offsetWidth;L.classList.add('slip');
+};
+
+renderMail=function(){
+  var box=$('mailList');if(!box)return;
+  var ins=S.mails.filter(function(m){return m.from==='ta'}),outs=S.mails.filter(function(m){return m.from!=='ta'});
+  var unread=ins.filter(function(m){return !m.read}).length;
+  document.querySelectorAll('#mlTabs [data-m]').forEach(function(b){b.classList.toggle('on',b.dataset.m===MAILTAB)});
+  var a=$('mlIn'),b=$('mlOut');
+  if(a)a.textContent=unread?unread+' 未读':(ins.length||'');
+  if(b)b.textContent=outs.length||'';
+  var isIn=MAILTAB==='in',list=(isIn?ins:outs).slice().sort(function(x,y){return y.at-x.at}),now=Date.now();
+  if(!list.length){
+    box.innerHTML=isIn?l4Empty('还没有收到信','给'+esc(taName())+'写一封，<br>他会慢慢回，回信落在这里。'):l4Empty('还没有寄出的信','点右上角「写一封信」。');
+    return;
+  }
+  box.innerHTML=list.map(function(m){
+    var sealed=isIn&&!m.read,st='',wait=false;
+    if(!isIn){
+      if(m.replyAt>now){st=esc(taName())+' 在写回信';wait=true}
+      else if(m.replyAt===undefined)st='刚寄出';
+      else st='已寄出';
+    }
+    return '<button type="button" class="env'+(sealed?' sealed':'')+'" data-act="openMail" data-id="'+esc(m.id)+'">'
+      +'<span class="env-slip"></span>'
+      +'<span class="env-face">'
+      +'<span class="env-hill"></span>'
+      +'<span class="env-t">'+esc(m.title||'无题')+'</span>'
+      +'<span class="env-f">'+(isIn?esc(taName())+' 写给你':'寄给 '+esc(taName()))+'</span>'
+      +'<span class="env-foot"><span class="env-d">'+envDate(m.at)+'</span>'+(st?'<span class="env-st'+(wait?' wait':'')+'">'+st+'</span>':'')+'</span>'
+      +'</span>'
+      +'<span class="env-flap"></span>'
+      +(sealed?'<span class="env-wax">封</span>':'')
+      +'</button>';
+  }).join('');
+};
+
+// 点一下：封口掀开，等信纸抽出来再摊开整封
+var _omV66=openMail;
+openMail=function(id){
+  var el=document.querySelector('.env[data-id="'+String(id).replace(/["\\]/g,'')+'"]');
+  if(!el||!el.classList.contains('sealed')){_omV66(id);letterSlip();return}
+  if(el.classList.contains('opening'))return;
+  el.classList.add('opening');
+  setTimeout(function(){_omV66(id);letterSlip()},430);
+};
+
+// 写信：直接写在信纸上
+newMail=function(pre){
+  pre=pre||{};
+  var w=document.createElement('div');w.className='wl';
+  w.innerHTML='<div class="wl-paper"><span class="wl-hill"></span>'
+    +'<input id="mTitle" class="wl-t" maxlength="30" placeholder="写个标题，空着也行">'
+    +'<textarea id="mBody" class="wl-b" placeholder="慢慢写，不着急。"></textarea>'
+    +'<div class="wl-sign">—— '+esc(S.me.name||'我')+'</div></div>'
+    +'<button type="button" class="primary" id="mSend" style="width:100%">封 好 寄 出</button>'
+    +'<p class="hint">寄出以后放在「寄出的信」里。'+esc(taName())+'会按回信概率和时长回你，回信落在「收到的信」。</p>';
+  w.querySelector('#mTitle').value=pre.title||'';
+  w.querySelector('#mBody').value=pre.body||'';
+  w.querySelector('#mSend').addEventListener('click',function(){
+    var t=w.querySelector('#mTitle').value.trim()||'无题';
+    var bd=w.querySelector('#mBody').value.trim();
+    if(!bd){alert('正文还空着。');return}
+    S.mails.push({id:uid(),from:'me',title:t,body:bd,at:Date.now(),read:true});
+    save();closeSheet();MAILTAB='out';
+    if(typeof mailTick==='function')mailTick();
+    go('mail');renderMail();updateNav();
+  });
+  openSheet('写一封信',w);
+};
+
+renderMail();
+
+}catch(e){console.error("[zika] js/v66.js",e)}

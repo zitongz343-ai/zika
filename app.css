@@ -1506,3 +1506,33 @@ html body #bkPrev{position:sticky;top:0;z-index:4}
 .bs-list .lb-pill{display:inline-flex;align-items:center;gap:7px}
 .bs-list .lb-pill i{font-style:normal;opacity:.55;font-size:15px;line-height:1;padding:0 1px}
 .bs-none{font-family:var(--sans);font-size:11.5px;color:var(--sub);line-height:1.9;margin:0 0 10px}
+
+/* ===== css/v66.css ===== 信箱：封好的信封 + 信纸 ===== */
+.env{display:block;width:100%;padding:0;margin:14px 0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;animation:pop .3s ease both}
+.env-slip{position:absolute;left:14px;right:14px;top:6px;height:44px;border-radius:9px 9px 0 0;background:var(--surface-2);border:1px solid var(--line);border-bottom:0;transition:transform .4s cubic-bezier(.3,.8,.3,1)}
+.env-face{position:relative;display:block;padding:16px 17px 14px;border-radius:15px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);overflow:hidden;transition:padding .36s ease,transform .4s ease}
+.env-hill{position:absolute;left:0;right:0;bottom:0;height:54px;background:var(--accent);opacity:.11;-webkit-clip-path:polygon(0 100%,16% 58%,32% 84%,54% 30%,72% 68%,87% 48%,100% 76%,100% 100%);clip-path:polygon(0 100%,16% 58%,32% 84%,54% 30%,72% 68%,87% 48%,100% 76%,100% 100%)}
+.env-t{position:relative;display:block;font-family:var(--serif);font-size:15px;letter-spacing:.06em}
+.env-f{position:relative;display:block;margin-top:6px;font-family:var(--sans);font-size:10.5px;color:var(--accent);letter-spacing:.1em}
+.env-f::before{content:"\2709 ";opacity:.8}
+.env-foot{position:relative;display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:14px}
+.env-d,.env-st{font-family:var(--sans);font-size:10.5px;color:var(--sub);letter-spacing:.07em}
+.env-st.wait{color:var(--accent)}
+.env-flap{position:absolute;left:0;right:0;top:0;height:0;pointer-events:none}
+.env.sealed .env-face{padding-top:48px}
+.env.sealed .env-flap{height:58px;background:linear-gradient(180deg,var(--surface-2),var(--surface));-webkit-clip-path:polygon(0 0,100% 0,50% 100%);clip-path:polygon(0 0,100% 0,50% 100%);box-shadow:0 7px 12px rgba(0,0,0,.07);transform-origin:top center;transform:rotateX(0deg);transition:transform .44s cubic-bezier(.4,.05,.25,1)}
+.env-wax{position:absolute;left:50%;top:52px;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-family:var(--serif);font-size:11px;letter-spacing:0;box-shadow:0 0 0 4px rgba(255,255,255,.28),0 4px 10px rgba(0,0,0,.18);pointer-events:none;transition:opacity .26s ease,transform .26s ease}
+.env.opening .env-flap{transform:rotateX(-168deg)}
+.env.opening .env-wax{opacity:0;transform:translate(-50%,-50%) scale(.55)}
+.env.opening .env-slip{transform:translateY(-18px)}
+.env.opening .env-face{transform:translateY(5px)}
+.letter.slip{animation:letterSlip .44s cubic-bezier(.2,.8,.3,1)}
+@keyframes letterSlip{from{transform:translateY(28px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+
+/* 写信：写在信纸上 */
+.wl-paper{position:relative;margin:0 0 14px;padding:18px 16px 14px;border-radius:15px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.wl-paper::before{content:"";position:absolute;inset:56px 0 0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 31px,var(--line) 31px 32px);opacity:.38}
+.wl-hill{position:absolute;left:0;right:0;bottom:0;height:60px;background:var(--accent);opacity:.08;pointer-events:none;-webkit-clip-path:polygon(0 100%,16% 58%,32% 84%,54% 30%,72% 68%,87% 48%,100% 76%,100% 100%);clip-path:polygon(0 100%,16% 58%,32% 84%,54% 30%,72% 68%,87% 48%,100% 76%,100% 100%)}
+.wl-paper input.wl-t{position:relative;width:100%;padding:0 0 11px;border:0;border-bottom:1px dashed var(--line);border-radius:0;background:none;color:var(--ink);font-family:var(--serif);font-size:16px;letter-spacing:.06em;outline:none}
+.wl-paper textarea.wl-b{position:relative;width:100%;min-height:256px;max-height:none;margin:12px 0 0;padding:0;border:0;border-radius:0;background:none;color:var(--ink);font-family:var(--serif);font-size:15px;line-height:32px;outline:none;resize:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.wl-sign{position:relative;margin-top:16px;text-align:right;font-family:var(--serif);font-size:13px;color:var(--sub);letter-spacing:.08em}
