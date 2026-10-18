@@ -8471,3 +8471,113 @@ muLoad=function(){
 muProgCache();
 
 }catch(e){console.error("[zika] js/v76.js",e)}
+
+/* ===== js/v78.js ===== */
+try{
+
+// v78：点循环、点列表、点收藏不再重画整页
+// 以前这三个都走 muDraw，整块 innerHTML 重建：封面要重新去取图所以闪一下，
+// 歌词节点全没了、当前句归零，所以先跳回开头再滑回来。
+// 现在只改该改的那一两个地方。
+
+// ── 就地换播放方式按钮 ──
+muModeBtn=function(){
+  var md=muMode();
+  var mi=md==='shuffle'?MI.shuffle:md==='order'?MI.order:MI.loop;
+  var mn=md==='shuffle'?'\u968f\u673a':md==='order'?'\u987a\u5e8f':'\u5faa\u73af';
+  var bs=document.querySelectorAll('#muBody [data-mu="mode"]');
+  for(var i=0;i<bs.length;i++){
+    bs[i].innerHTML=mi+'<em>'+mn+'</em>';
+    bs[i].setAttribute('aria-label','\u64ad\u653e\u65b9\u5f0f\uff1a'+mn);
+  }
+};
+
+// ── 就地开关「这一轮」 ──
+muQueueHTML=function(){
+  var n=MU.list.length;
+  return '<p class="mu-qh">\u8fd9\u4e00\u8f6e\u7684 '+n+' \u9996</p>'+MU.list.map(function(x,i){
+    return '<button type="button" class="mu-s'+(i===MU.idx?' on':'')+'" data-q="'+i+'">'+muCov(x.cover)
+      +'<span class="mu-st"><b>'+esc(x.name||'')+'</b><em>'+esc(x.singer||'')+'</em></span></button>';
+  }).join('');
+};
+muQueueToggle=function(){
+  MU.qOpen=!MU.qOpen;
+  var bs=document.querySelectorAll('#muBody [data-mu="queue"]');
+  for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',MU.qOpen);
+  var ctl=document.querySelector('#muBody .mu-ctl');
+  var host=ctl&&ctl.parentNode;if(!host)return;
+  var ex=host.querySelector('.mu-queue');
+  if(!MU.qOpen){if(ex)ex.remove();return}
+  if(ex)return;
+  var d=document.createElement('div');d.className='mu-queue';d.innerHTML=muQueueHTML();
+  host.appendChild(d);
+};
+
+// ── 就地换那颗心 ──
+muFav=function(){
+  var s=MU.cur;if(!s)return;
+  var m=muPref(),i=-1,on;
+  m.fav.forEach(function(x,k){if(x.mid===s.mid)i=k});
+  if(i>=0){m.fav.splice(i,1);on=false;muToast('\u4ece\u6536\u85cf\u91cc\u62ff\u51fa\u6765\u4e86')}
+  else{m.fav.unshift(muSlim(s));on=true;muToast('\u6536\u8d77\u6765\u4e86')}
+  save();
+  var bs=document.querySelectorAll('#muBody [data-mu="fav"]');
+  for(var j=0;j<bs.length;j++){
+    bs[j].classList.toggle('on',on);
+    bs[j].innerHTML=on?MI.heartOn:MI.heart;
+    bs[j].setAttribute('aria-label',on?'\u53d6\u6d88\u6536\u85cf':'\u6536\u85cf');
+  }
+};
+
+// ── 歌词刚重建那一下直接就位，不要滑过去 ──
+var LC78={box:null,ps:null};
+muLrcPaint=function(){
+  var L=MU.lrc,a=MU.a;
+  if(!L||!L.lines||!L.lines.length||!a)return;
+  var box=$('muLrc');if(!box)return;
+  var fresh=false;
+  if(LC78.box!==box||!LC78.ps||!LC78.ps.length||!LC78.ps[0].isConnected){
+    LC78.box=box;LC78.ps=[].slice.call(box.querySelectorAll('p[data-l]'));fresh=true;
+  }
+  var ps=LC78.ps,ls=L.lines,t=a.currentTime||0,k=-1;
+  for(var i=0;i<ls.length;i++){if(ls[i].t<=t+.25)k=i;else break}
+  if(k===MU.lrcAt&&!fresh)return;
+  var old=MU.lrcAt;MU.lrcAt=k;
+  var touch=[old-1,old,old+1,k-1,k,k+1],done={};
+  for(var j=0;j<touch.length;j++){
+    var n=touch[j];
+    if(n<0||n>=ps.length||done[n])continue;
+    done[n]=1;
+    var p=ps[n];if(!p)continue;
+    p.classList.toggle('on',n===k);
+    p.classList.toggle('near',Math.abs(n-k)===1);
+  }
+  if(MU.lrcHold)return;
+  var el=k>=0?ps[k]:null;if(!el)return;
+  MU.asAt=Date.now();
+  box.scrollTo({top:Math.max(0,el.offsetTop-box.clientHeight/2+el.offsetHeight/2),behavior:fresh?'auto':'smooth'});
+};
+var _loadV78=muLoad;
+muLoad=function(){LC78.box=null;LC78.ps=null;return _loadV78.apply(this,arguments)};
+
+// ── 把这三个动作从重画里拦下来 ──
+var _bcV78=muBodyClick;
+muBodyClick=function(e){
+  var t=e.target.closest('[data-mu]');
+  if(t){
+    var a=t.dataset.mu;
+    if(a==='mode'){
+      var md=muMode(),i=0;
+      MU_MODE.forEach(function(x,k){if(x[0]===md)i=k});
+      var nx=MU_MODE[(i+1)%MU_MODE.length];
+      muPref().mode=nx[0];save();muSyncLoop();muModeBtn();
+      muToast('\u64ad\u653e\u65b9\u5f0f\uff1a'+nx[1]);
+      return;
+    }
+    if(a==='queue'){muQueueToggle();return}
+    if(a==='fav'){muFav();return}
+  }
+  return _bcV78.call(this,e);
+};
+
+}catch(e){console.error("[zika] js/v78.js",e)}
