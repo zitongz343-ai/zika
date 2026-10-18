@@ -1860,3 +1860,9 @@ html[data-style="glass"] .inner{background:var(--gl-sheet)!important}
 /* 透明度那排拉条 */
 #glBox .field{margin-bottom:10px}
 #glBox .rg b{min-width:46px;text-align:right}
+
+/* ===== css/v83.css 设置页（全屏弹层）也跟「设置和弹层」那根拉条走 ===== */
+/* 原来 .sheet.full 的底是硬写的实色渐变，把拉条盖死了 */
+
+html[data-style="glass"] .sheet.full{background:transparent!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+html[data-style="glass"] .sheet.full .inner{background:var(--gl-sheet)!important;backdrop-filter:none;-webkit-backdrop-filter:none}
