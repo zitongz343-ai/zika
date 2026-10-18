@@ -22,11 +22,14 @@ body{background:linear-gradient(172deg,var(--bg-a) 0%,var(--bg-b) 100%);color:va
 .mist{left:-12%;bottom:-4%;width:130%;opacity:.5;animation:fade 2.6s ease both,drift 28s ease-in-out 2.6s infinite alternate}
 .br{top:-10%;left:-30%;width:84%;max-width:470px;opacity:.92;transform-origin:50% 0;transform:scaleX(-1) rotate(6deg);-webkit-mask-image:linear-gradient(170deg,#000 30%,transparent 62%);mask-image:linear-gradient(170deg,#000 30%,transparent 62%);animation:fade 2.2s ease .2s both,bsway 9s ease-in-out 2.4s infinite}
 .lan{top:-6%;right:-20%;width:98%;max-width:580px;transform-origin:70% 0;animation:drop 1.7s cubic-bezier(.2,.8,.3,1) both,sway 7s ease-in-out 1.7s infinite}
-.nm{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);display:flex;flex-direction:row-reverse;gap:20px;align-items:flex-start}
-.nm b{writing-mode:vertical-rl;font-weight:400;font-size:50px;line-height:1;letter-spacing:.16em;color:var(--ink);text-shadow:0 2px 14px rgba(255,255,255,.9)}
-.nm b span{display:inline-block;animation:ink 1.3s ease both}
-.nm b.ta{margin-top:58px}
-.nm i{writing-mode:vertical-rl;font-style:normal;font-size:12px;letter-spacing:.7em;color:var(--sub);margin-top:24px;animation:fade 1.6s ease 1.6s both}
+.nm{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);display:grid;grid-template-columns:64px 30px 64px;justify-items:center;align-items:start}
+.nm b,.nm i{display:flex;flex-direction:column;align-items:center;font-style:normal}
+.nm b{font-weight:400;font-size:50px;line-height:1;gap:8px;color:var(--ink);text-shadow:0 2px 14px rgba(255,255,255,.9)}
+.nm b span{display:block;animation:ink 1.3s ease both}
+.nm b.me{grid-column:3;grid-row:1}
+.nm b.ta{grid-column:1;grid-row:1;margin-top:58px}
+.nm i{grid-column:2;grid-row:1;font-size:12px;line-height:1;gap:9px;color:var(--sub);margin-top:24px;animation:fade 1.6s ease 1.6s both}
+.nm i span{display:block}
 .seal{position:absolute;left:-30px;bottom:-34px;width:26px;height:26px;border:1.5px solid var(--seal);border-radius:3px;color:var(--seal);font-size:17px;line-height:23px;text-align:center;opacity:.85;transform:rotate(-6deg);animation:stamp .5s cubic-bezier(.3,1.6,.5,1) 3s both}
 .ft{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 70px);text-align:center;animation:fade 2s ease 2.4s both}
 .ft p{font-size:14px;letter-spacing:.4em;color:var(--sub);padding-left:.4em}
@@ -52,7 +55,7 @@ body{background:linear-gradient(172deg,var(--bg-a) 0%,var(--bg-b) 100%);color:va
   <img class="art mist" src="raw/1040g3k0323l7109nna4g5o39q2709225ido6o50.jpeg" alt="">
   <img class="art br" src="raw/1040g3k831urrs7pqhu2g5pm1hgonefpbgtd63c0.jpeg" alt="">
   <img class="art lan" src="raw/1040g3k831urrs7pqhu205pm1hgonefpb4vncv68.jpeg" alt="">
-  <div class="nm"><b class="me" id="nMe">江亭晚</b><i>长 相 思</i><b class="ta" id="nTa">顾时夜</b><span class="seal">晚</span></div>
+  <div class="nm"><b class="me" id="nMe">江亭晚</b><i>长相思</i><b class="ta" id="nTa">顾时夜</b><span class="seal">晚</span></div>
   <div class="ft"><p id="day"></p><em>轻 触 入 内</em></div>
 </div>
 <div class="tone" id="tone"><button data-t="fen">樱粉</button><button data-t="zi">藕紫</button><button data-t="su">素墨</button></div>
@@ -62,8 +65,12 @@ body{background:linear-gradient(172deg,var(--bg-a) 0%,var(--bg-b) 100%);color:va
   try{var S=JSON.parse(localStorage.getItem('mj_zika_v2')||'null');if(S&&S.ta&&S.ta.name)document.getElementById('nTa').textContent=S.ta.name}catch(e){}
   // 名字拆成一个个字，依次晕出来：先江亭晚，再他的名字
   document.querySelectorAll('.nm b').forEach(function(b,bi){
-    var t=Array.from(b.textContent);b.textContent='';
+    var t=Array.from(b.textContent.replace(/\s/g,''));b.textContent='';
     t.forEach(function(ch,i){var s=document.createElement('span');s.textContent=ch;s.style.animationDelay=(0.9+bi*0.9+i*0.3)+'s';b.appendChild(s)});
+  });
+  document.querySelectorAll('.nm i').forEach(function(el){
+    var t=Array.from(el.textContent.replace(/\s/g,''));el.textContent='';
+    t.forEach(function(ch){var s=document.createElement('span');s.textContent=ch;el.appendChild(s)});
   });
   // 「十月十九 · 寅时」
   var D='〇一二三四五六七八九';
