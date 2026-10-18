@@ -5,30 +5,29 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fdf6f4">
 <title>江亭晚 · 开屏预览</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.3.1/400.css">
 <style>
-/* 开屏预览：灯笼垂下来轻轻晃，花枝随风摆，远山薄雾慢慢飘，名字一个字一个字晕出来，花瓣一直落。
+/* 开屏预览：花藤垂下来轻轻晃，远山薄雾慢慢飘，名字一个字一个字晕出来，花瓣一直落。
    素材读 raw/ 原图，打开时在手机上把白底算成真透明；算不出来就退回 multiply 叠底 */
 :root{--bg-a:#fdf6f4;--bg-b:#f6e3e6;--ink:#7a4652;--sub:#b48a92;--petal:#f3b3c0;--seal:#c4565f;--tone:none}
 html[data-tone="zi"]{--bg-a:#f9f5fc;--bg-b:#ebe1f4;--ink:#5c4870;--sub:#9b88b0;--petal:#d6bdf0;--seal:#8a5fb0;--tone:hue-rotate(-50deg) saturate(.92)}
 html[data-tone="su"]{--bg-a:#f7f6f3;--bg-b:#e8e6e1;--ink:#45464a;--sub:#8c8a86;--petal:#e4d8d8;--seal:#a2463f;--tone:grayscale(.85) contrast(1.05)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{background:linear-gradient(172deg,var(--bg-a) 0%,var(--bg-b) 100%);color:var(--ink);font-family:"LXGW WenKai","Kaiti SC","STKaiti",serif;-webkit-tap-highlight-color:transparent;transition:background .6s}
+body{background:linear-gradient(172deg,var(--bg-a) 0%,var(--bg-b) 100%);color:var(--ink);font-family:"Noto Serif SC","Songti SC","STSong",serif;-webkit-tap-highlight-color:transparent;transition:background .6s}
 #sp{position:fixed;inset:0;cursor:pointer;transition:opacity .6s ease,transform .6s ease}
 #sp.out{opacity:0;transform:scale(1.04)}
 .art{position:absolute;display:block;mix-blend-mode:multiply;filter:var(--tone);pointer-events:none;user-select:none;-webkit-user-drag:none;transition:filter .6s,opacity .4s}
 .art.keyed{mix-blend-mode:normal}
 .mist{left:-12%;bottom:-4%;width:130%;opacity:.5;animation:fade 2.6s ease both,drift 28s ease-in-out 2.6s infinite alternate}
-.br{top:-10%;left:-30%;width:84%;max-width:470px;opacity:.92;transform-origin:50% 0;transform:scaleX(-1) rotate(6deg);-webkit-mask-image:linear-gradient(170deg,#000 30%,transparent 62%);mask-image:linear-gradient(170deg,#000 30%,transparent 62%);animation:fade 2.2s ease .2s both,bsway 9s ease-in-out 2.4s infinite}
-.lan{top:-6%;right:-20%;width:98%;max-width:580px;transform-origin:70% 0;animation:drop 1.7s cubic-bezier(.2,.8,.3,1) both,sway 7s ease-in-out 1.7s infinite}
+.lan{top:-2%;right:-10%;width:118%;max-width:620px;transform-origin:60% 0;-webkit-mask-image:linear-gradient(180deg,#000 58%,transparent 92%);mask-image:linear-gradient(180deg,#000 58%,transparent 92%);animation:drop 1.7s cubic-bezier(.2,.8,.3,1) both,sway 7s ease-in-out 1.7s infinite}
 .nm{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);display:grid;grid-template-columns:64px 30px 64px;justify-items:center;align-items:start}
 .nm b,.nm i{display:flex;flex-direction:column;align-items:center;font-style:normal}
 .nm b{font-weight:400;font-size:50px;line-height:1;gap:8px;color:var(--ink);text-shadow:0 2px 14px rgba(255,255,255,.9)}
 .nm b span{display:block;animation:ink 1.3s ease both}
 .nm b.me{grid-column:3;grid-row:1}
 .nm b.ta{grid-column:1;grid-row:1;margin-top:58px}
-.nm i{grid-column:2;grid-row:1;font-size:12px;line-height:1;gap:9px;color:var(--sub);margin-top:24px;animation:fade 1.6s ease 1.6s both}
+.nm i{grid-column:2;grid-row:1;font-size:12px;line-height:1;gap:9px;color:var(--sub);margin-top:85px;animation:fade 1.6s ease 1.6s both}
 .nm i span{display:block}
 .seal{position:absolute;left:-30px;bottom:-34px;width:26px;height:26px;border:1.5px solid var(--seal);border-radius:3px;color:var(--seal);font-size:17px;line-height:23px;text-align:center;opacity:.85;transform:rotate(-6deg);animation:stamp .5s cubic-bezier(.3,1.6,.5,1) 3s both}
 .ft{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 70px);text-align:center;animation:fade 2s ease 2.4s both}
@@ -41,7 +40,6 @@ body{background:linear-gradient(172deg,var(--bg-a) 0%,var(--bg-b) 100%);color:va
 @keyframes fade{from{opacity:0}}
 @keyframes drop{from{opacity:0;transform:translateY(-40px) rotate(-3deg)}}
 @keyframes sway{0%,100%{transform:rotate(0)}50%{transform:rotate(2.2deg)}}
-@keyframes bsway{0%,100%{transform:scaleX(-1) rotate(6deg)}50%{transform:scaleX(-1) rotate(8.5deg)}}
 @keyframes drift{to{transform:translateX(-7%)}}
 @keyframes ink{from{opacity:0;filter:blur(7px);transform:translateY(-8px)}}
 @keyframes stamp{from{opacity:0;transform:rotate(-6deg) scale(1.8)}}
@@ -53,8 +51,7 @@ body{background:linear-gradient(172deg,var(--bg-a) 0%,var(--bg-b) 100%);color:va
 <body>
 <div id="sp" role="button" aria-label="进入江亭晚">
   <img class="art mist" src="raw/1040g3k0323l7109nna4g5o39q2709225ido6o50.jpeg" alt="">
-  <img class="art br" src="raw/1040g3k831urrs7pqhu2g5pm1hgonefpbgtd63c0.jpeg" alt="">
-  <img class="art lan" src="raw/1040g3k831urrs7pqhu205pm1hgonefpb4vncv68.jpeg" alt="">
+  <img class="art lan vine" src="raw/1040g34o31os5air7gs305otdlisq3abg4cta1mo.jpeg" alt="">
   <div class="nm"><b class="me" id="nMe">江亭晚</b><i>长相思</i><b class="ta" id="nTa">顾时夜</b><span class="seal">晚</span></div>
   <div class="ft"><p id="day"></p><em>轻 触 入 内</em></div>
 </div>
