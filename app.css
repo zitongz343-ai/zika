@@ -142,13 +142,6 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .mo-cbox input{flex:1;padding:8px 11px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--sans);font-size:12.5px;outline:none}
 .mo-cbox button{padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--sub);font-family:var(--sans);font-size:12px;cursor:pointer}
 .mo-cbox button.on{background:var(--accent);border-color:var(--accent);color:#fff}
-.mail{position:relative;margin:14px 0;padding:16px 17px;border-radius:16px;cursor:pointer;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);animation:pop .3s ease both}
-.mail-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.mail-title{font-size:15px;letter-spacing:.06em}
-.mail-date{font-family:var(--sans);font-size:10.5px;color:var(--sub);letter-spacing:.06em;white-space:nowrap}
-.mail-from{margin-top:6px;font-family:var(--sans);font-size:10.5px;color:var(--accent);letter-spacing:.1em}
-.mail-prev{margin:7px 0 0;font-size:12.5px;color:var(--sub);line-height:1.85;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.mail.unread::after{content:"";position:absolute;right:15px;top:15px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .reader{position:fixed;inset:0;z-index:60;background:rgba(20,14,10,.42);display:flex;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fade .2s ease}
 .reader[hidden]{display:none!important}
 @keyframes fade{from{opacity:0}}
@@ -369,8 +362,6 @@ textarea::placeholder{color:var(--sub);opacity:.7}
 .mo-cmts{border-radius:12px}
 
 /* 回信和塔罗 */
-.mail{border-radius:var(--r-lg)}
-.mail-from::before{content:"✉ ";opacity:.8}
 .letter{border-radius:24px}
 .letter::before{border-radius:24px}
 .tface{border-radius:18px}
@@ -794,8 +785,6 @@ textarea.l4-ta{width:100%;min-height:200px;max-height:none;padding:14px;border-r
 .l4-sel{flex:1;min-width:0;height:100%;border:0;background:none;color:var(--ink);font-family:var(--sans);font-size:16px;text-align:right;text-align-last:right;outline:none;-webkit-appearance:none;appearance:none}
 /* 信箱 */
 .ml-tabs{margin:0 0 4px}
-.mail-st{margin-top:8px;font-family:var(--sans);font-size:10.5px;color:var(--sub);letter-spacing:.06em}
-.mail-st.wait{color:var(--accent)}
 .reader #rReply[hidden]{display:none}
 
 
@@ -1128,10 +1117,6 @@ html[data-theme="night"] body::after{mix-blend-mode:screen;opacity:.05}
 .sh-back{color:var(--deep)}
 
 /* ── 信箱：左边一道竖线，日期用斜体 ── */
-.mail{border-radius:6px 18px 18px 6px;border-left:3px solid var(--accent)}
-.mail.unread{border-left-color:var(--deep)}
-.mail-title{font-family:var(--serif);color:var(--deep)}
-.mail-date{font-family:Georgia,"Times New Roman",serif;font-style:italic}
 .letter-head h3{color:var(--deep);letter-spacing:.12em}
 
 /* ── 朋友圈封面 ── */
