@@ -1447,7 +1447,6 @@ html[data-bubble="plain"] #stream .card.show-del{padding-bottom:var(--bub-pad,10
 /* ===== css/v62.css ===== */
 /* v62：QQ 音乐 */
 .view[data-view="music"] .mo-bar{padding-left:48px}
-.view[data-view="music"]{padding-bottom:24px}
 #muSeg{margin-bottom:14px}
 .mu-q{display:flex;gap:8px;margin:0 0 10px}
 .mu-q input{flex:1;min-width:0;padding:11px 16px;border-radius:999px;border:1px solid color-mix(in srgb,var(--ink) 12%,transparent);background:var(--surface);color:var(--ink);font-family:var(--sans);font-size:16px;outline:none;-webkit-appearance:none;appearance:none}
@@ -1473,7 +1472,6 @@ html[data-bubble="plain"] #stream .card.show-del{padding-bottom:var(--bub-pad,10
 .mu-bar button:active{background:color-mix(in srgb,var(--ink) 8%,transparent)}
 .mu-bar button svg{width:20px;height:20px;display:block}
 .mu-bar .pg{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);opacity:.8;transition:width .3s linear}
-#muPlay{position:sticky;bottom:12px;margin-top:16px;z-index:3}
 #muNow{flex:0 0 auto;margin:8px 14px 0;padding:5px 6px 5px 6px;border-radius:14px;cursor:pointer}
 #muNow img{flex-basis:32px;width:32px;height:32px;border-radius:8px}
 #muNow .mu-st b{font-size:13.5px}
@@ -1528,9 +1526,6 @@ html body #bkPrev{position:sticky;top:0;z-index:4}
 .mu-head{position:relative;padding:26px 46px 16px;text-align:center}
 .mu-kick{margin:0;font-family:var(--sans);font-size:9.5px;letter-spacing:.42em;color:var(--sub);opacity:.85}
 .mu-head h3{margin:7px 0 0;font-family:var(--serif);font-weight:400;font-size:22px;letter-spacing:.2em;color:var(--deep)}
-.mu-gear{position:absolute;right:0;top:24px;width:38px;height:38px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--sub);display:grid;place-items:center;cursor:pointer;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
-.mu-gear svg{width:19px;height:19px}
-.mu-gear:active{color:var(--deep)}
 
 /* 分页：下面一条短横线 */
 .mu-seg{display:flex;justify-content:center;gap:26px;margin:0 0 20px;padding:0 4px 2px}
@@ -1559,17 +1554,12 @@ html body #bkPrev{position:sticky;top:0;z-index:4}
 /* 进度和音量 */
 .mu-seek{margin:22px 0 0}
 .mu-tt{display:flex;justify-content:space-between;margin-top:7px;font-family:var(--sans);font-size:10.5px;color:var(--sub);letter-spacing:.06em}
-.mu-vol{display:flex;align-items:center;gap:11px;margin:22px 0 0;color:var(--sub)}
-.mu-vol svg{flex:0 0 19px;width:19px;height:19px}
-.mu-vol input{flex:1;min-width:0}
-.mu-vol span{flex:0 0 auto;font-family:var(--sans);font-size:9.5px;letter-spacing:.24em}
 .mu-np input[type="range"]{-webkit-appearance:none;appearance:none;display:block;width:100%;height:18px;margin:0;background:none;outline:none;cursor:pointer}
 .mu-np input[type="range"]::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(90deg,var(--deep) 0 var(--f,0%),color-mix(in srgb,var(--ink) 14%,transparent) var(--f,0%) 100%)}
 .mu-np input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;margin-top:-6px;border-radius:50%;background:var(--surface);border:1px solid var(--line);box-shadow:0 2px 7px rgba(0,0,0,.18)}
 .mu-np input[type="range"]::-moz-range-track{height:3px;border-radius:3px;background:color-mix(in srgb,var(--ink) 14%,transparent)}
 .mu-np input[type="range"]::-moz-range-progress{height:3px;border-radius:3px;background:var(--deep)}
 .mu-np input[type="range"]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--surface);border:1px solid var(--line)}
-#muVol{--f:100%}
 
 /* 按钮一排 */
 .mu-ctl{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:24px 0 0}
@@ -1645,17 +1635,7 @@ html[data-theme="night"] .mu-art{box-shadow:0 18px 44px rgba(0,0,0,.5)}
 /* 歌词 */
 .mu-np.lyr{text-align:left}
 .mu-np.lyr .mu-art{display:none}
-.mu-lk{text-align:center;margin:0 0 4px}
-.mu-tr{display:block;margin:0 2px 2px auto;padding:4px 2px;border:0;background:none;color:var(--sub);font-family:var(--serif);font-size:14px;cursor:pointer;border-bottom:1px solid transparent}
-.mu-tr.on{color:var(--deep);border-bottom-color:var(--deep)}
-.mu-lrc{max-height:46dvh;overflow-y:auto;padding:14px 2px 18px;text-align:center;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent)}
 .mu-lrc::-webkit-scrollbar{display:none}
-.mu-lrc p{margin:0 0 20px;transition:color .3s,opacity .3s,transform .3s}
-.mu-lrc p span{display:block;font-family:var(--serif);font-size:16px;line-height:1.6;color:var(--sub);opacity:.42}
-.mu-lrc p i{display:block;margin-top:5px;font-style:normal;font-family:var(--serif);font-size:13px;line-height:1.6;color:var(--sub);opacity:.3}
-.mu-lrc p.near span{opacity:.6}
-.mu-lrc p.on span{font-size:20px;color:var(--ink);opacity:1}
-.mu-lrc p.on i{font-size:15px;color:var(--sub);opacity:.85}
 .mu-np.lyr .mu-line{margin-top:6px;padding-top:16px;border-top:1px dashed var(--line)}
 
 /* 自己贴歌词、去填设置这类一行小字链接 */
@@ -1675,19 +1655,15 @@ html body #muPlay button{width:32px;height:32px}
 html body #muPlay button svg{width:18px;height:18px}
 html body #muPlay .mu-st b{font-size:13.5px}
 html body #muPlay .mu-st em{font-size:10.5px}
-.view[data-view="music"]{padding-bottom:calc(env(safe-area-inset-bottom) + 72px)}
 
 /* 歌词：右边跳句的小按钮 */
 .mu-lw{position:relative}
 .mu-jump{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px;pointer-events:none;animation:fade .18s ease}
 .mu-jump[hidden]{display:none!important}
-.mu-jump i{flex:1 1 auto;width:34px;height:1px;background:color-mix(in srgb,var(--ink) 16%,transparent)}
 .mu-jump button{pointer-events:auto;display:inline-flex;align-items:center;gap:5px;padding:5px 11px 5px 9px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--deep);cursor:pointer;box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
 .mu-jump button svg{width:13px;height:13px}
 .mu-jump em{font-style:normal;font-family:var(--sans);font-size:10.5px;letter-spacing:.06em}
 .mu-jump button:active{transform:scale(.94)}
-.mu-lrc p{cursor:pointer;-webkit-tap-highlight-color:transparent}
-.mu-lrc p.pick span{color:var(--deep);opacity:.9}
 
 /* ===== css/v70.css 音乐：头固定、没音量条、歌词页重做 ===== */
 
@@ -1721,8 +1697,6 @@ html body #muPlay .mu-st em{font-size:10.5px}
 .mu-lrc p.near span{opacity:.52}
 .mu-lrc p.on span{font-size:21px;color:var(--deep);opacity:1}
 .mu-lrc p.on i{font-size:14.5px;opacity:.72}
-.mu-lrc p.pick{background:color-mix(in srgb,var(--ink) 5%,transparent)}
-.mu-lrc p.pick span{color:var(--deep);opacity:.86}
 .mu-lrc .mu-imp{margin:10px auto 0}
 
 /* 歌词页底下的控制：矮一版 */
@@ -1761,10 +1735,6 @@ html body #muPlay .mu-st em{font-size:10.5px}
 
 /* ===== css/v72.css 滑到的那句：不加底块、不加深，也别跑到左边 ===== */
 
-.mu-lrc,.mu-lrc p,.mu-lrc p span,.mu-lrc p i{text-align:center}
-.mu-lrc p.pick{background:none}
-.mu-lrc p.pick span{color:var(--sub);opacity:.6}
-.mu-lrc p.pick i{opacity:.4}
 
 /* ===== css/v73.css 歌词永远居中；跳句按钮旁边那条短线拿掉 ===== */
 .mu-lrc{text-align:center!important}
