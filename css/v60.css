@@ -1,0 +1,2 @@
+/* v60：普通气泡点一下不再变大。原来 v23 给 .show-del 下面多留了 26px 放「引用 收藏 撕掉」，现在那排挪到气泡外面了，这块空就不要了 */
+html[data-bubble="plain"] #stream .card.show-del{padding-bottom:var(--bub-pad,10px)!important}
