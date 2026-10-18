@@ -8057,3 +8057,135 @@ MU.hTab='lists';MU.tab='home';MU.lrc=null;MU.lrcAt=-1;MU.qOpen=false;MU.lastT=0;
 muSyncLoop();muDraw();muPaintNow();
 
 }catch(e){console.error("[zika] js/v68.js",e)}
+
+/* ===== js/v69.js ===== */
+try{
+
+// v69：三个毛病
+// 1. 正在放和歌词页的按钮点不动——v62 绑事件时记住的是老的 muBodyClick，后面换了函数它不知道；这里重新绑成每次读最新的
+// 2. 底下那条播放条改成固定在屏底，矮一点
+// 3. 歌词可以滑，点哪句从哪句开始；滑的时候右边跳出一个带时间的小按钮
+
+// ── 1. 重新绑点击 ──
+(function(){
+  var b=$('muBody');
+  if(b&&!b.dataset.v69){
+    var n=b.cloneNode(false);n.dataset.v69='1';
+    b.parentNode.replaceChild(n,b);
+    n.addEventListener('click',function(e){muBodyClick.call(this,e)});
+  }
+  ['muPlay','muNow'].forEach(function(id){
+    var el=$(id);if(!el||el.dataset.v69)return;
+    var c=el.cloneNode(true);c.dataset.v69='1';
+    el.parentNode.replaceChild(c,el);
+    c.addEventListener('click',function(e){muBarClick.call(this,e)});
+  });
+  var seg=$('muSeg');
+  if(seg&&!seg.dataset.v69){
+    seg.dataset.v69='1';
+    seg.addEventListener('click',function(e){
+      var t=e.target.closest('[data-t]');if(!t)return;
+      MU.tab=t.dataset.t;muDraw();
+    });
+  }
+})();
+
+// ── 3. 歌词：滑动、点句跳转 ──
+muLrcHTML=function(){
+  var L=MU.lrc;
+  if(!MU.cur)return '<p class="mu-wait hint">先挑一首歌，歌词会自己跟上。</p>';
+  if(!L||L.loading)return '<p class="mu-wait hint">在找歌词…</p>';
+  if(!L.lines.length)
+    return '<p class="mu-wait hint">'+esc(L.err||'这首没有歌词。')+'</p>'
+      +'<button type="button" class="mu-imp" data-mu="lrcset">导入 LRC / 纯文本歌词</button>';
+  var tr=muPref().trans&&L.tr&&L.tr.length;
+  return '<p class="mu-kick mu-lk">THE WORDS BETWEEN US</p>'
+    +(L.tr&&L.tr.length?'<button type="button" class="mu-tr'+(muPref().trans?' on':'')+'" data-mu="trans">译</button>':'')
+    +'<div class="mu-lw"><div class="mu-lrc" id="muLrc">'
+    +L.lines.map(function(l,i){
+      var t=tr?muTrOf(l.t):'';
+      return '<p data-l="'+i+'"><span>'+esc(l.x)+'</span>'+(t?'<i>'+esc(t)+'</i>':'')+'</p>';
+    }).join('')
+    +'</div><div class="mu-jump" id="muJump" hidden><i></i>'
+    +'<button type="button" data-mu="jump" aria-label="从这句开始">'+MI.play+'<em id="muJt">0:00</em></button></div></div>'
+    +'<button type="button" class="mu-imp" data-mu="lrcset">'+(L.own?'换掉我贴的歌词':'歌词不对？自己贴一份')+'</button>';
+};
+muCenterLine=function(){
+  var box=$('muLrc');if(!box)return -1;
+  var mid=box.scrollTop+box.clientHeight/2,best=-1,bd=1e9;
+  box.querySelectorAll('p[data-l]').forEach(function(p){
+    var c=p.offsetTop+p.offsetHeight/2,d=Math.abs(c-mid);
+    if(d<bd){bd=d;best=+p.dataset.l}
+  });
+  return best;
+};
+muJumpShow=function(){
+  var j=$('muJump'),box=$('muLrc'),L=MU.lrc;
+  if(!j||!box||!L||!L.lines.length)return;
+  var i=muCenterLine();if(i<0)return;
+  MU.jumpTo=i;
+  var t=$('muJt');if(t)t.textContent=muTime(L.lines[i].t);
+  j.hidden=false;
+  box.querySelectorAll('p[data-l]').forEach(function(p){p.classList.toggle('pick',+p.dataset.l===i)});
+};
+muJumpHide=function(){
+  var j=$('muJump');if(j)j.hidden=true;
+  var box=$('muLrc');if(box)box.querySelectorAll('p.pick').forEach(function(p){p.classList.remove('pick')});
+};
+muSeekLine=function(i){
+  var L=MU.lrc,a=muAudio();
+  if(!L||!L.lines[i])return;
+  try{a.currentTime=Math.max(0,L.lines[i].t)}catch(e){}
+  if(a.paused){MU.lastT=Date.now();var p=a.play();if(p&&p.catch)p.catch(function(){})}
+  MU.lrcHold=0;clearTimeout(MU.lrcHT);muJumpHide();MU.lrcAt=-1;muLrcPaint();
+};
+muLrcBind=function(){
+  var box=$('muLrc');if(!box||box.dataset.b)return;
+  box.dataset.b='1';
+  box.addEventListener('scroll',function(){
+    if(Date.now()-(MU.asAt||0)<700)return;
+    MU.lrcHold=1;muJumpShow();
+    clearTimeout(MU.lrcHT);
+    MU.lrcHT=setTimeout(function(){MU.lrcHold=0;muJumpHide();MU.lrcAt=-1;muLrcPaint()},3400);
+  },{passive:true});
+  box.addEventListener('click',function(e){
+    var p=e.target.closest('p[data-l]');if(!p)return;
+    muSeekLine(+p.dataset.l);
+  });
+};
+muLrcPaint=function(){
+  var box=$('muLrc'),L=MU.lrc,a=MU.a;
+  if(!box||!L||!L.lines.length||!a)return;
+  var t=a.currentTime||0,k=-1;
+  for(var i=0;i<L.lines.length;i++){if(L.lines[i].t<=t+.25)k=i;else break}
+  if(k===MU.lrcAt)return;
+  MU.lrcAt=k;
+  box.querySelectorAll('p[data-l]').forEach(function(p,i2){
+    p.classList.toggle('on',i2===k);
+    p.classList.toggle('near',Math.abs(i2-k)===1);
+  });
+  if(MU.lrcHold)return;
+  var el=k>=0?box.querySelector('p[data-l="'+k+'"]'):null;
+  if(!el)return;
+  MU.asAt=Date.now();
+  box.scrollTo({top:Math.max(0,el.offsetTop-box.clientHeight/2+el.offsetHeight/2),behavior:'smooth'});
+};
+
+var _bcV69=muBodyClick;
+muBodyClick=function(e){
+  var t=e.target.closest('[data-mu]');
+  if(t&&t.dataset.mu==='jump'){muSeekLine(MU.jumpTo);return}
+  return _bcV69.call(this,e);
+};
+
+var _drawV69=muDraw;
+muDraw=function(){
+  var r=_drawV69.apply(this,arguments);
+  if(MU.tab==='lyric'){muLrcBind();muJumpHide()}
+  return r;
+};
+
+MU.lrcHold=0;MU.lrcHT=0;MU.asAt=0;MU.jumpTo=-1;
+muDraw();muPaintNow();
+
+}catch(e){console.error("[zika] js/v69.js",e)}

@@ -1665,3 +1665,26 @@ html[data-theme="night"] .mu-art{box-shadow:0 18px 44px rgba(0,0,0,.5)}
 
 /* 搜歌弹层 */
 .mu-sw #muRes{margin-top:4px}
+
+/* ===== css/v69.css 音乐：播放条固定在屏底 + 歌词跳句 ===== */
+
+/* 底下那条：固定在屏底，矮一点 */
+html body #muPlay{position:fixed;left:max(12px,calc(50% - 248px));right:max(12px,calc(50% - 248px));bottom:calc(env(safe-area-inset-bottom) + 10px);top:auto;margin:0;z-index:38;border-radius:16px;padding:6px 6px 6px 7px;gap:7px}
+html body #muPlay img,html body #muPlay .mu-cov{flex:0 0 36px;width:36px;height:36px;border-radius:9px}
+html body #muPlay button{width:32px;height:32px}
+html body #muPlay button svg{width:18px;height:18px}
+html body #muPlay .mu-st b{font-size:13.5px}
+html body #muPlay .mu-st em{font-size:10.5px}
+.view[data-view="music"]{padding-bottom:calc(env(safe-area-inset-bottom) + 72px)}
+
+/* 歌词：右边跳句的小按钮 */
+.mu-lw{position:relative}
+.mu-jump{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px;pointer-events:none;animation:fade .18s ease}
+.mu-jump[hidden]{display:none!important}
+.mu-jump i{flex:1 1 auto;width:34px;height:1px;background:color-mix(in srgb,var(--ink) 16%,transparent)}
+.mu-jump button{pointer-events:auto;display:inline-flex;align-items:center;gap:5px;padding:5px 11px 5px 9px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--deep);cursor:pointer;box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.mu-jump button svg{width:13px;height:13px}
+.mu-jump em{font-style:normal;font-family:var(--sans);font-size:10.5px;letter-spacing:.06em}
+.mu-jump button:active{transform:scale(.94)}
+.mu-lrc p{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mu-lrc p.pick span{color:var(--deep);opacity:.9}
