@@ -108,12 +108,7 @@ setAv=function(el,who){
 avStr=function(who){return who.img?'<img src="'+esc(who.img)+'" alt="">':esc(who.avatar||'✦')};
 $=function(id){return document.getElementById(id)};
 taName=function(){return S.ta.name||TA_NAME};
-splash=function(){
-  $('spSub').textContent=(S.me.name||'我')+' × '+taName();
-  var sp=$('splash'),done=false;
-  function end(){if(done)return;done=true;sp.classList.add('out');setTimeout(function(){sp.style.display='none'},650)}
-  sp.addEventListener('click',end);setTimeout(end,2500);
-};
+splash=function(){};
 applySkin=function(){
   document.documentElement.dataset.theme=S.theme;
   document.documentElement.dataset.style=S.style;
@@ -5588,20 +5583,7 @@ spStar=function(){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M
   foot.insertBefore(bar,sr);
   var call=$('btnCall');if(call)bar.appendChild(call);
 })();
-// 开屏：名字当主角，细线和小星星跟主页那行对得上，整体短一点
-
-(function(){
-  var box=document.querySelector('#splash .sp'),sp=$('splash');if(!box||!sp)return;
-  box.innerHTML='<div class="sp-en"><i></i><span>ALWAYS · TOGETHER</span><i></i></div>'
-    +'<div class="sp-nm" id="spSub"></div>'
-    +'<div class="sp-ft"><i></i>'+spStar()+'<i></i></div>'
-    +'<div class="sp-title">字 卡 传 讯</div>';
-  $('spSub').textContent=(S.me.name||'我')+' × '+taName();
-  setTimeout(function(){
-    sp.classList.add('out');
-    setTimeout(function(){sp.style.display='none'},700);
-  },1800);
-})();
+// 开屏改到 sw.js 那一版，v46 这段已删
 
 }catch(e){console.error("[zika] js/v46.js",e)}
 
