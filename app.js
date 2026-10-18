@@ -9245,16 +9245,33 @@ if(home87){
   ['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(function(e){document.addEventListener(e,off,true)});
 })();
 
-// 三、透明度/气泡那些 setProperty 按帧合并，一次手势不再算几十次
-function raf87(name){
-  if(typeof window[name]!=='function')return;
-  var fn=window[name],q=false;
-  window[name]=function(){
-    if(q)return;q=true;
-    requestAnimationFrame(function(){q=false;try{fn()}catch(e){}});
-  };
-}
-raf87('applyGlass');
-raf87('applyBub84');
+
 
 }catch(e){console.error("[zika] js/v87.js",e)}
+
+
+/* ===== js/v88.js ===== */
+try{
+
+var DY88=[
+  ['txDynm','\u65e5\u5b50\u540d\u5b57'],
+  ['txDysub','\u65e5\u671f\u90a3\u884c'],
+  ['txDynum','\u5929\u6570'],
+  ['txDyunit','\u5929\u6570\u5355\u4f4d'],
+  ['txSec','\u5206\u7ec4\u5c0f\u6807\u9898'],
+  ['txFlabel','\u8bbe\u7f6e\u9879\u540d'],
+  ['txEmp','\u7a7a\u72b6\u6001\u6807\u9898']
+];
+if(!TX_GROUPS.some(function(g){return g[1].some(function(x){return x[0]==='txDynm'})})){
+  TX_GROUPS.push(['\u7eaa\u5ff5\u65e5\u4e0e\u8bbe\u7f6e\u9875',DY88]);
+  TX_ALL.length=0;
+  TX_GROUPS.forEach(function(g){g[1].forEach(function(x){TX_ALL.push(x)})});
+  TX_ALL.forEach(function(x){
+    V85_DEF[x[0]]='';
+    if(typeof P_DEF==='object')P_DEF[x[0]]='';
+    if(S.prefs[x[0]]===undefined||S.prefs[x[0]]===null)S.prefs[x[0]]='';
+  });
+  save();applyText();
+}
+
+}catch(e){console.error("[zika] js/v88.js",e)}

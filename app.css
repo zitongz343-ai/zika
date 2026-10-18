@@ -1971,5 +1971,14 @@ html body .zt-en{color:var(--tx-hen,var(--accent))!important}
 html body .zt-ft{color:var(--tx-hft,var(--accent))!important}
 
 /* 拖拉条的时候暂时摆掉 backdrop-filter，松手再回来 */
-html[data-dragging="1"] *,html[data-dragging="1"] *::before,html[data-dragging="1"] *::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-html[data-dragging="1"] .card,html[data-dragging="1"] .entry,html[data-dragging="1"] .quote{box-shadow:none!important}
+html[data-dragging="1"] .card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
+
+
+/* ===== css/v88.css 纪念日和弹层里的字也能调 ===== */
+html body #sheetBody .v27-d .l b{color:var(--tx-dynm,var(--ink))!important}
+html body #sheetBody .v27-d .l span{color:var(--tx-dysub,var(--sub))!important}
+html body #sheetBody .v27-d .r strong{color:var(--tx-dynum,var(--deep))!important}
+html body #sheetBody .v27-d .r em,html body #sheetBody .v27-d .r i{color:var(--tx-dyunit,var(--accent))!important}
+html body #sheetBody .sec{color:var(--tx-sec,var(--accent))!important;opacity:1!important}
+html body #sheetBody .field>label{color:var(--tx-flabel,var(--sub))!important}
+html body #sheetBody .empty b{color:var(--tx-emp,var(--ink))!important}
