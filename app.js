@@ -8189,3 +8189,102 @@ MU.lrcHold=0;MU.lrcHT=0;MU.asAt=0;MU.jumpTo=-1;
 muDraw();muPaintNow();
 
 }catch(e){console.error("[zika] js/v69.js",e)}
+
+/* ===== js/v70.js ===== */
+try{
+
+// v70：页面头和分页固定住，只让下面滑；拿掉左上角那个圆按钮和音量条；歌词页重做
+
+// ── 页面头：只留右上角搜歌 ──
+(function(){
+  var v=document.querySelector('.view[data-view="music"]');if(!v)return;
+  v.classList.add('mu-fix');
+  var h=v.querySelector('.mu-head');
+  if(h){
+    h.innerHTML='<button type="button" class="mu-rd r" data-mu="find" aria-label="搜歌">'+MI.plus+'</button>'
+      +'<p class="mu-kick">LISTENING TOGETHER</p><h3>一起听歌</h3>';
+    h.addEventListener('click',function(e){
+      if(e.target.closest('[data-mu="find"]'))muSearchSheet();
+    });
+  }
+})();
+
+// ── 控制区：没有音量条，歌词页用矮的那一版 ──
+muCtlHTML=function(slim){
+  var s=MU.cur;if(!s)return '';
+  var on=!!(MU.a&&!MU.a.paused),n=MU.list.length,md=muMode(),fav=muIsFav(s.mid);
+  var mi=md==='shuffle'?MI.shuffle:md==='order'?MI.order:MI.loop;
+  var mn=md==='shuffle'?'随机':md==='order'?'顺序':'循环';
+  return '<div class="mu-line">'
+    +'<div class="mu-lt">'
+    +(slim?'':'<p class="mu-tag">'+(on?'NOW PLAYING \u00b7 在放':'PAUSED \u00b7 停下了')+'</p>')
+    +'<h2 class="mu-nm">'+esc(s.name||'')+'</h2>'
+    +'<p class="mu-sg">'+esc(s.singer||'')+'</p></div>'
+    +'<button type="button" class="mu-hb'+(fav?' on':'')+'" data-mu="fav" aria-label="'+(fav?'取消收藏':'收藏')+'">'+(fav?MI.heartOn:MI.heart)+'</button></div>'
+    +'<div class="mu-seek"><input type="range" id="muSeek" min="0" max="1000" step="1" value="0" aria-label="进度">'
+    +'<div class="mu-tt"><span id="muT1">0:00</span><span id="muT2">0:00</span></div></div>'
+    +'<div class="mu-ctl">'
+    +'<button type="button" class="mu-sm on" data-mu="mode" aria-label="播放方式：'+mn+'">'+mi+'<em>'+mn+'</em></button>'
+    +'<button type="button" class="mu-md" data-mu="prev" aria-label="上一首">'+MI.prev+'</button>'
+    +'<button type="button" class="mu-big" data-mu="toggle" aria-label="'+(on?'暂停':'播放')+'">'+(on?MI.pause:MI.play)+'</button>'
+    +'<button type="button" class="mu-md" data-mu="next" aria-label="下一首">'+MI.next+'</button>'
+    +'<button type="button" class="mu-sm'+(MU.qOpen?' on':'')+'" data-mu="queue" aria-label="这一轮">'+MI.list+'<em>'+(n?(MU.idx+1)+' / '+n:'')+'</em></button>'
+    +'</div>'
+    +(MU.qOpen?'<div class="mu-queue"><p class="mu-qh">这一轮的 '+n+' 首</p>'+MU.list.map(function(x,i){
+        return '<button type="button" class="mu-s'+(i===MU.idx?' on':'')+'" data-q="'+i+'">'+muCov(x.cover)
+          +'<span class="mu-st"><b>'+esc(x.name||'')+'</b><em>'+esc(x.singer||'')+'</em></span></button>';
+      }).join('')+'</div>':'');
+};
+
+// ── 歌词页：歌词自己滑，控制贴在下面 ──
+muLrcHTML=function(){
+  var L=MU.lrc;
+  if(!MU.cur)return '<div class="mu-lrcx"><p class="mu-wait hint">先挑一首歌，歌词会自己跟上。</p></div>';
+  if(!L||L.loading)return '<div class="mu-lrcx"><p class="mu-wait hint">在找歌词…</p></div>';
+  if(!L.lines.length)
+    return '<div class="mu-lrcx"><p class="mu-wait hint">'+esc(L.err||'这首没有歌词。')+'</p>'
+      +'<button type="button" class="mu-imp" data-mu="lrcset">导入 LRC / 纯文本歌词</button></div>';
+  var tr=muPref().trans&&L.tr&&L.tr.length;
+  return (L.tr&&L.tr.length?'<button type="button" class="mu-tr'+(muPref().trans?' on':'')+'" data-mu="trans">译文</button>':'')
+    +'<div class="mu-lw"><div class="mu-lrc" id="muLrc">'
+    +'<div class="mu-lpad"></div>'
+    +L.lines.map(function(l,i){
+      var t=tr?muTrOf(l.t):'';
+      return '<p data-l="'+i+'"><span>'+esc(l.x)+'</span>'+(t?'<i>'+esc(t)+'</i>':'')+'</p>';
+    }).join('')
+    +'<button type="button" class="mu-imp" data-mu="lrcset">'+(L.own?'换掉我贴的歌词':'歌词不对？自己贴一份')+'</button>'
+    +'<div class="mu-lpad"></div></div>'
+    +'<div class="mu-jump" id="muJump" hidden><i></i>'
+    +'<button type="button" data-mu="jump" aria-label="从这句开始">'+MI.play+'<em id="muJt">0:00</em></button></div></div>';
+};
+muLyricPage=function(){
+  return '<div class="mu-np lyr'+(MU.a&&!MU.a.paused?' on':'')+'" data-mid="'+esc(MU.cur?MU.cur.mid:'')+'">'
+    +muLrcHTML()
+    +(MU.cur?'<div class="mu-lbot">'+muCtlHTML(true)+'</div>':'')+'</div>';
+};
+
+var _drawV70=muDraw;
+muDraw=function(){
+  var r=_drawV70.apply(this,arguments);
+  var b=$('muBody');if(b)b.dataset.tab=MU.tab;
+  return r;
+};
+
+muDraw();muPaintNow();
+
+}catch(e){console.error("[zika] js/v70.js",e)}
+
+/* ===== js/v70b.js ===== */
+try{
+
+// 音乐页不要那个浮在左上角的日夜切换；其他页还是留着
+(function(){
+  var btn=document.querySelector('#dkFab,#btnDark,.dk-fab');
+  function mark(v){document.body.classList.toggle('on-music',v==='music')}
+  var _go=go;
+  go=function(v){var r=_go.apply(this,arguments);mark(v);return r};
+  var cur=document.querySelector('.view.on');
+  mark(cur?cur.dataset.view:'');
+})();
+
+}catch(e){console.error("[zika] js/v70b.js",e)}

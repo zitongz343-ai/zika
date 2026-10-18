@@ -1688,3 +1688,60 @@ html body #muPlay .mu-st em{font-size:10.5px}
 .mu-jump button:active{transform:scale(.94)}
 .mu-lrc p{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .mu-lrc p.pick span{color:var(--deep);opacity:.9}
+
+/* ===== css/v70.css 音乐：头固定、没音量条、歌词页重做 ===== */
+
+/* 整页改成上下两段：头和分页不动，只下面那块滑 */
+.view[data-view="music"].mu-fix{padding:0 16px 0!important;overflow:hidden!important}
+.view[data-view="music"].mu-fix.on{display:flex!important;flex-direction:column;height:100%}
+.view[data-view="music"].mu-fix .mu-head{flex:0 0 auto;padding:48px 46px 12px}
+.view[data-view="music"].mu-fix .mu-rd{top:46px}
+.view[data-view="music"].mu-fix .mu-seg{flex:0 0 auto;margin-bottom:12px}
+.view[data-view="music"].mu-fix #muBody{flex:1 1 0;height:0;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:calc(env(safe-area-inset-bottom) + 70px)}
+.view[data-view="music"].mu-fix #muBody::-webkit-scrollbar{display:none}
+/* 正在放和歌词这两页小播放条是藏的，不用留底部空白 */
+.view[data-view="music"].mu-fix #muBody[data-tab="now"],
+.view[data-view="music"].mu-fix #muBody[data-tab="lyric"]{padding-bottom:calc(env(safe-area-inset-bottom) + 10px)}
+.view[data-view="music"].mu-fix #muBody[data-tab="lyric"]{overflow:hidden}
+
+/* 歌词页：歌词自己滑，控制贴在下面 */
+.mu-np.lyr{position:relative;display:flex;flex-direction:column;height:100%;text-align:left}
+.mu-np.lyr .mu-art{display:none}
+.mu-np.lyr .mu-lw{flex:1 1 0;height:0;min-height:0}
+.mu-np.lyr .mu-tr{position:absolute;right:2px;top:0;z-index:3;margin:0;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--sub);font-family:var(--serif);font-size:12px;letter-spacing:.08em;cursor:pointer;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.mu-np.lyr .mu-tr.on{color:var(--deep);border-color:color-mix(in srgb,var(--deep) 40%,transparent)}
+.mu-lrcx{padding:34px 0 10px;text-align:center}
+.mu-lw{position:relative;height:100%}
+.mu-lrc{height:100%;max-height:none;overflow-y:auto;padding:0 6px;text-align:center;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);mask-image:linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent)}
+.mu-lrc::-webkit-scrollbar{display:none}
+.mu-lpad{height:38%}
+.mu-lrc p{margin:0 0 24px;padding:3px 4px;border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .3s,opacity .3s}
+.mu-lrc p span{display:block;font-family:var(--serif);font-size:16.5px;line-height:1.62;color:var(--sub);opacity:.34;transition:font-size .28s ease,opacity .3s,color .3s}
+.mu-lrc p i{display:block;margin-top:5px;font-style:normal;font-family:var(--serif);font-size:13px;line-height:1.6;color:var(--sub);opacity:.24}
+.mu-lrc p.near span{opacity:.52}
+.mu-lrc p.on span{font-size:21px;color:var(--deep);opacity:1}
+.mu-lrc p.on i{font-size:14.5px;opacity:.72}
+.mu-lrc p.pick{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+.mu-lrc p.pick span{color:var(--deep);opacity:.86}
+.mu-lrc .mu-imp{margin:10px auto 0}
+
+/* 歌词页底下的控制：矮一版 */
+.mu-lbot{flex:0 0 auto;padding:14px 2px calc(env(safe-area-inset-bottom) + 6px);border-top:1px dashed var(--line)}
+.mu-lbot .mu-line{margin:0}
+.mu-lbot .mu-nm{margin:0;font-size:18px;letter-spacing:.04em}
+.mu-lbot .mu-sg{margin:4px 0 0;font-size:11.5px}
+.mu-lbot .mu-hb{flex:0 0 40px;width:40px;height:40px;margin-top:2px}
+.mu-lbot .mu-hb svg{width:19px;height:19px}
+.mu-lbot .mu-seek{margin:12px 0 0}
+.mu-lbot .mu-ctl{margin:12px 0 0}
+.mu-lbot .mu-big{flex:0 0 58px;height:58px}
+.mu-lbot .mu-big svg{width:25px;height:25px}
+.mu-lbot .mu-md{flex:0 0 40px;height:40px}
+.mu-lbot .mu-md svg{width:23px;height:23px}
+.mu-lbot .mu-queue{max-height:32dvh;overflow-y:auto;scrollbar-width:none}
+.mu-lbot .mu-queue::-webkit-scrollbar{display:none}
+
+/* 正在放：没了音量条，封面稍大一点 */
+.mu-art{width:min(72%,300px);margin-bottom:22px}
+.mu-np .mu-ctl{margin-top:26px}
+.mu-np .mu-queue{margin-top:24px}
