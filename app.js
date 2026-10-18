@@ -7428,3 +7428,264 @@ newMail=function(pre){
 renderMail();
 
 }catch(e){console.error("[zika] js/v66.js",e)}
+
+/* ===== js/v67.js ===== */
+try{
+
+// v67：音乐页重做成「一起听歌」——居中大标题、下划线分页、大封面播放器，进度和音量都能拖
+// 顺手修了封面：接口没给图或者图挂了，放一个音符方块，不再留破图
+
+MI.shuffle='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.8L19.6 7l-3.1 3.2"/><path d="M19.6 7h-3.9a4 4 0 0 0-3.3 1.75l-3.6 5.5A4 4 0 0 1 5.5 16H4"/><path d="M16.5 13.8L19.6 17l-3.1 3.2"/><path d="M4 7h1.5a4 4 0 0 1 3.3 1.75l.45.7"/><path d="M14.1 14.3l.3.45A4 4 0 0 0 17.7 17h1.9"/></svg>';
+MI.list='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="7" height="7" rx="1.7"/><rect x="13" y="4" width="7" height="7" rx="1.7"/><rect x="4" y="13" width="7" height="7" rx="1.7"/><rect x="13" y="13" width="7" height="7" rx="1.7"/></svg>';
+MI.vol='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3L11 6v12l-4-3.5H4z"/><path d="M15.4 9.3a3.8 3.8 0 0 1 0 5.4"/><path d="M18 6.9a7.4 7.4 0 0 1 0 10.2"/></svg>';
+MI.gear='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.4v2.2M12 18.4v2.2M4.6 7.8l1.9 1.1M17.5 15.1l1.9 1.1M4.6 16.2l1.9-1.1M17.5 8.9l1.9-1.1"/></svg>';
+
+// ── 封面 ──
+muBadImg=function(im){
+  if(!im||!im.parentNode)return;
+  var sp=document.createElement('span');
+  sp.className=im.className+' none';sp.innerHTML='<i>\u266a</i>';
+  im.parentNode.replaceChild(sp,im);
+};
+muCov=function(u,extra){
+  var c=muHttps(u),cls='mu-cov'+(extra?' '+extra:'');
+  if(!c)return '<span class="'+cls+' none"><i>\u266a</i></span>';
+  return '<img class="'+cls+'" src="'+esc(c)+'" alt="" loading="lazy" onerror="muBadImg(this)">';
+};
+
+// ── 音量、随机、时间 ──
+muVolGet=function(){var v=+S.prefs.mu.vol;return isNaN(v)?1:Math.max(0,Math.min(1,v))};
+var _auV67=muAudio;
+muAudio=function(){
+  var a=_auV67.apply(this,arguments);
+  if(!a.v67){a.v67=1;a.volume=muVolGet();a.addEventListener('loadedmetadata',muProg)}
+  return a;
+};
+var _nxV67=muNext;
+muNext=function(d){
+  if(MU.shuf&&MU.list.length>1&&(d||1)>0){
+    var i=MU.idx;
+    for(var k=0;k<24&&i===MU.idx;k++)i=Math.floor(Math.random()*MU.list.length);
+    MU.idx=i;muLoad();return;
+  }
+  return _nxV67.apply(this,arguments);
+};
+muTime=function(t){
+  if(!t||!isFinite(t))return '0:00';
+  t=Math.max(0,Math.floor(t));
+  var m=Math.floor(t/60),s=t%60;
+  return m+':'+(s<10?'0':'')+s;
+};
+
+// ── 正在放 ──
+muNowHTML=function(){
+  var s=MU.cur;
+  if(!s)return '<div class="mu-none"><span class="mu-cov big none"><i>\u266a</i></span>'
+    +'<p>还没有在放的歌。<br>去「歌单」或者「搜歌」里挑一首。</p></div>';
+  var on=!!(MU.a&&!MU.a.paused),n=MU.list.length;
+  return '<div class="mu-np'+(on?' on':'')+'" data-mid="'+esc(s.mid)+'">'
+    +'<div class="mu-art">'+muCov(s.cover,'big')+'</div>'
+    +'<p class="mu-tag">'+(on?'NOW PLAYING \u00b7 在放':'PAUSED \u00b7 停下了')+'</p>'
+    +'<h2 class="mu-nm">'+esc(s.name||'')+'</h2>'
+    +'<p class="mu-sg">'+esc(s.singer||'')+(s.album?' \u00b7 '+esc(s.album):'')+'</p>'
+    +'<div class="mu-seek"><input type="range" id="muSeek" min="0" max="1000" step="1" value="0" aria-label="进度">'
+    +'<div class="mu-tt"><span id="muT1">0:00</span><span id="muT2">0:00</span></div></div>'
+    +'<div class="mu-ctl">'
+    +'<button type="button" class="mu-sm'+(MU.shuf?' on':'')+'" data-mu="shuf" aria-label="随机">'+MI.shuffle+'<em>随机</em></button>'
+    +'<button type="button" class="mu-md" data-mu="prev" aria-label="上一首">'+MI.prev+'</button>'
+    +'<button type="button" class="mu-big" data-mu="toggle" aria-label="'+(on?'暂停':'播放')+'">'+(on?MI.pause:MI.play)+'</button>'
+    +'<button type="button" class="mu-md" data-mu="next" aria-label="下一首">'+MI.next+'</button>'
+    +'<button type="button" class="mu-sm'+(MU.qOpen?' on':'')+'" data-mu="queue" aria-label="队列">'+MI.list+'<em>'+(n?(MU.idx+1)+' / '+n:'')+'</em></button>'
+    +'</div>'
+    +'<div class="mu-vol">'+MI.vol+'<input type="range" id="muVol" min="0" max="100" step="1" value="'+Math.round(muVolGet()*100)+'" aria-label="音量"><span>VOL.</span></div>'
+    +(MU.qOpen?'<div class="mu-queue"><p class="mu-qh">这一轮的 '+n+' 首</p>'+MU.list.map(function(x,i){
+        return '<button type="button" class="mu-s'+(i===MU.idx?' on':'')+'" data-q="'+i+'">'+muCov(x.cover)
+          +'<span class="mu-st"><b>'+esc(x.name||'')+'</b><em>'+esc(x.singer||'')+'</em></span></button>';
+      }).join('')+'</div>':'')
+    +'</div>';
+};
+muBindNow=function(){
+  var sk=$('muSeek'),vl=$('muVol');
+  if(sk){
+    sk.addEventListener('input',function(){
+      MU.seek=true;var a=MU.a;
+      if(a&&a.duration)$('muT1').textContent=muTime(sk.value/1000*a.duration);
+    });
+    sk.addEventListener('change',function(){
+      var a=MU.a;
+      if(a&&a.duration&&isFinite(a.duration))try{a.currentTime=sk.value/1000*a.duration}catch(e){}
+      MU.seek=false;muProg();
+    });
+  }
+  if(vl)vl.addEventListener('input',function(){
+    S.prefs.mu.vol=vl.value/100;muAudio().volume=muVolGet();save();
+  });
+  muProg();
+};
+muProg=function(){
+  var a=MU.a,d=a&&a.duration&&isFinite(a.duration)?a.duration:0;
+  var w=d?Math.min(100,a.currentTime/d*100):0;
+  document.querySelectorAll('.mu-bar .pg').forEach(function(p){p.style.width=w+'%'});
+  if(MU.seek)return;
+  var sk=$('muSeek');if(sk)sk.value=Math.round(w*10);
+  var t1=$('muT1'),t2=$('muT2');
+  if(t1)t1.textContent=muTime(a?a.currentTime:0);
+  if(t2)t2.textContent=muTime(d);
+  if(sk)sk.style.setProperty('--f',w+'%');
+};
+muPaintNow=function(){
+  var s=MU.cur,on=!!(MU.a&&!MU.a.paused);
+  ['muNow','muPlay'].forEach(function(id){
+    var el=$(id);if(!el)return;el.hidden=!s;if(!s)return;
+    var im=el.querySelector('img'),c=muHttps(s.cover);
+    if(im){im.hidden=!c;if(c&&im.getAttribute('src')!==c)im.src=c}
+    el.querySelector('b').textContent=s.name;
+    el.querySelector('em').textContent=(id==='muNow'?(on?'在听 \u00b7 ':'暂停了 \u00b7 '):'')+s.singer;
+    var tg=el.querySelector('[data-mu="toggle"]');
+    if(tg){tg.innerHTML=on?MI.pause:MI.play;tg.setAttribute('aria-label',on?'暂停':'播放')}
+  });
+  var sb=$('sbcMu');if(sb)sb.textContent=on?'\u266a':'';
+  var b=$('muBody');if(!b)return;
+  b.querySelectorAll('.mu-s[data-i]').forEach(function(x){
+    var it=MU.shown[+x.dataset.i];x.classList.toggle('on',!!(it&&s&&it.mid===s.mid));
+  });
+  if(MU.tab!=='now')return;
+  var np=b.querySelector('.mu-np');
+  if(!s||!np||np.dataset.mid!==String(s.mid)){muDraw();return}
+  np.classList.toggle('on',on);
+  var tag=np.querySelector('.mu-tag');if(tag)tag.textContent=on?'NOW PLAYING \u00b7 在放':'PAUSED \u00b7 停下了';
+  var big=np.querySelector('.mu-big');
+  if(big){big.innerHTML=on?MI.pause:MI.play;big.setAttribute('aria-label',on?'暂停':'播放')}
+};
+
+// ── 三个分页 ──
+muDraw=function(){
+  var b=$('muBody');if(!b)return;
+  var seg=$('muSeg');
+  if(seg)seg.querySelectorAll('[data-t]').forEach(function(x){x.classList.toggle('on',x.dataset.t===MU.tab)});
+  var pb=$('muPlay');if(pb)pb.classList.toggle('mu-off',MU.tab==='now');
+  if(!muOk()){
+    MU.shown=[];
+    b.innerHTML='<div class="empty"><b>还没连上 QQ 音乐</b>填一下服务器地址和密码就能听。</div>'
+      +'<button type="button" class="primary" data-mu="set" style="width:100%">去 填</button>';
+    return;
+  }
+  if(MU.tab==='now'){MU.shown=[];b.innerHTML=muNowHTML();muBindNow();return}
+  if(MU.tab==='search'){
+    if(!b.querySelector('#muQ')){
+      b.innerHTML='<form class="mu-q" id="muQ"><input type="search" placeholder="搜歌名、歌手…" enterkeyhint="search" autocomplete="off"><button type="submit" class="primary">搜</button></form><div id="muRes"></div>';
+      var inp=b.querySelector('input');inp.value=MU.q;
+      b.querySelector('form').addEventListener('submit',function(e){e.preventDefault();inp.blur();muSearch(inp.value.trim())});
+    }
+    var r=$('muRes');
+    if(MU.sBusy){r.innerHTML='<p class="hint mu-wait">找找…</p>';return}
+    if(MU.sErr){r.innerHTML='<p class="hint mu-wait">'+esc(MU.sErr)+'</p>';return}
+    muSongs(r,MU.res||[],MU.res?'没找到，换个词试试。':'搜一首想听的。');
+    return;
+  }
+  if(MU.pl){
+    b.innerHTML='<button type="button" class="sh-back" data-mu="back">\u2039 歌单</button>'
+      +'<div class="mu-plh">'+muCov(MU.pl.cover,'md')+'<span class="mu-st"><b>'+esc(MU.pl.name)+'</b><em>'+(MU.pl.loading?'':MU.pl.songs.length+' 首')+'</em></span>'
+      +(MU.pl.songs.length?'<button type="button" class="ghost" data-mu="all">全部播放</button>':'')+'</div><div id="muRes"></div>';
+    var pr=$('muRes');
+    if(MU.pl.loading){pr.innerHTML='<p class="hint mu-wait">在翻这个歌单…</p>';return}
+    if(MU.pl.err){pr.innerHTML='<p class="hint mu-wait">'+esc(MU.pl.err)+'</p>';return}
+    muSongs(pr,MU.pl.songs,'这个歌单是空的。');
+    return;
+  }
+  MU.shown=[];
+  if(MU.lists===null){b.innerHTML='<p class="hint mu-wait">在拿你的歌单…</p>';muLoadLists();return}
+  if(MU.listErr){b.innerHTML='<p class="hint mu-wait">'+esc(MU.listErr)+'</p><button type="button" class="ghost" data-mu="retry" style="width:100%">再试一次</button>';return}
+  if(!MU.lists.length){b.innerHTML='<p class="hint mu-wait">没找到你建的歌单。</p>';return}
+  b.innerHTML=(MU.nick?'<p class="mu-nick">'+esc(MU.nick)+' 的歌单</p>':'')+MU.lists.map(function(l){
+    return '<button type="button" class="mu-s" data-pl="'+esc(l.id)+'">'+muCov(l.cover)
+      +'<span class="mu-st"><b>'+esc(l.name||'歌单')+'</b><em>'+(+l.count||0)+' 首</em></span></button>';
+  }).join('');
+};
+muSongs=function(el,songs,none){
+  MU.shown=songs||[];
+  if(!MU.shown.length){el.innerHTML=none?'<p class="hint mu-wait">'+none+'</p>':'';return}
+  el.innerHTML=MU.shown.map(function(s,i){
+    return '<button type="button" class="mu-s'+(MU.cur&&MU.cur.mid===s.mid?' on':'')+'" data-i="'+i+'">'+muCov(s.cover)
+      +'<span class="mu-st"><b>'+esc(s.name||'')+'</b><em>'+esc(s.singer||'')+(s.album?' \u00b7 '+esc(s.album):'')+'</em></span></button>';
+  }).join('');
+};
+muOpenPl=function(id){
+  var l=(MU.lists||[]).filter(function(x){return x.id===id})[0]||{};
+  MU.pl={id:id,name:l.name||'歌单',cover:l.cover||'',songs:[],loading:true,err:''};muDraw();
+  muApi('/playlist?id='+encodeURIComponent(id)).then(function(j){
+    if(!MU.pl||MU.pl.id!==id)return;MU.pl.songs=j.songs||[];
+  }).catch(function(e){if(MU.pl&&MU.pl.id===id)MU.pl.err=muErrText(e)})
+  .then(function(){if(MU.pl&&MU.pl.id===id){MU.pl.loading=false;muDraw()}});
+};
+muBodyClick=function(e){
+  var t=e.target.closest('[data-mu],[data-i],[data-pl],[data-q]');if(!t)return;
+  if(t.dataset.q!==undefined){MU.idx=+t.dataset.q;muLoad();return}
+  if(t.dataset.i!==undefined){muPlay(MU.shown,+t.dataset.i);return}
+  if(t.dataset.pl){muOpenPl(t.dataset.pl);return}
+  var a=t.dataset.mu,au=muAudio();
+  if(a==='set')openMuSet();
+  if(a==='back'){MU.pl=null;muDraw()}
+  if(a==='all'&&MU.pl&&MU.pl.songs.length)muPlay(MU.pl.songs,0);
+  if(a==='retry'){MU.lists=null;MU.listErr='';muDraw()}
+  if(a==='shuf'){MU.shuf=!MU.shuf;muDraw()}
+  if(a==='queue'){MU.qOpen=!MU.qOpen;muDraw()}
+  if(a==='prev')muNext(-1);
+  if(a==='next')muNext(1);
+  if(a==='toggle'&&MU.cur){
+    if(au.paused){var p=au.play();if(p&&p.catch)p.catch(function(){})}else au.pause();
+  }
+};
+// 点底下那条小的，进「正在放」
+muBarClick=function(e){
+  var t=e.target.closest('[data-mu]'),self=this;
+  if(!t||t.dataset.mu==='open'){
+    if(self.id==='muNow')go('music');
+    MU.tab='now';muDraw();return;
+  }
+  var a=t.dataset.mu,au=muAudio();
+  if(a==='toggle'){if(!MU.cur)return;if(au.paused){var p=au.play();if(p&&p.catch)p.catch(function(){})}else au.pause()}
+  if(a==='next')muNext(1);
+  if(a==='prev')muNext(-1);
+};
+
+// ── 页面头：居中大标题、下划线分页、右上角进设置 ──
+(function(){
+  var v=document.querySelector('.view[data-view="music"]');if(!v)return;
+  var bar=v.querySelector('.mo-bar');
+  if(bar&&!v.querySelector('.mu-head')){
+    var h=document.createElement('div');h.className='mu-head';
+    h.innerHTML='<button type="button" class="mu-gear" data-mu="set" aria-label="QQ 音乐设置">'+MI.gear+'</button>'
+      +'<p class="mu-kick">LISTENING TOGETHER</p><h3>一起听歌</h3>';
+    bar.parentNode.replaceChild(h,bar);
+    h.addEventListener('click',function(e){if(e.target.closest('[data-mu="set"]'))openMuSet()});
+  }
+  var seg=$('muSeg');
+  if(seg){
+    seg.className='mu-seg';
+    seg.innerHTML='<button type="button" data-t="now">正在放</button>'
+      +'<button type="button" data-t="lists">歌单</button>'
+      +'<button type="button" data-t="search">搜歌</button>';
+  }
+})();
+
+if(!S.prefs.mu||typeof S.prefs.mu!=='object')S.prefs.mu={base:'',tok:''};
+if(S.prefs.mu.vol===undefined){S.prefs.mu.vol=1;save()}
+MU.shuf=false;MU.qOpen=false;MU.seek=false;MU.tab='now';
+muDraw();muPaintNow();
+
+}catch(e){console.error("[zika] js/v67.js",e)}
+
+/* ===== js/v67b.js ===== */
+try{
+
+// 两条小播放条里的封面也别留破图：加载不出来就藏起来
+(function(){
+  ['muNow','muPlay'].forEach(function(id){
+    var el=$(id);if(!el)return;
+    var im=el.querySelector('img');if(!im)return;
+    im.addEventListener('error',function(){im.hidden=true});
+  });
+})();
+
+}catch(e){console.error("[zika] js/v67b.js",e)}

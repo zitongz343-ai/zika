@@ -1521,3 +1521,86 @@ html body #bkPrev{position:sticky;top:0;z-index:4}
 .wl-paper input.wl-t{position:relative;width:100%;padding:0 0 11px;border:0;border-bottom:1px dashed var(--line);border-radius:0;background:none;color:var(--ink);font-family:var(--serif);font-size:16px;letter-spacing:.06em;outline:none}
 .wl-paper textarea.wl-b{position:relative;width:100%;min-height:256px;max-height:none;margin:12px 0 0;padding:0;border:0;border-radius:0;background:none;color:var(--ink);font-family:var(--serif);font-size:15px;line-height:32px;outline:none;resize:none;backdrop-filter:none;-webkit-backdrop-filter:none}
 .wl-sign{position:relative;margin-top:16px;text-align:right;font-family:var(--serif);font-size:13px;color:var(--sub);letter-spacing:.08em}
+
+/* ===== css/v67.css ===== 音乐页：一起听歌 ===== */
+
+/* 页面头 */
+.mu-head{position:relative;padding:26px 46px 16px;text-align:center}
+.mu-kick{margin:0;font-family:var(--sans);font-size:9.5px;letter-spacing:.42em;color:var(--sub);opacity:.85}
+.mu-head h3{margin:7px 0 0;font-family:var(--serif);font-weight:400;font-size:22px;letter-spacing:.2em;color:var(--deep)}
+.mu-gear{position:absolute;right:0;top:24px;width:38px;height:38px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--sub);display:grid;place-items:center;cursor:pointer;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.mu-gear svg{width:19px;height:19px}
+.mu-gear:active{color:var(--deep)}
+
+/* 分页：下面一条短横线 */
+.mu-seg{display:flex;justify-content:center;gap:26px;margin:0 0 20px;padding:0 4px 2px}
+.mu-seg button{position:relative;padding:8px 2px 10px;border:0;background:none;color:var(--sub);font-family:var(--sans);font-size:14px;letter-spacing:.1em;cursor:pointer;transition:color .2s}
+.mu-seg button.on{color:var(--deep)}
+.mu-seg button.on::after{content:"";position:absolute;left:50%;bottom:2px;width:22px;height:2px;border-radius:2px;background:var(--deep);transform:translateX(-50%)}
+
+/* 封面：没图或图挂了就放一个音符 */
+.mu-cov{flex:0 0 46px;width:46px;height:46px;border-radius:10px;object-fit:cover;background:var(--surface-2)}
+.mu-cov.none{display:grid;place-items:center;border:1px solid var(--line);color:var(--sub)}
+.mu-cov.none i{font-style:normal;font-size:18px;line-height:1;opacity:.75}
+.mu-cov.md{flex:0 0 54px;width:54px;height:54px;border-radius:12px}
+.mu-cov.md.none i{font-size:21px}
+
+/* 正在放 */
+.mu-np{text-align:center;padding:0 2px}
+.mu-art{position:relative;width:min(70%,286px);margin:2px auto 20px;aspect-ratio:1;border-radius:20px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line);box-shadow:0 18px 40px rgba(0,0,0,.14)}
+.mu-art .mu-cov{flex:none;width:100%;height:100%;border-radius:0;border:0}
+.mu-art .mu-cov.none i{font-size:46px}
+.mu-np.on .mu-art{animation:muFloat 5.5s ease-in-out infinite}
+@keyframes muFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.mu-tag{margin:0;font-family:var(--sans);font-size:9.5px;letter-spacing:.3em;color:var(--sub)}
+.mu-nm{margin:8px 0 0;font-family:var(--serif);font-weight:400;font-size:25px;line-height:1.32;letter-spacing:.03em;color:var(--ink);word-break:break-word}
+.mu-sg{margin:7px 0 0;font-family:var(--sans);font-size:12.5px;color:var(--sub);letter-spacing:.04em}
+
+/* 进度和音量 */
+.mu-seek{margin:22px 0 0}
+.mu-tt{display:flex;justify-content:space-between;margin-top:7px;font-family:var(--sans);font-size:10.5px;color:var(--sub);letter-spacing:.06em}
+.mu-vol{display:flex;align-items:center;gap:11px;margin:22px 0 0;color:var(--sub)}
+.mu-vol svg{flex:0 0 19px;width:19px;height:19px}
+.mu-vol input{flex:1;min-width:0}
+.mu-vol span{flex:0 0 auto;font-family:var(--sans);font-size:9.5px;letter-spacing:.24em}
+.mu-np input[type="range"]{-webkit-appearance:none;appearance:none;display:block;width:100%;height:18px;margin:0;background:none;outline:none;cursor:pointer}
+.mu-np input[type="range"]::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(90deg,var(--deep) 0 var(--f,0%),color-mix(in srgb,var(--ink) 14%,transparent) var(--f,0%) 100%)}
+.mu-np input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;margin-top:-6px;border-radius:50%;background:var(--surface);border:1px solid var(--line);box-shadow:0 2px 7px rgba(0,0,0,.18)}
+.mu-np input[type="range"]::-moz-range-track{height:3px;border-radius:3px;background:color-mix(in srgb,var(--ink) 14%,transparent)}
+.mu-np input[type="range"]::-moz-range-progress{height:3px;border-radius:3px;background:var(--deep)}
+.mu-np input[type="range"]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--surface);border:1px solid var(--line)}
+#muVol{--f:100%}
+
+/* 按钮一排 */
+.mu-ctl{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:24px 0 0}
+.mu-ctl button{padding:0;border:0;background:none;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.mu-sm{flex:0 0 54px;gap:5px;color:var(--sub)!important}
+.mu-sm svg{width:21px;height:21px}
+.mu-sm em{font-style:normal;font-family:var(--sans);font-size:9.5px;letter-spacing:.06em;line-height:1}
+.mu-sm.on{color:var(--deep)!important}
+.mu-md{flex:0 0 46px;height:46px;border-radius:50%;color:var(--deep)!important}
+.mu-md svg{width:27px;height:27px}
+.mu-big{flex:0 0 72px;height:72px;border-radius:50%!important;border:1px solid var(--line)!important;background:var(--surface)!important;color:var(--deep)!important;box-shadow:var(--shadow);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.mu-big svg{width:31px;height:31px;margin-left:2px}
+.mu-big:active{transform:scale(.95)}
+.mu-md:active,.mu-sm:active{opacity:.55}
+
+/* 这一轮的队列 */
+.mu-queue{margin:22px 0 0;padding-top:14px;border-top:1px dashed var(--line);text-align:left}
+.mu-qh{margin:0 0 6px;padding:0 4px;font-family:var(--sans);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
+.mu-nick{margin:0 0 10px;padding:0 4px;font-family:var(--sans);font-size:10.5px;letter-spacing:.14em;color:var(--sub)}
+
+/* 空着的时候 */
+.mu-none{text-align:center;padding:14px 0 6px}
+.mu-none .mu-cov{flex:none;width:min(56%,214px);height:auto;aspect-ratio:1;margin:6px auto 18px;border-radius:20px}
+.mu-none .mu-cov.none i{font-size:42px}
+.mu-none p{margin:0;font-family:var(--serif);font-size:14px;line-height:2;color:var(--sub)}
+
+/* 「正在放」里不再重复那条小播放条 */
+#muPlay.mu-off{display:none!important}
+.mu-bar img[hidden]{display:none}
+
+/* 纯色材质：阴影收一点，边线清一点 */
+html[data-style="solid"] .mu-art{box-shadow:0 10px 26px rgba(0,0,0,.09)}
+html[data-style="solid"] .mu-big{box-shadow:0 2px 8px rgba(0,0,0,.07)}
+html[data-theme="night"] .mu-art{box-shadow:0 18px 44px rgba(0,0,0,.5)}
