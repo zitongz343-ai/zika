@@ -7270,3 +7270,78 @@ try{
 })();
 
 }catch(e){console.error("[zika] js/v63.js",e)}
+
+/* ===== v65 气泡：实时预览 + 方案保存 ===== */
+var bubSnap,bubApply;
+try{
+if(!Array.isArray(S.prefs.bubSaves)){S.prefs.bubSaves=[];save()}
+bubSnap=function(){
+  var o={css:S.bubbleCSS||''};
+  if(typeof BUB_KEYS!=='undefined')BUB_KEYS.forEach(function(k){o[k]=S.prefs[k]});
+  return o;
+};
+bubApply=function(p){
+  if(typeof BUB_KEYS!=='undefined')BUB_KEYS.forEach(function(k){if(p[k]!==undefined)S.prefs[k]=p[k]});
+  S.bubbleCSS=p.css||'';
+  save();applyChat();applyBubbleCSS();renderChat();
+};
+var _obV65=openBubble;
+openBubble=function(){
+  _obV65.apply(this,arguments);
+  var seg=$('bkSeg');if(!seg)return;
+  // 自定义 CSS 默认展开，边写边看上面贴着的预览
+  var dt=sheetBody.querySelector('.v23-css');if(dt)dt.open=true;
+  // 实时预览：打字停下来就生效，不用点「应用 CSS」
+  var box=$('bubbleBox');
+  if(box&&!box.dataset.live){
+    box.dataset.live='1';
+    var t=null;
+    box.addEventListener('input',function(){
+      clearTimeout(t);
+      t=setTimeout(function(){S.bubbleCSS=box.value.trim();save();applyBubbleCSS()},220);
+    });
+  }
+  // 方案
+  var host=seg.parentNode,wrap=document.createElement('div');wrap.id='bsBox';
+  host.insertBefore(wrap,seg);
+  function reopen(){closeSheet();setTimeout(function(){openBubble();if(typeof addBack==='function')addBack()},80)}
+  function draw(){
+    var ls=S.prefs.bubSaves||[];
+    wrap.innerHTML='<div class="sec">方案</div>'
+      +(ls.length
+        ?'<div class="bs-list">'+ls.map(function(p){return '<button type="button" class="lb-pill" data-bs="'+esc(p.id)+'">'+esc(p.name)+'<i data-del="'+esc(p.id)+'">×</i></button>'}).join('')+'</div>'
+        :'<p class="bs-none">还没存过方案。调好一套存起来，以后点一下就换回来。</p>')
+      +'<button type="button" class="ghost" data-bs-new="1" style="width:100%;margin-bottom:4px">＋ 把现在这套存成方案</button>';
+  }
+  wrap.addEventListener('click',function(e){
+    var d=e.target.closest('[data-del]');
+    if(d){
+      e.stopPropagation();
+      var p=(S.prefs.bubSaves||[]).filter(function(x){return x.id===d.dataset.del})[0];
+      if(!p||!confirm('删掉方案「'+p.name+'」？'))return;
+      S.prefs.bubSaves=S.prefs.bubSaves.filter(function(x){return x.id!==d.dataset.del});save();draw();return;
+    }
+    var b=e.target.closest('[data-bs]');
+    if(b){
+      var q=(S.prefs.bubSaves||[]).filter(function(x){return x.id===b.dataset.bs})[0];
+      if(q){bubApply(q);reopen()}
+      return;
+    }
+    if(e.target.closest('[data-bs-new]')){
+      var n=prompt('这套叫什么？','方案 '+((S.prefs.bubSaves||[]).length+1));
+      if(n===null||!n.trim())return;
+      var o=bubSnap();o.id=uid();o.name=n.trim().slice(0,12);
+      S.prefs.bubSaves.unshift(o);
+      if(!save()){S.prefs.bubSaves.shift();alert('存不下了。表情包或者壁纸占了太多地方，删几张再试。');return}
+      draw();
+    }
+  });
+  draw();
+};
+SET_GROUPS.forEach(function(g){g[1].forEach(function(i){
+  if(i[0]==='openBubble')i[2]=function(){
+    var n=(S.prefs.bubSaves||[]).length;
+    return (S.prefs.bubKind==='plain'?'普通气泡':'便签')+(n?' · '+n+' 套方案':'');
+  };
+})});
+}catch(e){console.error('[zika] v65',e)}

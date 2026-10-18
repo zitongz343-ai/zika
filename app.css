@@ -1499,3 +1499,10 @@ html[data-bubble="plain"] #stream .card.show-del{padding-bottom:var(--bub-pad,10
 #muToast{position:fixed;z-index:310;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translate(-50%,12px);max-width:calc(100% - 40px);padding:9px 16px;border-radius:999px;background:rgba(40,36,38,.88);color:#fff;font-family:var(--sans);font-size:12.5px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 #muToast.on{opacity:1;transform:translate(-50%,0)}
 
+
+/* ===== v65 气泡预览跟着滚 + 方案 ===== */
+html body #bkPrev{position:sticky;top:0;z-index:4}
+.bs-list{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}
+.bs-list .lb-pill{display:inline-flex;align-items:center;gap:7px}
+.bs-list .lb-pill i{font-style:normal;opacity:.55;font-size:15px;line-height:1;padding:0 1px}
+.bs-none{font-family:var(--sans);font-size:11.5px;color:var(--sub);line-height:1.9;margin:0 0 10px}
