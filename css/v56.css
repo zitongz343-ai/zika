@@ -1,0 +1,33 @@
+/* v56：⊕ 格子小一号；表情包面板和字卡库表情包都排成四列方格 */
+
+/* ── ⊕ 点开的格子 ── */
+html body .plusp{gap:18px!important;padding:4px 6px 12px!important}
+html body .plusp button{width:54px!important;gap:6px!important;font-size:11px!important;color:var(--sub)!important}
+html body .plusp button i{width:46px!important;height:46px!important;border-radius:14px!important;background:color-mix(in srgb,var(--accent) 13%,var(--solid))!important;border:0!important;box-shadow:none!important;color:var(--accent)!important;font-size:16px!important}
+html body .plusp button i svg{width:21px!important;height:21px!important;display:block}
+
+/* ── 聊天里的表情包面板：用 padding 撑出正方形，不靠 aspect-ratio，iOS 上不会叠在一起 ── */
+html body .skp-grid{display:flex!important;flex-wrap:wrap!important;align-content:flex-start!important;gap:8px!important;max-height:232px!important;overflow-y:auto!important}
+html body .skp-grid>button{position:relative!important;display:block!important;flex:0 0 calc((100% - 24px) / 4)!important;width:calc((100% - 24px) / 4)!important;height:0!important;min-height:0!important;padding:0 0 calc((100% - 24px) / 4)!important;margin:0!important;aspect-ratio:auto!important;border:0!important;border-radius:12px!important;overflow:hidden!important;background:var(--surface-2)!important}
+html body .skp-grid>button img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;border-radius:0!important}
+html body .skp-grid .skp-none{flex:0 0 100%}
+
+/* ── 字卡库 → 回复库 → 表情包：四列方格 ── */
+html body #l4List.skg{display:flex;flex-wrap:wrap;align-content:flex-start;gap:10px;padding-top:4px}
+html body #l4List.skg>*:not(.sk-tile){flex:0 0 100%}
+html body #l4List.skg .sk-tile{position:relative;flex:0 0 calc((100% - 30px) / 4);height:0;padding-bottom:calc((100% - 30px) / 4);border-radius:14px;overflow:hidden;background:var(--surface-2);border:1px solid var(--line);box-shadow:var(--shadow);cursor:pointer;transition:transform .15s ease}
+html body #l4List.skg .sk-tile:active{transform:scale(.95)}
+.sk-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.sk-tile.off img{opacity:.35;filter:grayscale(1)}
+.sk-tile.off::after{content:"已屏蔽";position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--sans);font-size:10px;color:var(--sub);letter-spacing:.08em}
+.sk-tile.sel{outline:2px solid var(--accent);outline-offset:-2px}
+html body .sk-tile .l4-chk{position:absolute!important;z-index:2;top:5px!important;right:5px!important;left:auto!important;width:20px;height:20px;margin:0!important;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.88);border:1px solid var(--line);color:var(--accent);font-family:var(--sans);font-size:12px;line-height:1}
+html body .sk-tile.sel .l4-chk{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* 点开一张看大图 */
+.skv{display:grid;place-items:center;margin:4px 0 16px}
+.skv img{max-width:62%;max-height:240px;border-radius:16px;box-shadow:var(--shadow)}
+
+/* 回复库 / 氛围感 下面那排小分类一直显示 */
+html body #l4Sub{display:flex}
+html body #l4Sub[hidden]{display:none}
