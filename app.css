@@ -1866,3 +1866,41 @@ html[data-style="glass"] .inner{background:var(--gl-sheet)!important}
 
 html[data-style="glass"] .sheet.full{background:transparent!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
 html[data-style="glass"] .sheet.full .inner{background:var(--gl-sheet)!important;backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* ===== css/v84.css 文字颜色按处分开 + 毛玻璃气泡 ===== */
+
+/* ── 文字颜色：没设就跟原来的走 ── */
+html body .chat-top .who:first-child .nm{color:var(--tx-title,var(--deep))}
+html body .chat-top .ts{color:var(--tx-stat,var(--accent))}
+html body .card .head .n{color:var(--tx-name,var(--accent))}
+html body .card .head>span:not([class]),
+html body .pmeta .tm{color:var(--tx-time,inherit)}
+html body .card .head .rd,
+html body .pmeta .rd2{color:var(--tx-read,var(--accent))}
+html body .card .head .fv,
+html body .pmeta .fv{color:var(--tx-fav,var(--accent))}
+html body #typing{color:var(--tx-typing,var(--accent))}
+html body #typing i{background:var(--tx-typing,var(--accent))}
+html body .poke{color:var(--tx-poke,var(--sub))}
+html body .card .qt{color:var(--tx-quote,var(--sub))}
+html body .daysep,html body .dsep,html body .day-sep{color:var(--tx-date,var(--sub))}
+html body .hint{color:var(--tx-hint,var(--sub))}
+
+/* ── 气泡：间距、饱满度、尾巴位置 ── */
+html[data-bubble="plain"] #stream{gap:var(--bub-gap,14px)}
+html[data-bubble="plain"] .card{min-width:var(--bub-fill,0%)}
+
+/* 尾巴靠顶 */
+html[data-bubble="plain"][data-bubtail="top"] .card.ta{border-bottom-left-radius:var(--bub-r,18px);border-top-left-radius:var(--bub-tail-r,5px)}
+html[data-bubble="plain"][data-bubtail="top"] .card.me{border-bottom-right-radius:var(--bub-r,18px);border-top-right-radius:var(--bub-tail-r,5px)}
+/* 不收尖 */
+html[data-bubble="plain"][data-bubtail="none"] .card.ta,
+html[data-bubble="plain"][data-bubtail="none"] .card.me{border-radius:var(--bub-r,18px)}
+
+/* ── 毛玻璃气泡：透、模糊、一道轻边 ── */
+html[data-bubglass="1"] .card{
+  backdrop-filter:var(--bub-blur,saturate(180%) blur(18px))!important;
+  -webkit-backdrop-filter:var(--bub-blur,saturate(180%) blur(18px))!important;
+  border:1px solid rgba(255,255,255,.3)!important;
+}
+html[data-theme="night"][data-bubglass="1"] .card{border-color:rgba(255,255,255,.12)!important}
