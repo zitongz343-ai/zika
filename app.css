@@ -1754,3 +1754,22 @@ html body #muPlay .mu-st em{font-size:10.5px}
 /* 小播放条的关闭 */
 #muNow .mu-x{flex:0 0 26px;width:26px;height:26px;margin-left:1px;border:0;border-radius:50%;background:none;color:var(--sub);font-family:var(--sans);font-size:17px;line-height:1;display:grid;place-items:center;cursor:pointer;padding:0}
 #muNow .mu-x:active{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+
+/* ===== css/v76.css 放音乐时少让 GPU 干活 ===== */
+
+/* 封面不再永远浮上浮下：这一条动画配上毛玻璃底，会让整屏持续重合成 */
+.mu-np.on .mu-art{animation:none}
+
+/* 进度每半秒改一次，不要再叠 300ms 过渡 */
+.mu-bar .pg{transition:none}
+
+/* 音乐页上这几个圆按钮不再各自开一层实时模糊 */
+.mu-big,.mu-hb,.mu-rd,.mu-jump button,.mu-np.lyr .mu-tr{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-style="glass"] .mu-big,html[data-style="glass"] .mu-hb,
+html[data-style="glass"] .mu-rd,html[data-style="glass"] .mu-jump button,
+html[data-style="glass"] .mu-np.lyr .mu-tr{background:color-mix(in srgb,var(--solid) 80%,transparent)!important}
+
+/* 歌词滑动交给合成层，不每帧重排 */
+.mu-lrc{transform:translateZ(0)}
+.mu-lrc p{transition:color .25s,opacity .25s}
+.mu-lrc p span{transition:font-size .22s ease,opacity .25s,color .25s}

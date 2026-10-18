@@ -8354,3 +8354,120 @@ MU.barOff=0;
 muPaintNow();
 
 }catch(e){console.error("[zika] js/v75.js",e)}
+
+/* ===== js/v76.js ===== */
+try{
+
+// v76：放音乐别让手机一直烧
+// timeupdate 每秒会响四次，以前每次都重查节点、每 20 秒把整份数据写一遍、歌词还整体重洗
+// 这里全改成：节点只查一次、半秒最多刷一次、歌词只改变动的那几行、落盘改成停下来或者两分钟一次
+
+var MP={pg:null,sk:null,t1:null,t2:null,at:0,w:-1,s1:-1,s2:-1};
+var LC={box:null,ps:null};
+
+muProgCache=function(){
+  MP.pg=[].slice.call(document.querySelectorAll('.mu-bar .pg'));
+  MP.sk=$('muSeek');MP.t1=$('muT1');MP.t2=$('muT2');
+  MP.w=-1;MP.s1=-1;MP.s2=-1;
+};
+
+muProg=function(force){
+  var a=MU.a;if(!a)return;
+  var now=Date.now();
+  if(force!==true&&now-MP.at<480)return;
+  MP.at=now;
+  if(!MP.pg||(MP.sk&&!MP.sk.isConnected))muProgCache();
+  var d=a.duration&&isFinite(a.duration)?a.duration:0;
+  var w=d?Math.min(100,a.currentTime/d*100):0;
+  if(Math.abs(w-MP.w)>=.25){
+    MP.w=w;
+    for(var i=0;i<MP.pg.length;i++)MP.pg[i].style.width=w+'%';
+    if(MP.sk&&MP.sk.isConnected&&!MU.seek){MP.sk.value=Math.round(w*10);MP.sk.style.setProperty('--f',w+'%')}
+  }
+  if(!MU.seek){
+    var c=Math.floor(a.currentTime||0),t=Math.floor(d);
+    if(MP.t1&&MP.t1.isConnected&&c!==MP.s1){MP.s1=c;MP.t1.textContent=muTime(c)}
+    if(MP.t2&&MP.t2.isConnected&&t!==MP.s2){MP.s2=t;MP.t2.textContent=muTime(t)}
+  }
+  muTick();muLrcPaint();
+};
+
+// 歌词：只改上一句和这一句周围那几行
+muLrcPaint=function(){
+  var L=MU.lrc,a=MU.a;
+  if(!L||!L.lines||!L.lines.length||!a)return;
+  var box=$('muLrc');if(!box)return;
+  if(LC.box!==box||!LC.ps){LC.box=box;LC.ps=[].slice.call(box.querySelectorAll('p[data-l]'))}
+  var ps=LC.ps,ls=L.lines,t=a.currentTime||0,k=-1;
+  for(var i=0;i<ls.length;i++){if(ls[i].t<=t+.25)k=i;else break}
+  if(k===MU.lrcAt)return;
+  var old=MU.lrcAt;MU.lrcAt=k;
+  var touch=[old-1,old,old+1,k-1,k,k+1],done={};
+  for(var j=0;j<touch.length;j++){
+    var n=touch[j];
+    if(n<0||n>=ps.length||done[n])continue;
+    done[n]=1;
+    var p=ps[n];if(!p)continue;
+    p.classList.toggle('on',n===k);
+    p.classList.toggle('near',Math.abs(n-k)===1);
+  }
+  if(MU.lrcHold)return;
+  var el=k>=0?ps[k]:null;if(!el)return;
+  MU.asAt=Date.now();
+  box.scrollTo({top:Math.max(0,el.offsetTop-box.clientHeight/2+el.offsetHeight/2),behavior:'smooth'});
+};
+
+// 听了多少分钟：先在心里记，不每次都写进本地
+muTick=function(){
+  var a=MU.a;if(!a||a.paused)return;
+  var now=Date.now();
+  if(MU.lastT&&now-MU.lastT<6000)MU.secAcc=(MU.secAcc||0)+(now-MU.lastT)/1000;
+  MU.lastT=now;
+  if(now-(MU.savedAt||0)>120000){MU.savedAt=now;muFlush()}
+};
+muFlush=function(){
+  var m=muPref();
+  if(MU.secAcc){m.secs=(+m.secs||0)+MU.secAcc;MU.secAcc=0}
+  MU.savedAt=Date.now();save();
+};
+
+// 停下来、切歌、切到后台都落一次盘
+(function(){
+  if(MU.saveT){clearTimeout(MU.saveT);MU.saveT=0}
+  MU.secAcc=0;MU.savedAt=Date.now();
+  var a=MU.a;
+  if(a&&!a.v76){
+    a.v76=1;
+    a.addEventListener('pause',muFlush);
+    a.addEventListener('ended',muFlush);
+  }
+  if(!window.__muFlushBound){
+    window.__muFlushBound=1;
+    document.addEventListener('visibilitychange',function(){if(document.hidden)muFlush()});
+    window.addEventListener('pagehide',muFlush);
+  }
+})();
+var _auV76=muAudio;
+muAudio=function(){
+  var a=_auV76.apply(this,arguments);
+  if(!a.v76){a.v76=1;a.addEventListener('pause',muFlush);a.addEventListener('ended',muFlush)}
+  return a;
+};
+
+// 重画页面后重新认一次节点，并立即刷一次
+var _bindV76=muBindNow;
+muBindNow=function(){
+  var r=_bindV76.apply(this,arguments);
+  LC.box=null;LC.ps=null;
+  muProgCache();muProg(true);
+  return r;
+};
+var _loadV76=muLoad;
+muLoad=function(){
+  LC.box=null;LC.ps=null;MP.w=-1;MP.s1=-1;MP.s2=-1;
+  return _loadV76.apply(this,arguments);
+};
+
+muProgCache();
+
+}catch(e){console.error("[zika] js/v76.js",e)}
