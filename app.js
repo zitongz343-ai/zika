@@ -8288,3 +8288,21 @@ try{
 })();
 
 }catch(e){console.error("[zika] js/v70b.js",e)}
+
+/* ===== js/v73.js ===== */
+try{
+
+// 滑到的那句不再标记，只右边浮一个带时间的按钮
+muJumpShow=function(){
+  var j=$('muJump'),box=$('muLrc'),L=MU.lrc;
+  if(!j||!box||!L||!L.lines.length)return;
+  var i=muCenterLine();if(i<0)return;
+  MU.jumpTo=i;
+  var t=$('muJt');if(t)t.textContent=muTime(L.lines[i].t);
+  j.hidden=false;
+};
+muJumpHide=function(){
+  var j=$('muJump');if(j)j.hidden=true;
+};
+
+}catch(e){console.error("[zika] js/v73.js",e)}

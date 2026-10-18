@@ -1765,3 +1765,11 @@ html body #muPlay .mu-st em{font-size:10.5px}
 .mu-lrc p.pick{background:none}
 .mu-lrc p.pick span{color:var(--sub);opacity:.6}
 .mu-lrc p.pick i{opacity:.4}
+
+/* ===== css/v73.css 歌词永远居中；跳句按钮旁边那条短线拿掉 ===== */
+.mu-lrc{text-align:center!important}
+.mu-lrc p,.mu-lrc p span,.mu-lrc p i{text-align:center!important;padding-left:0!important;padding-right:0!important}
+.mu-lrc p.pick{background:none!important}
+.mu-lrc p.pick span{color:var(--sub)!important;opacity:.34!important}
+.mu-lrc p.pick.on span{color:var(--deep)!important;opacity:1!important}
+.mu-jump i{display:none}
