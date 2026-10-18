@@ -1786,3 +1786,38 @@ html body #sheetBody .sh-back{backdrop-filter:none;-webkit-backdrop-filter:none;
 
 /* 滑动容器自己固定成一层，滑的时候不重建 */
 .sheet .inner{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;transform:translateZ(0)}
+
+/* ===== css/v80.css 毛玻璃材质下：各处再透一点，能看见底下的颜色 ===== */
+
+html[data-style="glass"]{--gl-a:rgba(255,255,255,.3);--gl-b:rgba(255,255,255,.19);--gl-blur:saturate(170%) blur(22px)}
+html[data-theme="night"][data-style="glass"]{--gl-a:rgba(50,46,60,.42);--gl-b:rgba(38,35,46,.3)}
+
+/* 传讯页：顶栏、底栏、输入框 */
+html[data-style="glass"] .chat-top,
+html[data-style="glass"] .chat-foot{background:var(--gl-a);backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+html[data-style="glass"] body .chat-foot .send-row #input{background:var(--gl-b)!important}
+
+/* 音乐页：播放条、大圆圈、心、搜歌、跳句、译文 */
+html[data-style="glass"] .mu-bar,
+html[data-style="glass"] html body #muPlay,
+html[data-style="glass"] #muNow{background:var(--gl-a)}
+html[data-style="glass"] .mu-big,
+html[data-style="glass"] .mu-hb,
+html[data-style="glass"] .mu-rd,
+html[data-style="glass"] .mu-jump button,
+html[data-style="glass"] .mu-np.lyr .mu-tr{background:var(--gl-a)!important}
+html[data-style="glass"] .mu-cov,
+html[data-style="glass"] .mu-art{background:var(--gl-b)}
+
+/* 字卡页：分组条、分页、小药丸、底下那条 */
+html[data-style="glass"] .l4-gh,
+html[data-style="glass"] .l4-seg,
+html[data-style="glass"] .lb-pill,
+html[data-style="glass"] .l4-card,
+html[data-style="glass"] .li{background:var(--gl-a)}
+html[data-style="glass"] .view[data-view="lib"] .l4-foot{background:var(--gl-a)!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+
+/* 设置和弹层：只透，不加实时模糊，滑动时不会闪 */
+html[data-style="glass"] body .menu-list.set-grp,
+html[data-style="glass"] body #sheetBody .sh-back{background:var(--gl-a)}
+html[data-style="glass"] .inner{background:var(--gl-a)}
