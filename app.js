@@ -9120,3 +9120,93 @@ bub84Mount=function(){
 v85Ensure();save();applyText();applyChat();
 
 }catch(e){console.error("[zika] js/v85.js",e)}
+
+/* ===== js/v86.js ===== */
+try{
+
+// v86：透明度拉条把主页也算上，并按页面分组
+
+var GL_GROUPS=[
+  ['\u4e3b\u9875',[
+    ['glHomeAv','\u5934\u50cf\u5e95',10],
+    ['glHomeDay','\u5929\u6570\u80f6\u56ca',10],
+    ['glQuote','\u4eca\u65e5\u4e00\u53e5',10],
+    ['glEntry','\u56db\u4e2a\u5165\u53e3',10]
+  ]],
+  ['\u4f20\u8baf\u9875',[
+    ['glChat','\u9876\u680f\u5e95\u680f',10],
+    ['glInput','\u8f93\u5165\u6846',6]
+  ]],
+  ['\u5176\u4ed6',[
+    ['glMusic','\u97f3\u4e50\u9875',10],
+    ['glLib','\u5b57\u5361\u9875',10],
+    ['glSheet','\u8bbe\u7f6e\u548c\u5f39\u5c42',10],
+    ['glSide','\u4fa7\u680f',10]
+  ]],
+  ['\u5168\u5c40',[
+    ['glBlur','\u6a21\u7cca\u7a0b\u5ea6',26]
+  ]]
+];
+GL_KEYS=[];
+GL_GROUPS.forEach(function(g){g[1].forEach(function(x){GL_KEYS.push(x)})});
+
+function glVar(k){return '--'+k.replace(/([A-Z])/g,function(m){return '-'+m.toLowerCase()})}
+
+glEnsure=function(){
+  var p=S.prefs;
+  GL_KEYS.forEach(function(x){
+    if(!(+p[x[0]]>=0))p[x[0]]=x[2];
+    if(typeof P_DEF==='object')P_DEF[x[0]]=x[2];
+  });
+  return p;
+};
+
+applyGlass=function(){
+  var p=glEnsure(),st=document.documentElement.style,dark=!!p.dark;
+  GL_KEYS.forEach(function(x){
+    var k=x[0],v=+p[k];
+    if(k==='glBlur'){st.setProperty('--gl-blur','saturate(185%) blur('+Math.max(0,v)+'px)');return}
+    var a=Math.max(0,Math.min(100,v))/100;
+    st.setProperty(glVar(k),dark?'rgba(46,42,56,'+(a*2).toFixed(3)+')':'rgba(255,255,255,'+a.toFixed(3)+')');
+  });
+};
+
+glMount=function(){
+  var sb=typeof sheetBody!=='undefined'&&sheetBody;if(!sb)return;
+  var old=sb.querySelector('#glBox');if(old)old.remove();
+  if(S.style!=='glass')return;
+  var segs=sb.querySelectorAll('.seg[data-g="style"]');
+  var after=segs.length?segs[segs.length-1].closest('.field'):null;
+  if(!after)return;
+  glEnsure();
+  function rg(x){
+    var k=x[0],blur=k==='glBlur',unit=blur?'px':'%',mx=blur?40:60;
+    return '<div class="field"><label>'+x[1]+'</label><div class="rg">'
+      +'<input type="range" data-gl="'+k+'" min="0" max="'+mx+'" step="1" value="'+(+S.prefs[k])+'">'
+      +'<b data-glv="'+k+'">'+(+S.prefs[k])+unit+'</b></div></div>';
+  }
+  var box=document.createElement('div');box.id='glBox';
+  box.innerHTML='<div class="sec">\u900f\u660e\u5ea6</div>'
+    +GL_GROUPS.map(function(g){
+      return '<p class="gl-h">'+g[0]+'</p>'+g[1].map(rg).join('');
+    }).join('')
+    +'<p class="hint">\u6570\u5b57\u8d8a\u5c0f\u8d8a\u900f\uff0c0 \u5c31\u662f\u53ea\u5269\u6a21\u7cca\u548c\u8fb9\u7ebf\u3002\u53ea\u5728\u6bdb\u73bb\u7483\u6750\u8d28\u4e0b\u751f\u6548\u3002</p>'
+    +'<button type="button" class="ghost" id="glRs" style="width:100%;margin-bottom:6px">\u6062\u590d\u9ed8\u8ba4\u900f\u660e\u5ea6</button>';
+  after.parentNode.insertBefore(box,after.nextSibling);
+  box.addEventListener('input',function(e){
+    var r=e.target.closest('[data-gl]');if(!r)return;
+    var k=r.dataset.gl,v=+r.value;
+    S.prefs[k]=v;applyGlass();
+    var b=box.querySelector('[data-glv="'+k+'"]');
+    if(b)b.textContent=v+(k==='glBlur'?'px':'%');
+  });
+  box.addEventListener('change',function(e){if(e.target.closest('[data-gl]'))save()});
+  box.querySelector('#glRs').addEventListener('click',function(){
+    GL_KEYS.forEach(function(x){S.prefs[x[0]]=x[2]});
+    save();applyGlass();glMount();
+  });
+};
+
+glEnsure();save();applyGlass();
+
+}catch(e){console.error("[zika] js/v86.js",e)}

@@ -1939,3 +1939,24 @@ html body .sb-day{color:var(--tx-sbday,var(--sub))!important}
 html body .tab{color:var(--tx-tab,var(--sub))!important}
 html body .tab.on{color:var(--tx-tabon,var(--deep))!important}
 html body .mo-bar h3{color:var(--tx-h3,var(--deep))!important}
+
+/* ===== css/v86.css 主页几块跟透明度拉条走 ===== */
+
+html[data-style="glass"]{--gl-home-av:rgba(255,255,255,.1);--gl-home-day:rgba(255,255,255,.1);--gl-quote:rgba(255,255,255,.1);--gl-entry:rgba(255,255,255,.1);--gl-side:rgba(255,255,255,.1)}
+
+/* 主页：头像底、天数胶囊、今日一句、四个入口 */
+html[data-style="glass"] .hp-av,
+html[data-style="glass"] .hh-pair .hp-av{background:var(--gl-home-av)!important}
+html[data-style="glass"] .hh-day{background:var(--gl-home-day)!important}
+html[data-style="glass"] .quote{background:var(--gl-quote)!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+html[data-style="glass"] .entry{background:var(--gl-entry)!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+html[data-style="glass"] .entry em{background:var(--gl-home-day)!important}
+
+/* 侧栏 */
+html[data-style="glass"] #sidebar{background:var(--gl-side)!important;backdrop-filter:var(--gl-blur);-webkit-backdrop-filter:var(--gl-blur)}
+html[data-style="glass"] .sb-av{background:var(--gl-home-av)!important}
+html[data-style="glass"] .sb-mini{background:var(--gl-home-day)!important}
+
+/* 透明度那排里的小分组标题 */
+#glBox .gl-h{margin:14px 0 8px;padding:0 2px;font-family:var(--sans);font-size:10.5px;letter-spacing:.18em;color:var(--sub);opacity:.9}
+#glBox .gl-h:first-of-type{margin-top:6px}
