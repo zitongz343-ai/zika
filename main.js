@@ -1,3 +1,5 @@
+// 字卡传讯 · main.js：app.js 和后面各版补丁按原顺序合成，每段自己包着 try
+/* ===== app.js ===== */
 // 字卡传讯 · app.js
 // 按原来的加载顺序合成一个文件，每段开头的 ===== 写着它原来是哪个文件
 // 每段包了 try：一段出错不连累后面的段，跟以前分文件时一样
@@ -9275,3 +9277,876 @@ if(!TX_GROUPS.some(function(g){return g[1].some(function(x){return x[0]==='txDyn
 }
 
 }catch(e){console.error("[zika] js/v88.js",e)}
+;
+/* ===== v89.js ===== */
+/* ===== js/v89.js ===== */
+try{
+
+// 图片搞进大仓以后，设置里那排容量话得重写：文字和图分开算
+
+var _odV89=openData;
+openData=function(){
+  _odV89();
+  var p=sheetBody&&sheetBody.querySelector('.hint');
+  if(!p)return;
+  var ZM=window.ZikaMedia||{},m=ZM.stats?ZM.stats():{ok:false,count:0,bytes:0};
+  var raw=ZM.rawSize?ZM.rawSize():0;
+  p.innerHTML='现在存着 '+S.cards.length+' 张字卡记录、'+S.lib.length+' 句字卡库，文字占 '+kb(raw)+'。<br>'
+    +(m.ok
+      ?'表情包、壁纸、头像、照片一共 '+m.count+' 张，占 '+kb(m.bytes)+'，存在图片大仓里，不挤文字的位置。'
+      :'图片大仓没打开，图还和文字挤在一起，存不下是正常的。换浏览器或者关掉无痕模式再试。')
+    +'<br>导出的备份里图是展开的，换手机、换浏览器都能导回来。milk 的全量备份（.json 或 .zip）能导入字卡分组、聊天记录、名字头像、纪念日和主页壁纸。';
+};
+
+}catch(e){console.error("[zika] js/v89.js",e)}
+;
+/* ===== v92.js ===== */
+try{
+
+// v92：设置页三处修正
+// 一、材质与配色里点配色 / 日夜，整页重画会把「透明度」那块冲掉，这里画完立刻补回去，滚动位置也保住
+// 二、顶栏固定：页面里那颗「‹ 设置」返回键搬一份到顶栏，跟板块名、关闭放一排；原来那颗藏起来，点顶栏的就等于点它
+// 三、从设置首页点进某一项再返回，回到刚才滑到的位置，不再跳回最顶上
+
+var v92Inner=function(){return sheet.querySelector('.inner')};
+
+// 一、透明度拉条别被冲掉
+(function(){
+  var y0=0;
+  function isLook(){return !!sheetBody.querySelector('.seg[data-g="style"]')}
+  sheetBody.addEventListener('click',function(){
+    if(isLook()){var i=v92Inner();y0=i?i.scrollTop:0}
+  },true);
+  sheetBody.addEventListener('click',function(){
+    if(!isLook()||S.style!=='glass'||sheetBody.querySelector('#glBox'))return;
+    if(typeof glMount==='function')glMount();
+    var i=v92Inner();if(i)i.scrollTop=y0;
+  });
+})();
+
+// 二、顶栏放返回键
+(function(){
+  var sh=sheet.querySelector('.sh');if(!sh)return;
+  var px=document.createElement('button');
+  px.type='button';px.className='v92-back';px.hidden=true;
+  sh.insertBefore(px,sh.firstChild);
+  var real=null;
+  function sync(){
+    var b=sheetBody.querySelector('.sh-back');
+    real=b;
+    if(b){
+      b.classList.add('v92-hide');
+      if(px.textContent!==b.textContent)px.textContent=b.textContent;
+      px.setAttribute('aria-label',b.textContent.replace(/^[\s\u2039‹]+/,'')||'\u8fd4\u56de');
+      px.hidden=false;sheet.classList.add('v92-bk');
+    }else{
+      px.hidden=true;sheet.classList.remove('v92-bk');
+    }
+  }
+  px.addEventListener('click',function(){if(real)real.click()});
+  if(window.MutationObserver)new MutationObserver(sync).observe(sheetBody,{childList:true,subtree:true});
+  sync();
+})();
+
+// 三、返回设置首页时回到原来的位置
+(function(){
+  var saved=0;
+  sheetBody.addEventListener('click',function(e){
+    if(sheetTitle.textContent!=='\u8bbe\u7f6e')return;
+    if(!e.target.closest('[data-fn]'))return;
+    var i=v92Inner();saved=i?i.scrollTop:0;
+  },true);
+  var _osV92=openSettings;
+  openSettings=function(){
+    var back=typeof SW24!=='undefined'&&SW24&&!!SW24.timer;
+    var r=_osV92.apply(this,arguments);
+    var y=back?saved:0;
+    if(!back)saved=0;
+    var i=v92Inner();
+    if(i){
+      i.scrollTop=y;
+      requestAnimationFrame(function(){i.scrollTop=y});
+    }
+    return r;
+  };
+})();
+
+}catch(e){console.error("[zika] v92.js",e)}
+;
+/* ===== v93.js ===== */
+try{
+
+// v93：
+// 一、他主动发来的字卡，回到页面时不显示：回到前台、页面恢复、别的窗口写过存档时，都从存档里把字卡对一遍再重画
+// 二、字号预览：v91 给提示字加了 !important 把预览的字号压死了，这里换成单独的预览卡，拖拉条时实时变
+
+// 一、回来时对一遍存档
+(function(){
+  function sync(){
+    var raw=null;
+    try{raw=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){raw=null}
+    var changed=false;
+    if(raw&&Array.isArray(raw.cards)){
+      var a=raw.cards,b=S.cards;
+      var la=a.length?a[a.length-1].id:'',lb=b.length?b[b.length-1].id:'';
+      // 存档比内存多（别的窗口或后台那一份写进去的），以存档为准
+      if(a.length>b.length||(a.length===b.length&&la!==lb&&a.some(function(x){return x.id===lb}))){
+        S.cards=a;changed=true;
+      }
+      if(raw.prefs&&raw.prefs.proNext&&raw.prefs.proNext!==S.prefs.proNext)S.prefs.proNext=raw.prefs.proNext;
+    }
+    // 不管有没有变都重画一次：iPhone 上页面在后台时改的东西，回来常常不刷到屏幕上
+    if(typeof renderChat==='function')renderChat();
+    if(typeof updateNav==='function')updateNav();
+    var st=document.getElementById('stream');
+    if(st)setTimeout(function(){st.scrollTop=st.scrollHeight},60);
+    return changed;
+  }
+  var t=null;
+  function later(){clearTimeout(t);t=setTimeout(sync,150)}
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)later()});
+  window.addEventListener('pageshow',later);
+  window.addEventListener('focus',later);
+  window.addEventListener('storage',function(e){if(!e.key||e.key===KEY)later()});
+  // 页面在后台时他发来的，记一下，回来一定重画
+  var _arcV93=addReplyCard;
+  addReplyCard=function(c){
+    var r=_arcV93.apply(this,arguments);
+    if(document.hidden)window.__v93dirty=true;
+    return r;
+  };
+  window.v93Sync=sync;
+})();
+
+// 二、字号预览
+(function(){
+  var _ofV93=openFontSet;
+  openFontSet=function(){
+    var r=_ofV93.apply(this,arguments);
+    var old=null;
+    sheetBody.querySelectorAll('p').forEach(function(p){if(!old&&p.textContent.indexOf('\u62d6\u4e00\u4e0b\u770b\u8fd9\u884c\u5b57')>=0)old=p});
+    var rg=sheetBody.querySelector('input[type=range][data-k="fontScale"]');
+    if(!old||!rg)return r;
+    var pv=document.createElement('div');pv.className='v93-fzprev';
+    pv.innerHTML='<span class="v93-fz-l"><\/span><p class="v93-fz-a">\u4eca\u5929\u4e5f\u60f3\u4f60\u3002<\/p><p class="v93-fz-b">\u4f60\u5403\u996d\u4e86\u5417\uff0c\u4e0d\u8bb8\u53c8\u662f\u9762\u5305\u3002<\/p><p class="v93-fz-c"><\/p>';
+    old.parentNode.replaceChild(pv,old);
+    var lab=pv.querySelector('.v93-fz-l'),cap=pv.querySelector('.v93-fz-c');
+    function paint(v){
+      v=+v||100;
+      document.documentElement.style.setProperty('--fz',String(Math.max(70,v)/100));
+      lab.textContent='\u9884\u89c8 \u00b7 '+v+'%';
+      cap.textContent='\u804a\u5929\u5b57\u5361\u3001\u4e3b\u9875\u3001\u4fa7\u680f\u90fd\u6309\u8fd9\u4e2a\u6bd4\u4f8b\u53d8';
+    }
+    rg.addEventListener('input',function(){paint(rg.value)});
+    var rs=sheetBody.querySelector('#fzReset');
+    if(rs)rs.addEventListener('click',function(){setTimeout(function(){paint(S.prefs.fontScale)},0)});
+    paint(S.prefs.fontScale);
+    return r;
+  };
+})();
+
+}catch(e){console.error("[zika] v93.js",e)}
+;
+/* ===== v99.js ===== */
+try{
+
+// v99：古风主页 + 侧栏
+// 主页：左上日子和节气、右上每日一句（点日历上哪天就换成那天的一句）、宜忌、日历（聊得越多圈越深）、四个入口浮在水面
+// 侧栏：绿枝跟着配色换色，九个入口左上五个、右下四个。都不带红点
+// 原来主页和侧栏的东西只是藏起来，数据和别处功能不动
+
+(function(){
+  if(document.getElementById('gh'))return;
+  var home=document.querySelector('section[data-view="home"]'),sb=document.getElementById('sidebar');
+  if(!home)return;
+  var R=document.documentElement;
+  R.classList.remove('lk-on');R.classList.add('gh-on');if(sb)R.classList.add('gs-on');
+
+  var BG=['bg/1040g3k0325j620rgkc3g5pmmebmne18vfi5h6go.jpeg','bg/1040g3k0325j620rgkc405pmmebmne18vs8q79ag.jpeg','bg/1040g3k0325j620rgkc605pmmebmne18vj5g5qng.jpeg'];
+  var PET=['raw/1040g34o325qjgns4l82g5otdlisq3abgd48s5u0.jpeg','raw/1040g34o325qjgns4l8205otdlisq3abgla5p9oo.jpeg'];
+  var VINE='side/1040g34o31os5air7gs3g5otdlisq3abg53ccl8o.jpeg';
+  var CN='\u3007\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d';
+  function cn(x){if(x<=10)return x===10?'\u5341':CN[x];if(x<20)return '\u5341'+CN[x-10];return CN[Math.floor(x/10)]+'\u5341'+(x%10?CN[x%10]:'')}
+  var EN=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  var TERMS=[[0,5,'小寒'],[0,20,'大寒'],[1,4,'立春'],[1,18,'雨水'],[2,5,'惊蛰'],[2,20,'春分'],[3,5,'清明'],[3,20,'谷雨'],[4,5,'立夏'],[4,21,'小满'],[5,5,'芒种'],[5,21,'夏至'],[6,7,'小暑'],[6,23,'大暑'],[7,7,'立秋'],[7,23,'处暑'],[8,7,'白露'],[8,23,'秋分'],[9,8,'寒露'],[9,23,'霜降'],[10,7,'立冬'],[10,22,'小雪'],[11,7,'大雪'],[11,21,'冬至']];
+  function term(d){
+    var t0=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();
+    for(var k=0;k<2;k++)for(var i=0;i<TERMS.length;i++){
+      var x=TERMS[i],t=new Date(d.getFullYear()+k,x[0],x[1]).getTime();
+      if(t>=t0){var n=Math.round((t-t0)/864e5);return n===0?'今日'+x[2]:x[2]+'前'+cn(n)+'日'}
+    }
+    return '';
+  }
+  // 和 dailyPick 同一套打散，今天这句和原来的「今日一句」是同一句
+  function hd(d){
+    var h=(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate())>>>0;
+    h=Math.imul(h^(h>>>16),0x45d9f3b)>>>0;h=Math.imul(h^(h>>>16),0x45d9f3b)>>>0;
+    return (h^(h>>>16))>>>0;
+  }
+  var YI=['想你','早睡','好好吃饭','写一封信','晒太阳','喝热水','抱抱','散步','听一首歌','发呆','慢慢来','多喝水'];
+  var JI=['熬夜','只吃面包','逞强','胡思乱想','空腹','久坐','赌气','把话憋着'];
+  function almOf(dt){
+    var A=window.GF_ALM;if(!A)return null;
+    var n=Math.round((new Date(dt.getFullYear(),dt.getMonth(),dt.getDate())-new Date(A.y0,0,1))/864e5);
+    var all=A.d.split(';');if(n<0||n>=all.length)return null;
+    function dec(s){var r=[];for(var i=0;i+1<s.length;i+=2)r.push(A.w[parseInt(s.substr(i,2),36)]);return r}
+    var p=all[n].split('|');return [dec(p[0]),dec(p[1])];
+  }
+  function alm(dt){
+    var a=almOf(dt),x=hd(dt),yi,ji;
+    if(a){var BAD=/殓|柩|葬|坟|碑|丧|服|破土|启钻|谢土|寿木|勿取|诸事|斋醮/;a=[a[0].filter(function(w){return !BAD.test(w)}),a[1].filter(function(w){return !BAD.test(w)})];var LAST=/^(祭祀|祈福)$/;a=a.map(function(l){return l.filter(function(w){return !LAST.test(w)}).concat(l.filter(function(w){return LAST.test(w)}))});yi=a[0].length?a[0].slice(0,2).join(' '):'诸事随心';ji=a[1].length?a[1].slice(0,2).join(' '):'百无禁忌'}
+    else{yi=YI[x%YI.length];ji=JI[(x>>>7)%JI.length]}
+    q('.gh-yi').textContent=yi;q('.gh-ji').textContent=ji;
+    q('.gh-yi').title=a?a[0].join(' '):yi;q('.gh-ji').title=a?a[1].join(' '):ji;
+  }
+  function pool(){try{return typeof tagPool==='function'?tagPool('每日一句'):[]}catch(e){return []}}
+  function sentFor(d){var p=pool();return p.length?p[hd(d)%p.length]:''}
+  // 「英文 | 中文」两行显示；只写中文就只显示中文
+  function parse(t){
+    t=String(t||'');var m=t.split(/\s*[|\uff5c]\s*/);
+    if(m.length>1){var a=m[0],b=m.slice(1).join(' '),cj=/[\u4e00-\u9fff]/;if(cj.test(a)&&!cj.test(b))return [b,a];return [a,b]}
+    return ['',t];
+  }
+  function counts(y,m){
+    var o={};
+    function add(c){if(!c||!c.at)return;var d=new Date(c.at);if(d.getFullYear()===y&&d.getMonth()===m){var k=d.getDate();o[k]=(o[k]||0)+1}}
+    (S.cards||[]).forEach(add);
+    (S.chats||[]).forEach(function(ch){(ch&&ch.cards||[]).forEach(add)});
+    return o;
+  }
+
+  // ── 主页 ──
+  var ENT=[['chat','传讯','Letters',27,18],['mail','信箱','Mailbox',69,30],['music','音乐','Music',30,112],['lib','字卡','Cards',73,124]];
+  var gh=document.createElement('div');gh.id='gh';
+  gh.innerHTML='<div class="gh-bg"></div><div class="gh-in">'
+    +'<div class="gh-top"><div class="gh-dl"><div class="gh-day"></div><div class="gh-meta"><b></b><span></span></div></div>'
+    +'<div class="gh-qt"><small></small><p class="gh-en"></p><p class="gh-zh"></p></div></div>'
+    +'<div class="gh-alm"><span><i>宜</i><em class="gh-yi"></em></span><span><i>忌</i><em class="gh-ji"></em></span></div>'
+    +'<section class="gh-cal"><div class="gh-hd"><b class="gh-mcn"></b><span class="gh-men"></span><div class="gh-nav"><button type="button" data-nav="-1" aria-label="上个月">\u2039</button><button type="button" data-nav="1" aria-label="下个月">\u203a</button></div></div><div class="gh-grid"></div></section>'
+    +'<section class="gh-also"><div class="gh-hd"><b>也去看看</b><span>ALSO HERE</span><i></i></div><div class="gh-pond">'
+    +ENT.map(function(e,i){return '<button type="button" class="gh-wd" data-go="'+e[0]+'" style="left:'+e[3]+'%;top:'+e[4]+'px;animation-delay:-'+(i+1)+'s"><b>'+e[1]+'</b><span class="gh-rf" aria-hidden="true">'+e[1]+'</span><em>'+e[2]+'</em></button>'}).join('')
+    +'</div></section></div><div class="gh-pts"></div>';
+  home.appendChild(gh);
+  (function(){var b=gh.querySelector('.gh-bg');if(b){b.id='gbg';document.body.insertBefore(b,document.body.firstChild)}})();
+  var q=function(s){return gh.querySelector(s)};
+  var pond=q('.gh-pond'),grid=q('.gh-grid'),qt=q('.gh-qt');
+
+  function rip(x,y,once,delay){
+    var r=document.createElement('span');r.className='gh-rip'+(once?' once':'');
+    r.style.left=x;r.style.top=y;if(delay)r.style.animationDelay=delay+'s';
+    pond.appendChild(r);if(once)setTimeout(function(){if(r.parentNode)r.parentNode.removeChild(r)},1700);
+  }
+  [['27%','62px'],['69%','74px'],['30%','156px'],['73%','168px']].forEach(function(p,k){rip(p[0],p[1],false,k*1.2)});
+  [[0,'3%',80,60,-2],[1,'47%',8,66,-5],[0,'82%',96,54,-1],[1,'48%',160,56,-6]].forEach(function(p){
+    var e=document.createElement('div');e.className='gh-pimg';
+    e.style.cssText='left:'+p[1]+';top:'+p[2]+'px;width:'+p[3]+'px;height:'+Math.round(p[3]*0.63)+'px;animation-delay:'+p[4]+'s';
+    pond.appendChild(e);
+  });
+  pond.querySelectorAll('.gh-pimg').forEach(function(e,i){
+    if(window.GIMG)GIMG(i%2?'p2':'p1').then(function(u){if(u)e.style.backgroundImage='url("'+u+'")'});
+  });
+  var pts=q('.gh-pts');
+  for(var j=0;j<6;j++){
+    var p=document.createElement('span');p.className='gh-pt';var s=5+Math.random()*7;
+    p.style.cssText='left:'+(Math.random()*100)+'%;width:'+s+'px;height:'+(s*.72)+'px;opacity:'+(.3+Math.random()*.4)+';animation-duration:'+(11+Math.random()*9)+'s;animation-delay:'+(-Math.random()*18)+'s;--dx:'+(-50+Math.random()*110)+'px;--r:'+(200+Math.random()*500)+'deg';
+    pts.appendChild(p);
+  }
+
+  // 配色：桃夭、天青用粉底图（天青在样式里转色），紫藤用紫底图
+  var BGI=-1;
+  function setBg(bi){
+    if(bi===BGI)return;BGI=bi;var el=document.getElementById('gbg')||q('.gh-bg');el.classList.remove('ld');
+    var put=function(u){if(BGI!==bi)return;el.style.backgroundImage='url("'+u+'")';el.classList.add('ld');R.style.setProperty('--gbgu','url("'+u+'")')};
+    if(window.GIMG)GIMG('bg'+bi).then(function(u){put(u||BG[bi]||'bg/qing.jpg')});else put(BG[bi]);
+  }
+  function tone(){
+    var p=S.prefs||{},cus=!!(p.pal&&p.pal.on),th=S.theme;
+    var t=p.gfTone||(cus?'fen':(th==='mist'?'zi':(th==='sage'?'su':'fen')));
+    var bi=t==='zi'?2:(t==='qing'?3:0);
+    R.dataset.gt=t;if(window.gsVine)gsVine();
+    setBg(bi);
+  }
+
+  var now=new Date(),VY=now.getFullYear(),VM=now.getMonth(),SEL=null,CUR={};
+  function quote(dt,label){
+    var t=sentFor(dt),pr=parse(t);
+    qt.style.opacity=0;
+    setTimeout(function(){
+      q('.gh-qt small').textContent=label;
+      q('.gh-en').textContent=pr[0];
+      q('.gh-zh').textContent=t?pr[1]:'字卡库「每日一句」还空着';
+      qt.style.opacity=1;
+    },180);
+  }
+  function isToday(y,m,d){var n=new Date();return n.getFullYear()===y&&n.getMonth()===m&&n.getDate()===d}
+  function select(d){
+    SEL=d;
+    grid.querySelectorAll('[data-d]').forEach(function(e){e.classList.toggle('sel',+e.dataset.d===d&&!e.classList.contains('to'))});
+    var c=CUR[d]||0;alm(new Date(VY,VM,d));
+    quote(new Date(VY,VM,d),isToday(VY,VM,d)?'今日一句':cn(VM+1)+'月'+cn(d)+(c?' · '+c+' 张':''));
+  }
+  function cal(){
+    CUR=counts(VY,VM);
+    var mx=0;for(var k in CUR)if(CUR[k]>mx)mx=CUR[k];
+    q('.gh-mcn').textContent=cn(VM+1)+'月';
+    q('.gh-men').textContent=EN[VM]+(VY!==new Date().getFullYear()?' '+VY:'');
+    var h='';'一二三四五六日'.split('').forEach(function(w){h+='<div class="gh-w">'+w+'</div>'});
+    var lead=(new Date(VY,VM,1).getDay()+6)%7,days=new Date(VY,VM+1,0).getDate();
+    for(var i=0;i<lead;i++)h+='<div></div>';
+    for(var d=1;d<=days;d++){
+      var n=CUR[d]||0,lv=n?(n>=mx*0.66?3:(n>=mx*0.33?2:1)):0;
+      var cls='gh-d'+(isToday(VY,VM,d)?' to':(lv?' l'+lv:''))+(SEL===d&&!isToday(VY,VM,d)?' sel':'');
+      h+='<div><button type="button" class="'+cls+'" data-d="'+d+'" aria-label="'+(VM+1)+'月'+d+'日'+(n?'，'+n+' 张':'')+'">'+d+'</button></div>';
+    }
+    grid.innerHTML=h;
+  }
+  function renderH(){
+    if(!S)return;
+    tone();
+    var d=new Date(),sc='子丑寅卯辰巳午未申酉戌亥'[Math.floor((d.getHours()+1)/2)%12],x=hd(d);
+    q('.gh-day').textContent=d.getDate();
+    q('.gh-meta b').textContent=cn(d.getMonth()+1)+'月 · '+sc+'时';
+    q('.gh-meta span').textContent=term(d);
+    alm(SEL?new Date(VY,VM,SEL):d);
+    cal();
+    if(SEL)select(SEL);else quote(d,'今日一句');
+  }
+  gh.addEventListener('click',function(e){
+    var g=e.target.closest('[data-go]');if(g){if(typeof go==='function')go(g.dataset.go);return}
+    var dd=e.target.closest('[data-d]');if(dd){select(+dd.dataset.d);return}
+    var nv=e.target.closest('[data-nav]');
+    if(nv){
+      VM+=+nv.dataset.nav;if(VM<0){VM=11;VY--}if(VM>11){VM=0;VY++}
+      var t=new Date();SEL=null;cal();alm(t);
+      if(VY===t.getFullYear()&&VM===t.getMonth())quote(t,'今日一句');
+      return;
+    }
+    if(e.target.closest('.gh-pond')){var b=pond.getBoundingClientRect();rip((e.clientX-b.left)+'px',(e.clientY-b.top)+'px',true)}
+  });
+
+  var _rhV99=renderHome;
+  renderHome=function(){var r=_rhV99.apply(this,arguments);try{renderH()}catch(e){console.error('[zika] v99 home',e)}return r};
+  if(typeof applyLook==='function'){var _alV99=applyLook;applyLook=function(){var r=_alV99.apply(this,arguments);try{tone()}catch(e){}return r}}
+  setInterval(function(){if(!document.hidden)try{renderH()}catch(e){}},60000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)try{renderH()}catch(e){}});
+  renderH();
+
+  // ── 侧栏 ──
+  if(!sb)return;
+  var IT=[['home',158,108,'主页','HOME'],['chat',104,190,'传讯','LETTERS'],['mail',70,272,'信箱','MAILBOX'],['moments',50,354,'朋友圈','MOMENTS'],['lib',46,436,'字卡库','CARDS'],
+          ['fav',254,366,'收藏','KEEPSAKE'],['tarot',226,448,'塔罗','TAROT'],['music',198,530,'音乐','MUSIC'],['set',170,612,'设置','SETTINGS']];
+  var gs=document.createElement('div');gs.id='gside';
+  gs.innerHTML='<div class="gs-stage"><div class="gs-vine"><\/div>'
+    +IT.map(function(t){return '<button type="button" class="gs-it" data-sv="'+t[0]+'" style="left:'+(t[1]/3).toFixed(2)+'%;top:'+(t[2]/7.2).toFixed(2)+'%"><b>'+t[3]+'</b><small>'+t[4]+'</small><u></u></button>'}).join('')+'</div>';
+  sb.appendChild(gs);
+  window.gsVine=function(){var t=(S.prefs&&S.prefs.gfTone)||'fen';if(window.GIMG)GIMG('vine_'+t).then(function(u){if(u)gs.querySelector('.gs-vine').style.backgroundImage='url("'+u+'")'})};
+  gsVine();
+  var stage=gs.querySelector('.gs-stage');
+  function fit(){}
+  function paintSide(){
+    var v=document.querySelector('.view.on'),cur=v?v.dataset.view:'home';
+    gs.querySelectorAll('[data-sv]').forEach(function(b){b.classList.toggle('on',b.dataset.sv===cur)});
+  }
+  gs.addEventListener('click',function(e){
+    var b=e.target.closest('[data-sv]');if(!b)return;
+    var v=b.dataset.sv;
+    if(typeof closeNav==='function')closeNav();
+    if(v==='set'){if(typeof openSettings==='function')setTimeout(openSettings,60);return}
+    if(typeof go==='function')go(v);
+  });
+  var _goV99=go;
+  go=function(){var r=_goV99.apply(this,arguments);try{paintSide()}catch(e){}return r};
+  window.addEventListener('resize',fit);
+  var nb=document.getElementById('navBtn');if(nb)nb.addEventListener('click',function(){fit();paintSide()});
+  fit();paintSide();
+})();
+
+}catch(e){console.error("[zika] v99.js",e)}
+;
+/* ===== v101.js ===== */
+try{
+
+// v101：古风设置页
+// 设色三种（桃夭 / 紫藤 / 天青），底图、字色、绿枝、花瓣一起换
+// 其余只留：称谓与小像、岁时、尺素往来、提示音、曲库、长明、封存与启封
+// 点进去的子页面改名字，样子在 v101.css 里统一改成古风
+
+(function(){
+  var TONES={
+    fen:{n:'桃夭',d:'灼灼其华',theme:'rose',accent:'#c27a86',bgA:'#fbf1f2',bgB:'#f3dfe3',ink:'#5a4a52',sub:'#a08890',dot:'linear-gradient(135deg,#f6d6dc,#c27a86)'},
+    zi:{n:'紫藤',d:'挂云而垂',theme:'rose',accent:'#7f78b4',bgA:'#f5f2fb',bgB:'#e6e0f3',ink:'#4e4766',sub:'#9590b0',dot:'linear-gradient(135deg,#e3dcf3,#7f78b4)'},
+    qing:{n:'天青',d:'雨过云破',theme:'mist',accent:'#5f86a6',bgA:'#f1f5f9',bgB:'#dde7ef',ink:'#3f5160',sub:'#8597a6',dot:'linear-gradient(135deg,#d8e5ef,#5f86a6)'}
+  };
+  function setTone(t){
+    var o=TONES[t]?TONES[t]:TONES.fen,p=S.prefs;
+    p.gfTone=TONES[t]?t:'fen';
+    p.pal={on:true,accent:o.accent,bgA:o.bgA,bgB:o.bgB};
+    p.ink=o.ink;p.sub=o.sub;p.dark=false;
+    if(typeof LOOK_T==='object'&&LOOK_T[o.theme])S.theme=o.theme;
+    save();
+    if(typeof applyLook==='function')applyLook();
+  }
+  window.gfSetTone=setTone;
+  // 第一次升级：原来是雾蓝的接着用紫藤（之前主页就是紫的底图），其余桃夭
+  if(!S.prefs.gfTone)setTone(S.theme==='mist'?'zi':'fen');
+
+  var GROUPS=[
+    ['同心','US',[
+      ['openProfile','称谓与小像','传讯页上的名字和头像',function(){return (S.me.name||'我')+' × '+taName()}]]],
+    ['鱼雁','REPLIES',[
+      ['openReplySet','尺素往来','回信快慢、已读不回、拍一拍、主动找你',function(){return '概率 · 时长'}]]],
+    ['檐铃','CHIME',[
+      ['openBanSet','通知','应用外的系统通知、应用内的横幅',function(){var a=[];if(S.prefs.sysOn&&typeof ntGranted==='function'&&ntGranted())a.push('应用外');if(S.prefs.banOn)a.push('应用内');return a.join(' · ')||'关'}],
+      ['openKaSet','长明','后台保活，切出去也接得到',function(){return S.prefs.keepAlive?'开':'关'}]]],
+    ['丝竹','MUSIC',[
+      ['openMuSet','曲库','QQ 音乐',function(){return typeof muOk==='function'&&muOk()?'已填':'没填'}]]],
+    ['锦匣','STORAGE',[
+      ['openData','封存与启封','数据备份与导入',function(){return '也认 milk'}]]]
+  ];
+  function e2(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function hd(b,s){return '<div class="gfs-hd"><b>'+b+'</b><span>'+s+'</span><i></i></div>'}
+  function body(){
+    var cur=S.prefs.gfTone||'fen';
+    var h='<section class="gfs-sec">'+hd('设色','PALETTE')+'<div class="gfs-box"><div class="gfs-sw">'
+      +Object.keys(TONES).map(function(k){var o=TONES[k];
+        return '<button type="button" data-gtone="'+k+'"'+(k===cur?' class="on"':'')+'><span class="dot" style="background:'+o.dot+'"></span><b>'+o.n+'</b><small>'+o.d+'</small><span class="seal">选</span></button>'}).join('')
+      +'</div></div></section>';
+    GROUPS.forEach(function(g){
+      var rows=g[2].filter(function(it){return typeof window[it[0]]==='function'});
+      if(!rows.length)return;
+      h+='<section class="gfs-sec">'+hd(g[0],g[1])+'<div class="gfs-box">'+rows.map(function(it){
+        var v='';try{v=it[3]()}catch(e){}
+        return '<button type="button" class="gfs-row" data-fn="'+it[0]+'"><span class="t"><b>'+it[1]+'</b><small>'+it[2]+'</small></span><em>'+e2(v)+'</em></button>';
+      }).join('')+'</div></section>';
+    });
+    return h;
+  }
+
+  // 设置首页：沿用原来的打开方式（全屏、返回记位置），只把里面换成这一套
+  var _osG=openSettings;
+  openSettings=function(){
+    var r=_osG.apply(this,arguments);
+    try{
+      var g=sheetBody.querySelector('.set-grp'),w=g&&g.parentNode;
+      if(w){
+        w.className='gfs';w.innerHTML=body();
+        w.addEventListener('click',function(e){
+          var b=e.target.closest('[data-gtone]');if(!b)return;
+          setTone(b.dataset.gtone);
+          w.querySelectorAll('[data-gtone]').forEach(function(x){x.classList.toggle('on',x===b)});
+        });
+      }
+    }catch(e){console.error('[zika] v101 settings',e)}
+    return r;
+  };
+
+  // 子页面的标题换成古风的名字
+  var TT={'名字和头像':'称谓与小像','纪念日':'岁时','回复与通话':'尺素往来','回复 · 回信 · 通话':'尺素往来','提示音':'提示音','后台保活':'长明','通知':'檐铃','数据备份与导入':'封存与启封','QQ 音乐':'曲库'};
+  var _shG=openSheet;
+  openSheet=function(t,n){return _shG.call(this,TT[t]||t,n)};
+})();
+
+}catch(e){console.error("[zika] v101.js",e)}
+;
+/* ===== v102.js ===== */
+try{
+
+// v102：古风传讯页
+// 顶栏、底栏垫图（跟设色转色）；底栏四个图标换成竹窗、梅瓶、鸟笼、折屏，按设色用三套预先染好的图
+// 「另起一页」收进竹窗（加号）里；时间写成「午后 二点四十一」；已读改「已阅」，没读的写「未启」
+// 状态写「在侧 · …」，他打字时写「正提笔」；键盘弹起时气泡区跟着变矮并贴住最底下
+
+(function(){
+  var R=document.documentElement;
+  var ICON={btnPlus:'zhuchuang',btnEmo:'meiping',btnPic:'niaolong',btnSend:'pingfeng'};
+  function tone(){var t=R.dataset.gt;return t==='zi'||t==='qing'?t:'fen'}
+  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=117'}
+
+  // ── 顶栏、底栏底图：插一层真的 div，不占用别处已经在用的 ::before ──
+  function layer(host,cls){
+    if(!host||host.querySelector(':scope>.'+cls))return;
+    var d=document.createElement('div');d.className=cls;d.setAttribute('aria-hidden','true');
+    host.insertBefore(d,host.firstChild);
+  }
+  layer(document.querySelector('.view[data-view="chat"] .chat-top'),'gf-tb');
+  layer(document.querySelector('.chat-foot'),'gf-fb');
+
+  // ── 另起一页：放进加号展开的格子最前面，点了打开对话列表（新开 / 翻旧的都在里面） ──
+  (function(){
+    var pp=$('plusp');if(!pp||$('gfNew'))return;
+    var t=document.createElement('button');t.type='button';t.id='gfNew';
+    t.innerHTML='<i><img alt=""></i><span>另起一页</span>';
+    t.addEventListener('click',function(){
+      pp.classList.remove('on');var p=$('btnPlus');if(p)p.classList.remove('on');
+      if(typeof openChats==='function')openChats();
+    });
+    pp.insertBefore(t,pp.firstChild);
+  })();
+
+  function paintIcons(){
+    Object.keys(ICON).forEach(function(id){
+      var b=$(id);if(!b)return;
+      var im=b.querySelector('img.gfic');
+      if(!im){b.innerHTML='';im=document.createElement('img');im.className='gfic';im.alt='';b.appendChild(im)}
+      var s=src(ICON[id]);if(im.getAttribute('src')!==s)im.setAttribute('src',s);
+    });
+    var h=document.querySelector('#gfNew img');if(h)h.setAttribute('src',src('chuang'));
+  }
+  paintIcons();
+  new MutationObserver(paintIcons).observe(R,{attributes:true,attributeFilter:['data-gt']});
+
+  // ── 时间：看得懂的钟点，只是写成汉字 ──
+  var CN='〇一二三四五六七八九';
+  function num(n){if(n<10)return CN[n];var t=Math.floor(n/10),o=n%10;return (t===1?'十':CN[t]+'十')+(o?CN[o]:'')}
+  function clock(d){
+    var h=d.getHours(),m=d.getMinutes();
+    var seg=h<5?'凌晨':h<8?'清晨':h<11?'上午':h<13?'中午':h<17?'午后':h<19?'傍晚':'夜里';
+    var hs=h%12===0?'十二':num(h%12);
+    return seg+' '+hs+'点'+(m===0?'整':m<10?'〇'+CN[m]:num(m));
+  }
+  window.gfTime=function(t){
+    var d=new Date(t),n=new Date(),y=new Date(n.getFullYear(),n.getMonth(),n.getDate()-1);
+    if(d.toDateString()===n.toDateString())return clock(d);
+    if(d.toDateString()===y.toDateString())return '昨日 '+clock(d);
+    return num(d.getMonth()+1)+'月'+num(d.getDate())+' '+clock(d);
+  };
+  if(typeof pmTime==='function')pmTime=function(t){return gfTime(t)};
+
+  // ── 已阅 / 未启 ──
+  if(typeof cardEl==='function'){
+    var _ce=cardEl;
+    cardEl=function(c){
+      var el=_ce.apply(this,arguments);
+      if(!el||!el.querySelectorAll||!c)return el;
+      var hd0=el.querySelector('.head');if(hd0&&c.at)hd0.querySelectorAll('span').forEach(function(x){if(!x.className&&/^\d/.test(x.textContent))x.textContent=gfTime(c.at)});
+      el.querySelectorAll('.rd,.rd2').forEach(function(r){r.textContent='已阅'});
+      // 便签样式的时间在 .head 里，用的是 月-日 时:分，这里也换成古风写法
+      if(c.at){var hs=el.querySelectorAll('.head>span:not(.n):not(.rd)');for(var i=0;i<hs.length;i++){if(/\d{1,2}:\d{2}/.test(hs[i].textContent)){hs[i].textContent=gfTime(c.at);break}}}
+      if(c.from==='me'&&!c.read&&c.type!=='poke'){
+        var m=el.querySelector('.pmeta'),u=document.createElement('span');u.textContent='未启';
+        if(m){u.className='rd2 gfun';m.insertBefore(u,m.firstChild)}
+        else{var hd=el.querySelector('.head');if(hd){u.className='rd gfun';hd.appendChild(u)}}
+      }
+      return el;
+    };
+  }
+  if(typeof openBubble==='function'){
+    var _ob=openBubble;
+    openBubble=function(){
+      var r=_ob.apply(this,arguments),pv=$('bkPrev');
+      if(pv){pv.querySelectorAll('.rd,.rd2').forEach(function(x){x.textContent='已阅'});pv.querySelectorAll('.pmeta .tm').forEach(function(x){x.textContent='夜里 七点三十一'})}
+      return r;
+    };
+  }
+
+  // ── 状态：在侧 · 字卡库里抽的状态；他打字时换成正提笔 ──
+  var typingOn=false;
+  function stText(){var s=(S.prefs&&S.prefs.taStatus)||'';return typingOn?'正提笔…':'在侧'+(s?' · '+s:'')}
+  function stShow(){var el=$('taSt');if(el){el.textContent=stText();el.title=el.textContent;el.hidden=false}}
+  if(typeof stPaint==='function'){var _sp=stPaint;stPaint=function(){var r=_sp.apply(this,arguments);stShow();return r}}
+  if(typeof showTyping==='function'){
+    var _st=showTyping;
+    showTyping=function(on){
+      var r=_st.apply(this,arguments);typingOn=!!on;
+      var t=document.getElementById('typing');
+      if(on&&t){var sp=t.querySelector('span:not(.ty-av)');if(sp)sp.textContent=taName()+' 正提笔'}
+      stShow();
+      return r;
+    };
+  }
+  stShow();
+
+  // ── 键盘弹起：页面高度已经跟着可见区域缩（kb.js），这里让气泡区贴住最底下，不被输入条挡住 ──
+  (function(){
+    var s=$('stream'),vv=window.visualViewport,inp=$('input');if(!s)return;
+    var gap=0;
+    function rec(){gap=s.scrollHeight-s.clientHeight-s.scrollTop}
+    function keep(){if(gap<90)s.scrollTop=s.scrollHeight}
+    s.addEventListener('scroll',rec,{passive:true});
+    if(vv)vv.addEventListener('resize',function(){requestAnimationFrame(keep);setTimeout(keep,80)});
+    window.addEventListener('resize',function(){requestAnimationFrame(keep)});
+    if(window.ResizeObserver)new ResizeObserver(keep).observe(s);
+    if(inp)inp.addEventListener('focus',function(){[0,140,320,560].forEach(function(t){setTimeout(function(){s.scrollTop=s.scrollHeight;rec()},t)})});
+  })();
+})();
+
+}catch(e){console.error("[zika] v102.js",e)}
+
+try{
+// v104：加号里的格子换古风——传音（如意佩）、听曲（竹瓶），和另起一页一样按设色染色
+(function(){
+  var R=document.documentElement;
+  function tone(){var t=R.dataset.gt;return t==='zi'||t==='qing'?t:'fen'}
+  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=117'}
+  var MAP={'语音通话':['ruyi','传音'],'传音':['ruyi','传音'],'听歌':['zhuping','听曲'],'听曲':['zhuping','听曲']};
+  function paint(){
+    var pp=document.getElementById('plusp');if(!pp)return;
+    pp.querySelectorAll('button').forEach(function(b){
+      var sp=b.querySelector('span'),i=b.querySelector('i');if(!sp||!i)return;
+      var k=b.dataset.gfi||sp.textContent.trim(),m=MAP[k];if(!m)return;
+      b.dataset.gfi=m[1];if(sp.textContent!==m[1])sp.textContent=m[1];
+      var im=i.querySelector('img.gfic2');
+      if(!im){i.innerHTML='';im=document.createElement('img');im.className='gfic2';im.alt='';i.appendChild(im)}
+      var s=src(m[0]);if(im.getAttribute('src')!==s)im.setAttribute('src',s);
+    });
+    var h=document.querySelector('#gfNew img');if(h)h.setAttribute('src',src('chuang'));
+  }
+  paint();
+  new MutationObserver(paint).observe(R,{attributes:true,attributeFilter:['data-gt']});
+  var p=document.getElementById('btnPlus');if(p)p.addEventListener('click',paint);
+})();
+}catch(e){console.error("[zika] v104",e)}
+
+try{
+// v105：正提笔从底栏里挪出来，放回底栏上方；它一出现，气泡区贴住最底下
+(function(){
+  var t=document.getElementById('typing'),f=document.querySelector('.chat-foot'),s=document.getElementById('stream');
+  if(!t||!f)return;
+  if(t.parentNode===f)f.parentNode.insertBefore(t,f);
+  if(s&&window.MutationObserver)new MutationObserver(function(){
+    if(t.hidden)return;var g=s.scrollHeight-s.clientHeight-s.scrollTop;
+    if(g<140)requestAnimationFrame(function(){s.scrollTop=s.scrollHeight});
+  }).observe(t,{attributes:true,attributeFilter:['hidden']});
+})();
+}catch(e){console.error("[zika] v105",e)}
+;
+/* ===== v109.js ===== */
+try{
+
+// v109：音乐条加「上一首」；称谓与小像改成两张名帖；提示音去掉；通知分「应用外 / 应用内」
+(function(){
+  // 提示音从设置里拿掉了，升级时顺手关掉，免得响了关不掉
+  if(!S.prefs.v109){S.prefs.snd=false;S.prefs.v109=1;save()}
+
+  // ── 音乐条：在播放键前面补一个上一首 ──
+  function muPrev(){
+    var el=document.getElementById('muNow');if(!el||el.querySelector('[data-mu="prev"]'))return;
+    var tg=el.querySelector('[data-mu="toggle"]');if(!tg)return;
+    var b=document.createElement('button');b.type='button';b.dataset.mu='prev';b.setAttribute('aria-label','上一首');
+    b.innerHTML=(typeof MI==='object'&&MI.prev)?MI.prev:'\u2039';
+    el.insertBefore(b,tg);
+  }
+  muPrev();
+  if(typeof muPaintNow==='function'){var _mp=muPaintNow;muPaintNow=function(){var r=_mp.apply(this,arguments);muPrev();return r}}
+
+  // ── 称谓与小像：两张名帖，中间一枚「同心」 ──
+  function e3(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function pfAv(k){var o=S[k]||{};return o.img?'<img src="'+e3(o.img)+'" alt="">':e3(o.avatar||(k==='me'?'\ud83c\udf19':'\u2726'))}
+  function card(k,who){
+    return '<div class="gfpf-card"><div class="who">'+who+'</div><div class="av" data-gfav="'+k+'" data-gfpick="'+k+'" role="button" aria-label="换小像">'+pfAv(k)+'</div>'
+      +'<div class="fld"><label>称 谓</label><input data-gfnm="'+k+'" maxlength="12"></div>'
+      +'<div class="fld s"><label>无小像时</label><input data-gfsy="'+k+'" maxlength="4"></div></div>';
+  }
+  openProfile=function(){
+    var w=document.createElement('div');w.className='gfpf';
+    w.innerHTML='<div class="gfpf-tie">'+card('me','我')+'<div class="gfpf-knot"><i></i><span>同心</span><i></i></div>'+card('ta','他')+'</div>'
+      +'<button type="button" class="gfpf-ok" data-gfok="1">收 好</button>'
+      +'<button type="button" class="gfpf-lnk" data-gfno="1">小像都换回符号</button>';
+    w.querySelector('[data-gfnm="me"]').value=S.me.name||'';
+    w.querySelector('[data-gfnm="ta"]').value=S.ta.name||'';
+    w.querySelector('[data-gfsy="me"]').value=S.me.avatar||'';
+    w.querySelector('[data-gfsy="ta"]').value=S.ta.avatar||'';
+    w.addEventListener('click',function(e){
+      var p=e.target.closest('[data-gfpick]');
+      if(p){if(typeof pickAvatar==='function')pickAvatar(p.dataset.gfpick);return}
+      if(e.target.closest('[data-gfok]')){
+        var dn=typeof TA_NAME==='string'?TA_NAME:'顾时夜';
+        S.me.name=(w.querySelector('[data-gfnm="me"]').value||'我').trim().slice(0,12);
+        S.ta.name=(w.querySelector('[data-gfnm="ta"]').value||dn).trim().slice(0,12);
+        S.me.avatar=(w.querySelector('[data-gfsy="me"]').value||'\ud83c\udf19').trim().slice(0,4);
+        S.ta.avatar=(w.querySelector('[data-gfsy="ta"]').value||'\u2726').trim().slice(0,4);
+        save();paintNames();if(typeof renderHome==='function')renderHome();if(typeof renderChat==='function')renderChat();closeSheet();return;
+      }
+      if(e.target.closest('[data-gfno]')){
+        if(confirm('把两张小像都去掉？')){S.me.img='';S.ta.img='';save();paintNames();if(typeof renderMoments==='function')renderMoments()}
+      }
+    });
+    openSheet('名字和头像',w);
+  };
+  // 换完照片，名帖上的小像跟着换
+  var _pnG=paintNames;
+  paintNames=function(){
+    var r=_pnG.apply(this,arguments);
+    document.querySelectorAll('[data-gfav]').forEach(function(a){a.innerHTML=pfAv(a.dataset.gfav)});
+    return r;
+  };
+
+  // ── 通知：两节改名「应用外通知」「应用内横幅」 ──
+  if(typeof openBanSet==='function'){
+    var _ob=openBanSet;
+    openBanSet=function(){
+      var r=_ob.apply(this,arguments);
+      try{
+        var M={'系统通知':'应用外通知','页面里的横幅':'应用内横幅'};
+        document.querySelectorAll('#sheetBody .sec').forEach(function(s){var t=s.textContent.trim();if(M[t])s.textContent=M[t]});
+      }catch(e){}
+      return r;
+    };
+  }
+})();
+
+}catch(e){console.error("[zika] v109.js",e)}
+;
+/* ===== v111.js ===== */
+try{
+// v111：收藏图标换梅花；收藏页素笺；另起一页换清晰的矢量图标
+(function(){
+  var MEI_P=[[12,6.5],[17.23,10.3],[15.23,16.45],[8.77,16.45],[6.77,10.3]];
+  function mei(fill){
+    return '<svg viewBox="0 0 24 24" fill="'+(fill?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.4">'
+      +MEI_P.map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3"/>'}).join('')
+      +'<circle cx="12" cy="12" r="1.3" fill="'+(fill?'#fffdf8':'currentColor')+'" stroke="none"/></svg>';
+  }
+  if(typeof BP_IC==='object'&&BP_IC){BP_IC.star=mei(false);BP_IC.starOn=mei(true)}
+
+  // 另起一页：一页折角信笺，角上一朵梅，矢量画，不会糊
+  var PAGE='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 6h17l9 9v27H12z" fill="#fffdf8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+    +'<path d="M29 6v9h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+    +'<path d="M17 21h13M17 27h13M17 33h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>'
+    +'<g fill="currentColor"><circle cx="34" cy="32" r="2.6"/><circle cx="37.8" cy="34.8" r="2.6"/><circle cx="36.4" cy="39.2" r="2.6"/><circle cx="31.6" cy="39.2" r="2.6"/><circle cx="30.2" cy="34.8" r="2.6"/></g>'
+    +'<circle cx="34" cy="36" r="1.2" fill="#fffdf8"/></svg>';
+  function page(){var i=document.querySelector('#gfNew i');if(i&&!i.querySelector('svg'))i.innerHTML=PAGE}
+  
+
+  // 收藏页：时间写古风，按钮改短
+  if(typeof renderFav==='function'){
+    var _rf=renderFav;
+    renderFav=function(){
+      var r=_rf.apply(this,arguments),box=document.getElementById('favList');
+      if(box&&S.favs&&S.favs.length){
+        var arts=box.querySelectorAll('article.fav');
+        for(var i=0;i<arts.length;i++){
+          var f=S.favs[i],a=arts[i];if(!f)continue;
+          var sp=a.querySelector('.fm span');if(sp&&f.at&&window.gfTime)sp.textContent=(f.name||taName())+' · '+gfTime(f.at);
+          var q=a.querySelector('[data-f="q"]'),rm=a.querySelector('[data-f="rm"]');
+          if(q)q.textContent='引用';if(rm)rm.textContent='撤下';
+        }
+      }
+      return r;
+    };
+  }
+})();
+}catch(e){console.error('[zika] v111.js',e)}
+;
+/* ===== v112.js ===== */
+try{
+// v112：朋友圈照预览改古风；信封日期写汉字；另起一页图标兜底（加号面板重建后也补上）
+(function(){
+  var CN='〇一二三四五六七八九';
+  function num(n){if(n<10)return CN[n];var t=Math.floor(n/10),o=n%10;return (t===1?'十':CN[t]+'十')+(o?CN[o]:'')}
+  function clock(d){
+    var h=d.getHours(),m=d.getMinutes();
+    var seg=h<5?'凌晨':h<8?'清晨':h<11?'上午':h<13?'中午':h<17?'午后':h<19?'傍晚':'夜里';
+    return seg+' '+(h%12===0?'十二':num(h%12))+'点'+(m===0?'整':m<10?'〇'+CN[m]:num(m));
+  }
+  var MEI='<circle cx="12" cy="6.5" r="3"/><circle cx="17.2" cy="10.3" r="3"/><circle cx="15.2" cy="16.4" r="3"/><circle cx="8.8" cy="16.4" r="3"/><circle cx="6.8" cy="10.3" r="3"/>';
+  function mei(f){return '<svg class="gf-mei" viewBox="0 0 24 24" fill="'+(f?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.4">'+MEI+'</svg>'}
+
+  // ── 朋友圈 ──
+  if(typeof MO_CAM!=='undefined')MO_CAM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5l4 4L9 19l-5 1 1-5z"/><path d="M14 6l4 4"/></svg>';
+  if(typeof MO_LOCK!=='undefined')MO_LOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/><circle cx="12" cy="14.5" r="1.3" fill="currentColor"/></svg>';
+  if(typeof moHM==='function')moHM=function(t){return clock(new Date(t))};
+  if(typeof moLabel==='function'&&typeof moDay0==='function'){
+    moLabel=function(t){
+      var d=new Date(t),diff=Math.round((moDay0(Date.now())-moDay0(t))/864e5);
+      var big=diff===0?'今日':diff===1?'昨日':num(d.getDate())+'日';
+      var sm=diff<2?num(d.getMonth()+1)+'月'+num(d.getDate()):num(d.getMonth()+1)+'月';
+      var y=d.getFullYear()!==new Date().getFullYear()?'<em>'+d.getFullYear()+'</em>':'';
+      return '<b class="w">'+big+'</b><small>'+sm+'</small>'+y;
+    };
+  }
+  if(typeof moPostHTML==='function'){
+    var _mp=moPostHTML;
+    moPostHTML=function(){
+      var h=_mp.apply(this,arguments);
+      return h.replace('>♥ 赞<','>'+mei(1)+'赏<').replace('>♡ 赞<','>'+mei(0)+'赏<')
+        .replace('data-a="cmt">评论<','data-a="cmt">题跋<').replace('data-a="del">删<','data-a="del">撤<')
+        .replace(' · 仅自己可见','<i class="gf-tag">仅己可见</i>')
+        .replace('<div class="m2-lk">♡ ','<div class="m2-lk">'+mei(1))
+        .replace(/<\/b> 回复 <b>/g,'</b> 回 <b>');
+    };
+  }
+  if(typeof renderMoments==='function'){
+    var _rm=renderMoments;
+    renderMoments=function(){
+      var r=_rm.apply(this,arguments);
+      document.querySelectorAll('.m2-pub').forEach(function(b){var s=b.querySelector('span');if(s)s.textContent=b.dataset.pub==='1'?'藏 笺':'落 笔'});
+      return r;
+    };
+    try{renderMoments()}catch(e){}
+  }
+
+  // ── 信封：日期写成「十月十九日」 ──
+  if(typeof envDate==='function'){
+    envDate=function(t){var d=new Date(t);return num(d.getMonth()+1)+'月'+num(d.getDate())+'日'};
+    try{if(typeof renderMail==='function')renderMail()}catch(e){}
+  }
+
+  // ── 另起一页：矢量信笺图标；加号面板里的格子被重画时再补上 ──
+  var PAGE='<svg class="gf-page" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 6h17l9 9v27H12z" fill="#fffdf8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+    +'<path d="M29 6v9h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'
+    +'<path d="M17 21h13M17 27h13M17 33h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>'
+    +'<g fill="currentColor"><circle cx="34" cy="32" r="2.6"/><circle cx="37.8" cy="34.8" r="2.6"/><circle cx="36.4" cy="39.2" r="2.6"/><circle cx="31.6" cy="39.2" r="2.6"/><circle cx="30.2" cy="34.8" r="2.6"/></g>'
+    +'<circle cx="34" cy="36" r="1.2" fill="#fffdf8"/></svg>';
+  function page(){var i=document.querySelector('#gfNew i');if(i&&!i.querySelector('svg.gf-page'))i.innerHTML=PAGE}
+})();
+}catch(e){console.error('[zika] v112.js',e)}
+;
+/* ===== v113.js ===== */
+try{
+// v113：拆信、写信都铺在整张信纸图上，字只写在图中间那块白纸里，横排
+// 拆信：开头写称呼，正文每段空两格，落款「某某 手书」加一枚小印，最后写日子
+// 写信：笺头写标题，正文写在白纸上，落款是自己的名字，按钮「封缄寄出」
+(function(){
+  var CN='〇一二三四五六七八九';
+  function num(n){if(n<10)return CN[n];var t=Math.floor(n/10),o=n%10;return (t===1?'十':CN[t]+'十')+(o?CN[o]:'')}
+  function seg(h){return h<5?'凌晨':h<8?'清晨':h<11?'上午':h<13?'午间':h<17?'午后':h<19?'傍晚':'夜'}
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+  // 在信纸上放一个盒子，正好盖住图里那块白纸，字都放进去
+  function box(host,list){
+    if(!host)return null;
+    var b=host.querySelector(':scope>.gfbox');
+    if(!b){b=el('div','gfbox');host.insertBefore(b,host.firstChild)}
+    list.forEach(function(n){if(n&&n.parentNode!==b)b.appendChild(n)});
+    return b;
+  }
+
+  // ── 拆信 ──
+  var L=document.querySelector('#reader .letter');
+  if(L)box(L,[L.querySelector('.letter-head'),L.querySelector('.letter-body')]);
+  function dress(){
+    var m=(typeof currentMail!=='undefined')?currentMail:null,b=document.getElementById('rBody');
+    if(!m||!b)return;
+    var mine=m.from==='me';
+    var fromN=mine?(S.me.name||'我'):taName(),toN=mine?taName():(S.me.name||'你');
+    b.innerHTML='';b.classList.add('gfl');
+    b.appendChild(el('p','to',toN+'：'));
+    String(m.body||'').split(/\n+/).forEach(function(s){s=s.trim();if(s)b.appendChild(el('p','bd',s))});
+    var sg=el('p','sg',fromN+' 手书');sg.appendChild(el('span','seal',fromN.slice(-2)));b.appendChild(sg);
+    var d=new Date(m.at);
+    b.appendChild(el('p','dt',num(d.getMonth()+1)+'月'+num(d.getDate())+'日 '+seg(d.getHours())));
+    b.scrollTop=0;
+  }
+  // 两条拆信路径（直接打开、拆封动画后打开）最后都会走 letterSlip
+  if(typeof letterSlip==='function'){
+    var _ls=letterSlip;
+    letterSlip=function(){try{dress()}catch(e){console.error('[zika] v113 dress',e)}return _ls.apply(this,arguments)};
+  }
+
+  // ── 写信 ──
+  function dressWrite(){
+    var p=document.querySelector('#sheetBody .wl-paper');
+    if(!p||p.querySelector('.gfbox'))return;
+    box(p,[p.querySelector('.wl-t'),p.querySelector('.wl-b'),p.querySelector('.wl-sign')]);
+    var t=p.querySelector('.wl-t'),bd=p.querySelector('.wl-b'),sg=p.querySelector('.wl-sign');
+    if(t)t.placeholder='题 一 个 笺 头';
+    if(bd)bd.placeholder='见字如面……';
+    if(sg)sg.textContent='—— '+(S.me.name||'我');
+    var s=document.getElementById('mSend');if(s)s.innerHTML='<i>缄</i>封缄寄出';
+  }
+  if(typeof newMail==='function'){
+    var _nm=newMail;
+    newMail=function(){var r=_nm.apply(this,arguments);dressWrite();setTimeout(dressWrite,0);return r};
+  }
+})();
+}catch(e){console.error('[zika] v113.js',e)}
