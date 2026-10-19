@@ -35,6 +35,20 @@ try{
   }
   var YI=['想你','早睡','好好吃饭','写一封信','晒太阳','喝热水','抱抱','散步','听一首歌','发呆','慢慢来','多喝水'];
   var JI=['熬夜','只吃面包','逞强','胡思乱想','空腹','久坐','赌气','把话憋着'];
+  function almOf(dt){
+    var A=window.GF_ALM;if(!A)return null;
+    var n=Math.round((new Date(dt.getFullYear(),dt.getMonth(),dt.getDate())-new Date(A.y0,0,1))/864e5);
+    var all=A.d.split(';');if(n<0||n>=all.length)return null;
+    function dec(s){var r=[];for(var i=0;i+1<s.length;i+=2)r.push(A.w[parseInt(s.substr(i,2),36)]);return r}
+    var p=all[n].split('|');return [dec(p[0]),dec(p[1])];
+  }
+  function alm(dt){
+    var a=almOf(dt),x=hd(dt),yi,ji;
+    if(a){yi=a[0].length?a[0].slice(0,6).join(' '):'诸事不宜';ji=a[1].length?a[1].slice(0,6).join(' '):'百无禁忌'}
+    else{yi=YI[x%YI.length];ji=JI[(x>>>7)%JI.length]}
+    q('.gh-yi').textContent=yi;q('.gh-ji').textContent=ji;
+    q('.gh-yi').title=a?a[0].join(' '):yi;q('.gh-ji').title=a?a[1].join(' '):ji;
+  }
   function pool(){try{return typeof tagPool==='function'?tagPool('每日一句'):[]}catch(e){return []}}
   function sentFor(d){var p=pool();return p.length?p[hd(d)%p.length]:''}
   // 「英文 | 中文」两行显示；只写中文就只显示中文
@@ -118,7 +132,7 @@ try{
   function select(d){
     SEL=d;
     grid.querySelectorAll('[data-d]').forEach(function(e){e.classList.toggle('sel',+e.dataset.d===d&&!e.classList.contains('to'))});
-    var c=CUR[d]||0;
+    var c=CUR[d]||0;alm(new Date(VY,VM,d));
     quote(new Date(VY,VM,d),isToday(VY,VM,d)?'今日一句':cn(VM+1)+'月'+cn(d)+(c?' · '+c+' 张':''));
   }
   function cal(){
@@ -143,8 +157,7 @@ try{
     q('.gh-day').textContent=d.getDate();
     q('.gh-meta b').textContent=cn(d.getMonth()+1)+'月 · '+sc+'时';
     q('.gh-meta span').textContent=term(d);
-    q('.gh-yi').textContent=YI[x%YI.length];
-    q('.gh-ji').textContent=JI[(x>>>7)%JI.length];
+    alm(SEL?new Date(VY,VM,SEL):d);
     cal();
     if(SEL)select(SEL);else quote(d,'今日一句');
   }
@@ -154,7 +167,7 @@ try{
     var nv=e.target.closest('[data-nav]');
     if(nv){
       VM+=+nv.dataset.nav;if(VM<0){VM=11;VY--}if(VM>11){VM=0;VY++}
-      var t=new Date();SEL=null;cal();
+      var t=new Date();SEL=null;cal();alm(t);
       if(VY===t.getFullYear()&&VM===t.getMonth())quote(t,'今日一句');
       return;
     }
