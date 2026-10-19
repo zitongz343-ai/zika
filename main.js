@@ -10181,3 +10181,31 @@ try{
   };
 })();
 }catch(e){console.error('[zika] v122.js',e)}
+
+
+/* ===== v124.js ===== */
+try{
+(function(){
+  var B=document.body;
+  function mark(v){B.classList.toggle('on-chat',v==='chat')}
+  var cur=document.querySelector('.view.on');mark(cur&&cur.dataset.view);
+  // 临时测速：进一次传讯，底下显示这次花了多久，方便在手机上找到真正慢在哪
+  var box=null,hideT=0;
+  function show(js,paint){
+    if(!box){box=document.createElement('div');box.id='zkPerf';document.body.appendChild(box)}
+    var w='';try{w=(typeof wallOf==='function'&&wallOf('chat'))?'有壁纸':'无壁纸'}catch(e){}
+    box.textContent='传讯 · 脚本 '+js+'ms · 画面 '+paint+'ms · '+((S.cards||[]).length)+'张 · '+w;
+    box.classList.add('on');clearTimeout(hideT);hideT=setTimeout(function(){box.classList.remove('on')},4000);
+  }
+  var _g=go;
+  go=function(v){
+    var t0=performance.now();mark(v);
+    var r=_g.apply(this,arguments);
+    if(v==='chat'){
+      var t1=performance.now();
+      requestAnimationFrame(function(){requestAnimationFrame(function(){show(Math.round(t1-t0),Math.round(performance.now()-t1))})});
+    }
+    return r;
+  };
+})();
+}catch(e){console.error('[zika] v124.js',e)}
