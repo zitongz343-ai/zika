@@ -145,3 +145,16 @@ try{
   var p=document.getElementById('btnPlus');if(p)p.addEventListener('click',paint);
 })();
 }catch(e){console.error("[zika] v104",e)}
+
+try{
+// v105：正提笔从底栏里挪出来，放回底栏上方；它一出现，气泡区贴住最底下
+(function(){
+  var t=document.getElementById('typing'),f=document.querySelector('.chat-foot'),s=document.getElementById('stream');
+  if(!t||!f)return;
+  if(t.parentNode===f)f.parentNode.insertBefore(t,f);
+  if(s&&window.MutationObserver)new MutationObserver(function(){
+    if(t.hidden)return;var g=s.scrollHeight-s.clientHeight-s.scrollTop;
+    if(g<140)requestAnimationFrame(function(){s.scrollTop=s.scrollHeight});
+  }).observe(t,{attributes:true,attributeFilter:['hidden']});
+})();
+}catch(e){console.error("[zika] v105",e)}
