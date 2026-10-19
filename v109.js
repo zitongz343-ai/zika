@@ -20,8 +20,7 @@ try{
   function e3(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function pfAv(k){var o=S[k]||{};return o.img?'<img src="'+e3(o.img)+'" alt="">':e3(o.avatar||(k==='me'?'\ud83c\udf19':'\u2726'))}
   function card(k,who){
-    return '<div class="gfpf-card"><div class="who">'+who+'</div><div class="av" data-gfav="'+k+'">'+pfAv(k)+'</div>'
-      +'<button type="button" class="pick" data-gfpick="'+k+'">换 小 像</button>'
+    return '<div class="gfpf-card"><div class="who">'+who+'</div><div class="av" data-gfav="'+k+'" data-gfpick="'+k+'" role="button" aria-label="换小像">'+pfAv(k)+'</div>'
       +'<div class="fld"><label>称 谓</label><input data-gfnm="'+k+'" maxlength="12"></div>'
       +'<div class="fld s"><label>无小像时</label><input data-gfsy="'+k+'" maxlength="4"></div></div>';
   }
