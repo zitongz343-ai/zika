@@ -34,3 +34,13 @@ html[data-gt] body .chat-foot .send-row #input{border-radius:10px!important;back
 
 /* 加号里的「另起一页」 */
 #gfNew i img{width:40px;height:40px;object-fit:contain;display:block}
+
+/* v103：顶栏加高，把名字和「在侧」那一行整个包住，气泡不再从名字底下露出来 */
+html[data-gt] body .view[data-view="chat"] .chat-top{min-height:90px!important;box-sizing:border-box!important}
+
+/* 时间和已阅：宋体；已阅放到时间后面，用主题色 */
+html[data-gt] body .pmeta{font-family:"Songti SC","STSong","Noto Serif SC",serif!important;letter-spacing:.1em!important}
+html[data-gt] body .pmeta .tm{order:1;color:var(--sub)!important}
+html[data-gt] body .pmeta .rd2{order:2;color:var(--accent)!important;font-family:inherit!important}
+html[data-gt] body .pmeta .fv{order:3}
+html[data-gt] body .card .head .rd{color:var(--accent)!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important}
