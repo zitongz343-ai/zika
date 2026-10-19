@@ -76,3 +76,28 @@ html[data-gt] body #typing i{display:inline-block!important;width:6px!important;
 html[data-gt] body #typing i:nth-of-type(1){margin-left:8px!important}
 html[data-gt] body #typing i:nth-of-type(2){animation-delay:.3s!important}
 html[data-gt] body #typing i:nth-of-type(3){animation-delay:.6s!important}
+
+/* v106：底栏裁矮；降温——去掉每个气泡各自开的实时模糊、去掉气泡区滚动遮罩，不在主页时停掉花瓣涟漪动画 */
+html[data-gt] body .view[data-view="chat"] .chat-foot{padding:4px 10px calc(4px + env(safe-area-inset-bottom))!important}
+html[data-gt] body .chat-foot .send-row #input{min-height:40px!important;padding:8px 14px!important;line-height:22px!important}
+html[data-gt] body .chat-foot .send-row .bi{height:40px!important}
+html[data-gt] body .chat-foot .send-row img.gfic{width:32px!important;height:32px!important}
+html[data-gt] body .chat-foot .send-row #btnSend{height:40px!important}
+html[data-gt] body .chat-foot .send-row #btnSend img.gfic{width:38px!important;height:38px!important}
+html[data-gt] body .plusp{padding:2px 6px 6px!important}
+.gf-fb{background-position:center 55%!important}
+
+/* 气泡区：滚动时整块遮罩每一帧都要重算，最费电，去掉 */
+html[data-gt] body .view[data-view="chat"] #stream{-webkit-mask-image:none!important;mask-image:none!important;contain:layout paint}
+
+/* 气泡：每个气泡一层实时模糊，几十个叠在会动的底图上，手机一直在重算。换成半透明实底，看着差不多 */
+html[data-gt] body .card,html[data-gt][data-bubglass="1"] body .card,html[data-gt] body .pcol .card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt][data-bubglass="1"] .card.ta{background:rgba(255,255,255,.72)!important}
+html[data-gt][data-bubglass="1"] .card.me{background:color-mix(in srgb,var(--accent) 14%,rgba(255,255,255,.8))!important}
+
+/* 顶栏、底栏底图只画一次，单独一层 */
+.gf-tb,.gf-fb{transition:none!important;will-change:auto;contain:strict}
+
+/* 不在主页时，主页的落花、涟漪、浮动全部停下 */
+body:not(.on-home) #gh,body:not(.on-home) #gh *{animation-play-state:paused!important}
+body:not(.on-home) #gh .gh-pts{display:none!important}
