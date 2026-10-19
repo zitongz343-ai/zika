@@ -1,4 +1,2 @@
-/* v118：宜忌按老黄历，宜、忌各占一行，太长的末尾省略 */
-#gh .gh-alm{flex-direction:column!important;gap:7px!important;margin-right:22px!important}
-#gh .gh-alm>span{display:flex;align-items:center;min-width:0}
-#gh .gh-alm em{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.14em}
+/* v119：宜忌只放一两个词，宜和忌并排一行 */
+#gh .gh-alm em{white-space:nowrap}
