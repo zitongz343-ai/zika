@@ -109,3 +109,31 @@ html[data-gt="zi"] .gf-tb{background-image:url("chat/top_zi.jpg?v=107")!importan
 html[data-gt="qing"] .gf-tb{background-image:url("chat/top_qing.jpg?v=107")!important}
 html[data-gt="zi"] .gf-fb{background-image:url("chat/foot_zi.jpg?v=107")!important}
 html[data-gt="qing"] .gf-fb{background-image:url("chat/foot_qing.jpg?v=107")!important}
+
+/* v108：素笺气泡——米白纸、一圈细边、方角；你的那张右上角折一个小角 */
+html[data-gt][data-bubble="plain"] body .card:not(.sk){
+  --tilt:0deg;
+  background:#fffdf8!important;
+  color:var(--ink)!important;
+  border:1px solid color-mix(in srgb,var(--accent) 26%,transparent)!important;
+  border-radius:3px!important;
+  box-shadow:0 1px 3px rgba(80,60,60,.08)!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  padding:8px 13px!important;
+  font-family:"Songti SC","STSong","Noto Serif SC",serif;
+}
+html[data-gt][data-bubble="plain"] body .card.me:not(.sk){
+  position:relative;
+  background:color-mix(in srgb,var(--accent) 10%,#fffdf8)!important;
+  padding-right:18px!important;
+  -webkit-clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+}
+/* 折过来的那一角：比纸深一点 */
+html[data-gt][data-bubble="plain"] body .card.me:not(.sk)::after{
+  content:"";position:absolute;top:-1px;right:-1px;width:11px;height:11px;pointer-events:none;
+  background:linear-gradient(225deg,transparent 50%,color-mix(in srgb,var(--accent) 32%,#fff) 50%);
+  box-shadow:-1px 1px 1px rgba(80,60,60,.08);
+}
+html[data-gt][data-bubble="plain"] body .card:not(.sk) .body{color:inherit!important;line-height:1.7}
+html[data-gt][data-bubble="plain"] body .card:not(.sk) .qt{background:color-mix(in srgb,var(--accent) 8%,transparent)!important;border-left:2px solid color-mix(in srgb,var(--accent) 50%,transparent)!important;border-radius:2px!important;color:var(--sub)!important}
