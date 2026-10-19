@@ -93,17 +93,16 @@ window.GF_ALM={y0:2026,w:["入宅","移徙","出行","进人口","修造","动�
 // 绿枝按三种配色各转一份颜色存起来，侧栏打开时不用再现算滤镜
 (function(){
   var CK='zika-gimg-v4';try{if(window.caches){caches.delete('zika-gimg-v1');caches.delete('zika-gimg-v2');caches.delete('zika-gimg-v3')}}catch(e){}
-  var VI='side/1040g34o31os5air7gs3g5otdlisq3abg53ccl8o.jpeg';
+  var VI='side/vine.jpg';
   var A={
-    bg0:['bg/1040g3k0325j620rgkc3g5pmmebmne18vfi5h6go.jpeg',900,0],
-    bg1:['bg/1040g3k0325j620rgkc405pmmebmne18vs8q79ag.jpeg',900,0],
-    bg2:['bg/1040g3k0325j620rgkc605pmmebmne18vj5g5qng.jpeg',900,0],
-    bg3:['bg/qing.jpg',900,0],
+    bg0:['home/bg-fen.jpg',900,0],
+    bg2:['home/bg-zi.jpg',900,0],
+    bg3:['home/bg-qing.jpg',900,0],
     vine_fen:[VI,640,236,255,.8],
     vine_zi:[VI,640,236,185,.75],
     vine_qing:[VI,640,236,135,.72],
-    p1:['raw/1040g34o325qjgns4l82g5otdlisq3abgd48s5u0.jpeg',320,246],
-    p2:['raw/1040g34o325qjgns4l8205otdlisq3abgla5p9oo.jpeg',320,246]
+    p1:['home/petal-1.jpg',320,246],
+    p2:['home/petal-2.jpg',320,246]
   };
   // 跟 CSS 的 hue-rotate() saturate() 同一套矩阵：先转色相再调饱和
   function mat(deg,sat){
@@ -175,7 +174,7 @@ window.GF_ALM={y0:2026,w:["入宅","移徙","出行","进人口","修造","动�
 (function(){
   try{
     var R=document.documentElement,CK='zika-gf110',memo={};
-    var SET={tb:'chat/w/top_',fb:'chat/w/foot_',env:'mail/w/env_',paper:'mail/w/paper_'};
+    var SET={tb:'chat/top_',fb:'chat/foot_',env:'mail/env_',paper:'mail/paper_'};
     function tone(){
       var t=R.dataset.gt;
       if(!t){try{var S=JSON.parse(localStorage.getItem('mj_zika_v2')||'null');t=(S&&S.prefs&&S.prefs.gfTone)||(S&&S.theme==='mist'?'zi':'fen')}catch(e){}}
