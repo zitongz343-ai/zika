@@ -10203,7 +10203,7 @@ try{
     var r=_g.apply(this,arguments);
     if(v==='chat'){
       var t1=performance.now();
-      requestAnimationFrame(function(){requestAnimationFrame(function(){show(Math.round(t1-t0),Math.round(performance.now()-t1))})});
+      
     }
     return r;
   };

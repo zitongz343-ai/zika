@@ -2804,6 +2804,4 @@ html[data-gt] body .l4-ib,html[data-gt] body .l4-seg,html[data-gt] body .view bu
 .view[data-view="chat"].on{opacity:1}
 /* 每张气泡原来都带一个弹出动画，几百张一起播。现在只给最后一张 */
 #stream>.card:not(:last-child){animation:none!important}
-/* 测速小条（临时） */
-#zkPerf{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 90px);transform:translateX(-50%);z-index:999;padding:6px 14px;border-radius:999px;background:rgba(60,40,50,.82);color:#fff;font:12px/1.5 -apple-system,sans-serif;letter-spacing:.04em;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .3s}
-#zkPerf.on{opacity:1}
+
