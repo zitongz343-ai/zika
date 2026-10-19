@@ -1,0 +1,79 @@
+/* v101：每一页都铺主页底图；设置和子页面改成古风；侧栏去掉会拖慢打开的滤镜和模糊 */
+html[data-gt]{--deep:var(--ink)}
+html[data-gt="qing"]{--hink:#3f5160;--hsub:#8597a6;--hac:#5f86a6;--hline:rgba(70,100,130,.22);--hpet:hue-rotate(-130deg);--hbgf:hue-rotate(215deg) saturate(.85)}
+
+/* ── 全局底图 ── */
+#gbg{position:fixed;inset:0;z-index:0;background:#fbf6f6 center top/cover no-repeat;filter:var(--hbgf);pointer-events:none;opacity:0;transition:opacity .45s ease}
+#gbg.ld{opacity:1}
+#gbg::after{content:"";position:absolute;inset:0;background:rgba(255,252,252,.38);opacity:0;transition:opacity .3s}
+body:not(.on-home) #gbg::after{opacity:1}
+html[data-gt] body{background:#fbf6f6!important}
+html[data-gt] body::before{display:none!important}
+#wall{display:none!important}
+#gh{background:transparent!important}
+
+/* ── 设置弹层：底下也是那张底图，盖一层薄白 ── */
+html[data-gt] body .sheet.full{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body .sheet.full::before{content:"";position:absolute;inset:0;background:#fbf6f6 var(--gbgu,none) center top/cover no-repeat;filter:var(--hbgf);pointer-events:none}
+html[data-gt] body .sheet.full .inner{position:relative;z-index:1;background:rgba(255,252,252,.46)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body .sheet.full .sh{background:rgba(255,251,251,.86)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-bottom:0!important}
+html[data-gt] body .sheet.full .sh::after{background:linear-gradient(rgba(255,251,251,.86),rgba(255,251,251,0))!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;-webkit-mask-image:none!important;mask-image:none!important}
+
+/* 字：一律宋体 */
+html[data-gt] body .sheet{font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .sheet *:not(input):not(textarea){font-family:inherit}
+html[data-gt] body .sheet input,html[data-gt] body .sheet textarea{font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .sheet .sh h2{font-weight:400!important;letter-spacing:.45em!important;color:var(--ink)!important}
+html[data-gt] body .sheet .v92-back{background:none!important;border:0!important;box-shadow:none!important;padding:8px 4px!important;color:var(--sub)!important;letter-spacing:.2em}
+
+/* 板块标题：小菱形 + 细线 */
+html[data-gt] body #sheetBody .sec{font-weight:400!important;font-size:15px!important;letter-spacing:.35em!important;color:var(--ink)!important;margin:28px 2px 12px!important}
+html[data-gt] body #sheetBody .sec:first-child{margin-top:6px!important}
+html[data-gt] body #sheetBody .sec::before{flex:0 0 6px!important;width:6px!important;height:6px!important;border:1px solid var(--accent);background:none!important;border-radius:0!important;transform:rotate(45deg)}
+html[data-gt] body #sheetBody .sec::after{background:color-mix(in srgb,var(--ink) 12%,transparent)!important}
+
+/* 设置项：浅色实底小卡，不要毛玻璃 */
+html[data-gt] body #sheetBody .field:has(.rg),html[data-gt] body #sheetBody .l4-swrow,html[data-gt] body #sheetBody .chk,html[data-gt] body #sheetBody .v23-card{background:rgba(255,252,252,.82)!important;border:1px solid color-mix(in srgb,var(--ink) 10%,transparent)!important;border-radius:10px!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body #sheetBody .field>label{letter-spacing:.14em!important}
+
+/* 说明小字：左边一道淡色竖线 */
+html[data-gt] body #sheetBody .hint:not(.mu-wait){background:none!important;border-left:2px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:0!important;padding:2px 0 2px 12px!important;letter-spacing:.06em!important}
+html[data-gt] body #sheetBody .hint:not(.mu-wait)::before{display:none!important}
+
+/* 输入框、按钮 */
+html[data-gt] body #sheetBody .field input:not([type=range]):not([type=color]):not([type=checkbox]),html[data-gt] body #sheetBody textarea{background:rgba(255,255,255,.78)!important;border:1px solid color-mix(in srgb,var(--ink) 14%,transparent)!important;border-radius:8px!important}
+html[data-gt] body #sheetBody .primary{background:var(--accent)!important;color:#fff!important;border:0!important;border-radius:6px!important;letter-spacing:.3em;box-shadow:none!important}
+html[data-gt] body #sheetBody .ghost{background:rgba(255,255,255,.72)!important;color:var(--accent)!important;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent)!important;border-radius:6px!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body #sheetBody .seg{border-radius:8px!important}
+html[data-gt] body #sheetBody .seg button{border-radius:6px!important}
+
+/* ── 设置首页 ── */
+#sheetBody .gfs{padding-bottom:36px}
+#sheetBody .gfs-sec{margin:18px 0 0}
+#sheetBody .gfs-sec:first-child{margin-top:4px}
+#sheetBody .gfs-hd{display:flex;align-items:baseline;gap:10px;margin:0 4px 9px}
+#sheetBody .gfs-hd b{font-weight:400;font-size:15px;letter-spacing:.32em;color:var(--ink)}
+html[data-gt] body .sheet .gfs-hd span{font-family:"Cormorant Garamond",Georgia,serif;font-size:10.5px;letter-spacing:.3em;color:var(--sub)}
+#sheetBody .gfs-hd i{flex:1;height:1px;background:color-mix(in srgb,var(--ink) 12%,transparent);transform:translateY(-4px)}
+#sheetBody .gfs-box{background:rgba(255,252,252,.84);border:1px solid color-mix(in srgb,var(--ink) 10%,transparent);border-radius:14px;overflow:hidden}
+#sheetBody .gfs-row{display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;border:0;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#sheetBody .gfs-row+.gfs-row{border-top:1px solid color-mix(in srgb,var(--ink) 9%,transparent)}
+#sheetBody .gfs-row:active{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+#sheetBody .gfs-row .t{flex:1;min-width:0}
+#sheetBody .gfs-row .t b{display:block;font-weight:400;font-size:14.5px;letter-spacing:.14em}
+#sheetBody .gfs-row .t small{display:block;margin-top:3px;font-size:10.5px;letter-spacing:.08em;color:var(--sub)}
+#sheetBody .gfs-row em{font-style:normal;font-size:11.5px;color:var(--sub);white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis}
+#sheetBody .gfs-row em::after{content:" \203A"}
+#sheetBody .gfs-sw{display:flex;gap:10px;padding:14px 12px}
+#sheetBody .gfs-sw button{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px 10px;border-radius:12px;border:1px solid transparent;background:rgba(255,255,255,.5);font:inherit;color:var(--ink);cursor:pointer;position:relative;transition:border-color .3s;-webkit-tap-highlight-color:transparent}
+#sheetBody .gfs-sw button.on{border-color:var(--accent)}
+#sheetBody .gfs-sw .dot{width:34px;height:34px;border-radius:50%;box-shadow:inset 0 0 0 3px rgba(255,255,255,.7)}
+#sheetBody .gfs-sw b{font-weight:400;font-size:14px;letter-spacing:.2em;padding-left:.2em}
+#sheetBody .gfs-sw small{font-size:9.5px;color:var(--sub);letter-spacing:.1em}
+#sheetBody .gfs-sw .seal{position:absolute;top:-7px;right:-5px;width:18px;height:18px;border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:3px;font-size:10px;line-height:16px;text-align:center;transform:rotate(-6deg);display:none}
+#sheetBody .gfs-sw button.on .seal{display:block}
+
+/* ── 侧栏：绿枝的颜色已经提前转好，不再现算滤镜；遮罩不做模糊 ── */
+#gside .gs-vine{filter:none!important}
+html body #navMask{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #sidebar{will-change:transform}

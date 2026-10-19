@@ -43,3 +43,6 @@
 /* 开屏单独一层，不跟后面 app 的重绘搅在一起 */
 #gfsp{transform:translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden}
 #gfsp.out{transform:translateZ(0) scale(1.04)}
+
+/* v101：天青 */
+#gfsp[data-tone="qing"]{--ga:#f3f7fa;--gb:#dfe8ef;--gink:#3f5160;--gsub:#8597a6;--gpetal:#bcd0e0;--gseal:#5f86a6;--gtone:saturate(.6) hue-rotate(-140deg)}

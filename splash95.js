@@ -10,7 +10,7 @@
   try{if(S&&S.ta&&S.ta.name)document.getElementById('gfTa').textContent=S.ta.name}catch(e){}
   // 颜色跟着 app 配色：雾蓝用藕紫，青草和夜间用素墨，其余樱粉
   var th=S&&S.theme,dark=S&&S.prefs&&S.prefs.dark,map={mist:'zi',sage:'su',night:'su'};
-  sp.dataset.tone=dark?'su':(map[th]||'fen');
+  sp.dataset.tone=(S&&S.prefs&&S.prefs.gfTone)||(dark?'su':(map[th]||'fen'));
   // 名字一个字一个字晕出来
   sp.querySelectorAll('.gf-nm b').forEach(function(b,bi){
     var t=Array.from(b.textContent.replace(/\s/g,''));b.textContent='';
