@@ -93,12 +93,12 @@ try{
   function setBg(bi){
     if(bi===BGI)return;BGI=bi;var el=document.getElementById('gbg')||q('.gh-bg');el.classList.remove('ld');
     var put=function(u){if(BGI!==bi)return;el.style.backgroundImage='url("'+u+'")';el.classList.add('ld');R.style.setProperty('--gbgu','url("'+u+'")')};
-    if(window.GIMG)GIMG('bg'+bi).then(function(u){put(u||BG[bi])});else put(BG[bi]);
+    if(window.GIMG)GIMG('bg'+bi).then(function(u){put(u||BG[bi]||'bg/qing.jpg')});else put(BG[bi]);
   }
   function tone(){
     var p=S.prefs||{},cus=!!(p.pal&&p.pal.on),th=S.theme;
     var t=p.gfTone||(cus?'fen':(th==='mist'?'zi':(th==='sage'?'su':'fen')));
-    var bi=t==='zi'?2:0;
+    var bi=t==='zi'?2:(t==='qing'?3:0);
     R.dataset.gt=t;if(window.gsVine)gsVine();
     setBg(bi);
   }

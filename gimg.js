@@ -8,6 +8,7 @@
     bg0:['bg/1040g3k0325j620rgkc3g5pmmebmne18vfi5h6go.jpeg',900,0],
     bg1:['bg/1040g3k0325j620rgkc405pmmebmne18vs8q79ag.jpeg',900,0],
     bg2:['bg/1040g3k0325j620rgkc605pmmebmne18vj5g5qng.jpeg',900,0],
+    bg3:['bg/qing.jpg',900,0],
     vine_fen:[VI,640,236,255,1.05],
     vine_zi:[VI,640,236,185,.95],
     vine_qing:[VI,640,236,105,.9],
@@ -73,7 +74,7 @@
   // 先做马上要用的底图、花瓣和这一色的绿枝，别的等空下来再做
   var t='fen';
   try{var S=JSON.parse(localStorage.getItem('mj_zika_v2')||'null');t=(S&&S.prefs&&S.prefs.gfTone)||(S&&S.theme==='mist'?'zi':'fen')}catch(e){}
-  var bi=t==='zi'?2:0;
+  var bi=t==='zi'?2:(t==='qing'?3:0);
   GIMG('bg'+bi);GIMG('p1');GIMG('p2');GIMG('vine_'+t);
   setTimeout(function(){GIMG(bi===2?'bg0':'bg2');['fen','zi','qing'].forEach(function(x){if(x!==t)GIMG('vine_'+x)})},9000);
 })();
