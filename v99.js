@@ -44,7 +44,7 @@ try{
   }
   function alm(dt){
     var a=almOf(dt),x=hd(dt),yi,ji;
-    if(a){var BAD=/殓|柩|葬|坟|碑|丧|服|破土|启钻|谢土|寿木|勿取|诸事|斋醮/;a=[a[0].filter(function(w){return !BAD.test(w)}),a[1].filter(function(w){return !BAD.test(w)})];yi=a[0].length?a[0].slice(0,2).join(' '):'诸事随心';ji=a[1].length?a[1].slice(0,2).join(' '):'百无禁忌'}
+    if(a){var BAD=/殓|柩|葬|坟|碑|丧|服|破土|启钻|谢土|寿木|勿取|诸事|斋醮/;a=[a[0].filter(function(w){return !BAD.test(w)}),a[1].filter(function(w){return !BAD.test(w)})];var LAST=/^(祭祀|祈福)$/;a=a.map(function(l){return l.filter(function(w){return !LAST.test(w)}).concat(l.filter(function(w){return LAST.test(w)}))});yi=a[0].length?a[0].slice(0,2).join(' '):'诸事随心';ji=a[1].length?a[1].slice(0,2).join(' '):'百无禁忌'}
     else{yi=YI[x%YI.length];ji=JI[(x>>>7)%JI.length]}
     q('.gh-yi').textContent=yi;q('.gh-ji').textContent=ji;
     q('.gh-yi').title=a?a[0].join(' '):yi;q('.gh-ji').title=a?a[1].join(' '):ji;
