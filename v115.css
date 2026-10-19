@@ -1,0 +1,2 @@
+/* v115：朋友圈封面左上角那块「朋友圈」竖条删掉 */
+html[data-gt] body .m2-cover::before{content:none!important;display:none!important}
