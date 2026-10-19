@@ -9,7 +9,7 @@ try{
   var R=document.documentElement;
   var ICON={btnPlus:'zhuchuang',btnEmo:'meiping',btnPic:'niaolong',btnSend:'pingfeng'};
   function tone(){var t=R.dataset.gt;return t==='zi'||t==='qing'?t:'fen'}
-  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=102'}
+  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=104'}
 
   // ── 顶栏、底栏底图：插一层真的 div，不占用别处已经在用的 ::before ──
   function layer(host,cls){
@@ -120,3 +120,28 @@ try{
 })();
 
 }catch(e){console.error("[zika] v102.js",e)}
+
+try{
+// v104：加号里的格子换古风——传音（如意佩）、听曲（竹瓶），和另起一页一样按设色染色
+(function(){
+  var R=document.documentElement;
+  function tone(){var t=R.dataset.gt;return t==='zi'||t==='qing'?t:'fen'}
+  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=104'}
+  var MAP={'语音通话':['ruyi','传音'],'传音':['ruyi','传音'],'听歌':['zhuping','听曲'],'听曲':['zhuping','听曲']};
+  function paint(){
+    var pp=document.getElementById('plusp');if(!pp)return;
+    pp.querySelectorAll('button').forEach(function(b){
+      var sp=b.querySelector('span'),i=b.querySelector('i');if(!sp||!i)return;
+      var k=b.dataset.gfi||sp.textContent.trim(),m=MAP[k];if(!m)return;
+      b.dataset.gfi=m[1];if(sp.textContent!==m[1])sp.textContent=m[1];
+      var im=i.querySelector('img.gfic2');
+      if(!im){i.innerHTML='';im=document.createElement('img');im.className='gfic2';im.alt='';i.appendChild(im)}
+      var s=src(m[0]);if(im.getAttribute('src')!==s)im.setAttribute('src',s);
+    });
+    var h=document.querySelector('#gfNew img');if(h)h.setAttribute('src',src('haitang'));
+  }
+  paint();
+  new MutationObserver(paint).observe(R,{attributes:true,attributeFilter:['data-gt']});
+  var p=document.getElementById('btnPlus');if(p)p.addEventListener('click',paint);
+})();
+}catch(e){console.error("[zika] v104",e)}

@@ -44,3 +44,14 @@ html[data-gt] body .pmeta .tm{order:1;color:var(--sub)!important}
 html[data-gt] body .pmeta .rd2{order:2;color:var(--accent)!important;font-family:inherit!important}
 html[data-gt] body .pmeta .fv{order:3}
 html[data-gt] body .card .head .rd{color:var(--accent)!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important}
+
+/* v104：正提笔不再浮在气泡上面，在输入条上方占一行，把气泡区顶上去 */
+html[data-gt] body .chat-foot #typing{position:relative!important;left:auto!important;bottom:auto!important;display:flex!important;width:auto!important;max-width:none!important;margin:0 0 6px!important;padding:2px 4px!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:12px!important;color:var(--sub)!important}
+html[data-gt] body .chat-foot #typing[hidden]{display:none!important}
+html[data-gt] body .chat-foot #typing .ty-av{display:none!important}
+html[data-gt] body .chat-foot #typing i{background:var(--accent)!important}
+
+/* 加号里的格子：去掉方块底，直接放古风图标，字改宋体 */
+html[data-gt] body .plusp button i{width:50px!important;height:50px!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+html[data-gt] body .plusp button i img{width:48px!important;height:48px!important;object-fit:contain;display:block;filter:drop-shadow(0 1px 1.5px rgba(60,40,50,.2))}
+html[data-gt] body .plusp button span{font-family:"Songti SC","STSong","Noto Serif SC",serif!important;letter-spacing:.12em!important}
