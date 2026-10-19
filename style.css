@@ -2775,3 +2775,13 @@ body:not(.on-home) #gh .gh-wd,body:not(.on-home) #gh .gh-rip,body:not(.on-home) 
 html[data-gt] body .l4-ib,html[data-gt] body .l4-seg,html[data-gt] body .view button.ghost,html[data-gt] body .m2-pub,html[data-gt] body .view .empty{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 /* 飘的花瓣单独一层 */
 #gh .gh-pt,#gfsp .gf-pt{will-change:transform}
+
+
+/* ===== v122 ===== */
+/* 开屏两张图已经是透明底，不用叠底混合，也不用遮罩；一开始就单独一层，中途不换层，不闪 */
+#gfsp .gf-art.keyed{mix-blend-mode:normal}
+#gfsp .gf-vine{-webkit-mask-image:none;mask-image:none}
+#gfsp .gf-art{will-change:transform,opacity;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+#gfsp .gf-art:not(.ok){animation-play-state:paused}
+/* 传讯页：切进来时不再整页重画，气泡各自算布局 */
+#stream>.card{contain:layout style}

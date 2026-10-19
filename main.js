@@ -10150,3 +10150,34 @@ try{
   }
 })();
 }catch(e){console.error('[zika] v113.js',e)}
+
+
+/* ===== v122.js ===== */
+try{
+// 从侧栏点「传讯」时，原来每次都把所有气泡删光重建一遍，记录一多就卡。
+// 现在只有字卡真变了才重画；没变就直接显示上次画好的，滚到底。
+// 其他地方（发消息、收到回复、改样式）直接调 renderChat 的，照旧重画。
+(function(){
+  var sig='',skip=false;
+  function sigOf(){
+    var c=S.cards||[],n=c.length,t='';
+    try{t=JSON.stringify(c.slice(-3))}catch(e){t=String(Math.random())}
+    return n+'|'+t.length+'|'+(n?c[n-1].id:'')+'|'+(document.documentElement.getAttribute('data-bubble')||'');
+  }
+  var _rc=renderChat;
+  renderChat=function(){
+    if(skip&&sig&&stream&&stream.childElementCount&&sigOf()===sig){
+      requestAnimationFrame(function(){stream.scrollTop=stream.scrollHeight});
+      return;
+    }
+    var r=_rc.apply(this,arguments);
+    sig=sigOf();
+    return r;
+  };
+  var _g=go;
+  go=function(v){
+    skip=(v==='chat');
+    try{return _g.apply(this,arguments)}finally{skip=false}
+  };
+})();
+}catch(e){console.error('[zika] v122.js',e)}
