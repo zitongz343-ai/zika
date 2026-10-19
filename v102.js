@@ -39,7 +39,7 @@ try{
       if(!im){b.innerHTML='';im=document.createElement('img');im.className='gfic';im.alt='';b.appendChild(im)}
       var s=src(ICON[id]);if(im.getAttribute('src')!==s)im.setAttribute('src',s);
     });
-    var h=document.querySelector('#gfNew img');if(h)h.setAttribute('src',src('haitang'));
+    var h=document.querySelector('#gfNew img');if(h)h.setAttribute('src',src('chuang'));
   }
   paintIcons();
   new MutationObserver(paintIcons).observe(R,{attributes:true,attributeFilter:['data-gt']});
@@ -138,7 +138,7 @@ try{
       if(!im){i.innerHTML='';im=document.createElement('img');im.className='gfic2';im.alt='';i.appendChild(im)}
       var s=src(m[0]);if(im.getAttribute('src')!==s)im.setAttribute('src',s);
     });
-    var h=document.querySelector('#gfNew img');if(h)h.setAttribute('src',src('haitang'));
+    var h=document.querySelector('#gfNew img');if(h)h.setAttribute('src',src('chuang'));
   }
   paint();
   new MutationObserver(paint).observe(R,{attributes:true,attributeFilter:['data-gt']});

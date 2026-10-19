@@ -58,8 +58,5 @@ try{
     +'<g fill="currentColor"><circle cx="34" cy="32" r="2.6"/><circle cx="37.8" cy="34.8" r="2.6"/><circle cx="36.4" cy="39.2" r="2.6"/><circle cx="31.6" cy="39.2" r="2.6"/><circle cx="30.2" cy="34.8" r="2.6"/></g>'
     +'<circle cx="34" cy="36" r="1.2" fill="#fffdf8"/></svg>';
   function page(){var i=document.querySelector('#gfNew i');if(i&&!i.querySelector('svg.gf-page'))i.innerHTML=PAGE}
-  page();
-  var pp=document.getElementById('plusp');
-  if(pp&&window.MutationObserver)new MutationObserver(page).observe(pp,{childList:true,subtree:true});
 })();
 }catch(e){console.error('[zika] v112.js',e)}
