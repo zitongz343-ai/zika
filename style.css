@@ -2403,8 +2403,8 @@ html[data-gt] body .plusp button i img{width:48px!important;height:48px!importan
 html[data-gt] body .plusp button span{font-family:"Songti SC","STSong","Noto Serif SC",serif!important;letter-spacing:.12em!important}
 
 /* v105：整个顶部往上提，顶栏底图铺进状态栏那块；顶栏、底栏和气泡区之间改成渐变，不再一刀切 */
-html[data-gt] body:has(.view[data-view="chat"].on) #app{padding-top:0!important}
-html[data-gt] body:has(.view[data-view="chat"].on) #navBtn{top:calc(env(safe-area-inset-top) + 4px)!important}
+html[data-gt] body.on-chat #app{padding-top:0!important}
+html[data-gt] body.on-chat #navBtn{top:calc(env(safe-area-inset-top) + 4px)!important}
 html[data-gt] body .view[data-view="chat"] .chat-top{padding-top:calc(env(safe-area-inset-top) + 4px)!important;min-height:calc(env(safe-area-inset-top) + 66px)!important;border-bottom:0!important;background:linear-gradient(to bottom,rgba(255,252,252,.6) 0%,rgba(255,252,252,.4) 62%,rgba(255,252,252,0) 100%)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html[data-gt] body .view[data-view="chat"] .chat-top .pair{top:calc(env(safe-area-inset-top) + 4px)!important}
 .gf-tb{-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);mask-image:linear-gradient(to bottom,#000 50%,transparent 100%)}
@@ -2795,3 +2795,15 @@ html[data-gt] body .l4-ib,html[data-gt] body .l4-seg,html[data-gt] body .view bu
 #stream>.card{content-visibility:auto;contain-intrinsic-size:auto 90px}
 /* 进传讯页不要再淡入上移那一下 */
 .view[data-view="chat"].on{animation:none!important}
+
+
+/* ===== v124 ===== */
+/* 进传讯淡入回来，只动透明度，不让它重新排版 */
+.view[data-view="chat"]{transition:opacity .24s ease}
+.view[data-view="chat"]:not(.on){opacity:0}
+.view[data-view="chat"].on{opacity:1}
+/* 每张气泡原来都带一个弹出动画，几百张一起播。现在只给最后一张 */
+#stream>.card:not(:last-child){animation:none!important}
+/* 测速小条（临时） */
+#zkPerf{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 90px);transform:translateX(-50%);z-index:999;padding:6px 14px;border-radius:999px;background:rgba(60,40,50,.82);color:#fff;font:12px/1.5 -apple-system,sans-serif;letter-spacing:.04em;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .3s}
+#zkPerf.on{opacity:1}
