@@ -101,3 +101,11 @@ html[data-gt][data-bubglass="1"] .card.me{background:color-mix(in srgb,var(--acc
 /* 不在主页时，主页的落花、涟漪、浮动全部停下 */
 body:not(.on-home) #gh,body:not(.on-home) #gh *{animation-play-state:paused!important}
 body:not(.on-home) #gh .gh-pts{display:none!important}
+
+/* v107：省电——底图不再用滤镜现场转色，三种设色各用一张提前转好的图 */
+html[data-gt="qing"]{--hbgf:none!important}
+.gf-tb,.gf-fb{filter:none!important}
+html[data-gt="zi"] .gf-tb{background-image:url("chat/top_zi.jpg?v=107")!important}
+html[data-gt="qing"] .gf-tb{background-image:url("chat/top_qing.jpg?v=107")!important}
+html[data-gt="zi"] .gf-fb{background-image:url("chat/foot_zi.jpg?v=107")!important}
+html[data-gt="qing"] .gf-fb{background-image:url("chat/foot_qing.jpg?v=107")!important}
