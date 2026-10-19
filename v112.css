@@ -1,0 +1,50 @@
+/* v112：加号面板浮在底栏上方；朋友圈古风；信封去掉信封符号、日期名字换宋体；天青的开屏和侧栏调蓝 */
+
+/* ── 加号面板：单独浮在输入条上方，底栏高度不变 ── */
+html[data-gt] body .chat-foot .plusp.on{position:absolute!important;left:10px!important;right:10px!important;bottom:calc(100% + 8px)!important;z-index:30!important;margin:0!important;box-shadow:0 6px 18px rgba(50,60,80,.14)!important}
+html[data-gt] body .plusp #gfNew i svg{width:44px!important;height:44px!important;display:block!important}
+
+/* ── 信封 ── */
+html[data-gt] body .env .env-f::before{content:none!important;display:none!important}
+html[data-gt] body .env .env-t,html[data-gt] body .env .env-f,html[data-gt] body .env .env-d,html[data-gt] body .env .env-st{font-family:"Songti SC","STSong","Noto Serif SC",serif!important}
+html[data-gt] body .env .env-f{font-size:11px!important;letter-spacing:.3em!important;padding-left:.3em;color:var(--ink)!important;opacity:.8}
+html[data-gt] body .env .env-d{display:inline-flex!important;align-items:center;gap:6px;font-size:11px!important;letter-spacing:.35em!important;padding-left:.35em!important;color:var(--accent)!important}
+html[data-gt] body .env .env-d::before,html[data-gt] body .env .env-d::after{content:"";width:12px;height:1px;background:currentColor;opacity:.45}
+
+/* ── 天青：开屏不再发灰，侧栏底色偏蓝 ── */
+#gfsp[data-tone="qing"]{--ga:#f1f6fb;--gb:#d6e6f3;--gpetal:#b2cde5;--gtone:hue-rotate(-148deg) saturate(1.05)}
+html[data-gt="qing"] body #sidebar{background:linear-gradient(180deg,#f3f8fc,#e6eff7)!important}
+
+/* ── 朋友圈 ── */
+html[data-gt] body .view[data-view="moments"]{--gfl:color-mix(in srgb,var(--accent) 24%,transparent);font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .view[data-view="moments"] *{font-family:inherit}
+html[data-gt] body .m2-cover::before{content:"朋友圈";position:absolute;left:18px;top:18px;z-index:2;writing-mode:vertical-rl;letter-spacing:.5em;font-size:13px;line-height:1;color:#fff;background:var(--accent);padding:8px 5px 3px;border-radius:2px;opacity:.85}
+html[data-gt] body .m2-nm{letter-spacing:.35em!important;font-size:17px!important}
+html[data-gt] body .m2-av{border-radius:0!important;padding:4px!important;background:#fffdf8!important;border:1px solid var(--accent)!important;box-shadow:0 3px 10px rgba(60,60,80,.15)!important}
+html[data-gt] body .m2-av img{border-radius:0!important}
+html[data-gt] body .m2-sign{letter-spacing:.3em!important;font-size:12px!important}
+html[data-gt] body .m2-sign::before{content:"— ";opacity:.5}
+html[data-gt] body .m2-day{gap:12px!important;padding:20px 0 18px!important;border-top:1px solid var(--gfl)!important}
+html[data-gt] body .m2-day:first-child{border-top:0!important}
+html[data-gt] body .m2-dl{flex:0 0 40px!important;display:flex;flex-direction:column;align-items:center;gap:6px}
+html[data-gt] body .m2-dl b,html[data-gt] body .m2-dl b.w{writing-mode:vertical-rl;font-weight:400!important;font-size:19px!important;letter-spacing:.3em!important;color:var(--ink)}
+html[data-gt] body .m2-dl small{writing-mode:vertical-rl;font-size:10px;letter-spacing:.2em;color:var(--sub)}
+html[data-gt] body .m2-dl em{margin:0!important;font-size:9px!important;letter-spacing:.05em}
+html[data-gt] body .m2-pubs{gap:10px!important}
+html[data-gt] body .m2-pub{position:relative;width:88px!important;height:96px!important;gap:8px!important;border-radius:0!important;background:#fffdf8!important;border:1px solid var(--gfl)!important;box-shadow:0 2px 6px rgba(60,60,80,.07)!important;color:var(--accent)!important;font-size:12.5px!important;letter-spacing:.3em!important}
+html[data-gt] body .m2-pub::before{content:"";position:absolute;inset:4px;border:1px dashed var(--gfl);pointer-events:none}
+html[data-gt] body .m2-pub svg{width:24px!important;height:24px!important}
+html[data-gt] body .m2-by{font-size:13px!important;letter-spacing:.15em}
+html[data-gt] body .m2-bav{border-radius:0!important;border-color:var(--accent)!important}
+html[data-gt] body .m2-text{line-height:2!important;letter-spacing:.06em}
+html[data-gt] body .m2-imgs img{border-radius:2px!important}
+html[data-gt] body .m2-meta{margin-top:6px!important;font-size:11px!important;letter-spacing:.15em}
+html[data-gt] body .m2-meta button{display:inline-flex!important;align-items:center;gap:4px;font-size:12px!important;letter-spacing:.2em}
+html[data-gt] body .gf-mei{width:13px;height:13px;flex:0 0 auto}
+html[data-gt] body .gf-tag{display:inline-block;margin-left:6px;padding:0 4px;font-style:normal;font-size:9.5px;line-height:1.6;color:#fff;background:var(--accent);border-radius:2px;letter-spacing:.1em;opacity:.85}
+html[data-gt] body .m2-ia{position:relative;margin-top:8px!important;padding:9px 12px 9px 18px!important;border-radius:0!important;background:#fffdf8!important;border:1px solid var(--gfl)!important;font-size:13px!important;line-height:1.9!important;letter-spacing:.04em}
+html[data-gt] body .m2-ia::before{content:"";position:absolute;left:8px;top:10px;bottom:10px;width:1px;background:var(--accent);opacity:.45}
+html[data-gt] body .m2-lk{display:flex;align-items:center;gap:5px;padding-bottom:4px;margin-bottom:4px;border-bottom:1px dashed var(--gfl)}
+html[data-gt] body .m2-lk+.m2-c{border-top:0!important;margin-top:0!important;padding-top:0!important}
+html[data-gt] body .m2-cbox input{border-radius:2px!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important}
+html[data-gt] body .m2-cbox button{border-radius:2px!important;letter-spacing:.2em}
