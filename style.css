@@ -2352,8 +2352,8 @@ html[data-gt="qing"]{--gfcf:hue-rotate(-150deg) saturate(.7)}
 /* 顶栏、底栏底图 */
 .view[data-view="chat"] .chat-top,.chat-foot{isolation:isolate}
 .gf-tb,.gf-fb{position:absolute;inset:0;z-index:-1;pointer-events:none;background-repeat:no-repeat;background-size:cover;filter:var(--gfcf);transition:filter .3s}
-.gf-tb{background-image:url("chat/top.jpg?v=102");background-position:center 30%;opacity:.42}
-.gf-fb{background-image:url("chat/foot.jpg?v=102");background-position:center 42%;opacity:.9}
+.gf-tb{background-image:none;background-position:center 30%;opacity:.42}
+.gf-fb{background-image:none;background-position:center 42%;opacity:.9}
 
 /* 名字下面一行：小菱形 + 在侧 · 状态 */
 html[data-gt] body .chat-top .ts{position:absolute!important;left:50%!important;top:100%!important;transform:translateX(-50%)!important;margin:2px 0 0!important;max-width:230px!important;padding:0!important;background:none!important;border:0!important;border-radius:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-family:inherit!important;font-size:10.5px!important;line-height:1.5!important;letter-spacing:.18em!important;text-indent:0!important;color:var(--sub)!important;cursor:default}
@@ -2451,10 +2451,10 @@ body:not(.on-home) #gh .gh-pts{display:none!important}
 /* v107：省电——底图不再用滤镜现场转色，三种设色各用一张提前转好的图 */
 html[data-gt="qing"]{--hbgf:none!important}
 .gf-tb,.gf-fb{filter:none!important}
-html[data-gt="zi"] .gf-tb{background-image:url("chat/top_zi.jpg?v=107")!important}
-html[data-gt="qing"] .gf-tb{background-image:url("chat/top_qing.jpg?v=107")!important}
-html[data-gt="zi"] .gf-fb{background-image:url("chat/foot_zi.jpg?v=107")!important}
-html[data-gt="qing"] .gf-fb{background-image:url("chat/foot_qing.jpg?v=107")!important}
+html[data-gt="zi"] .gf-tb{background-image:none!important}
+html[data-gt="qing"] .gf-tb{background-image:none!important}
+html[data-gt="zi"] .gf-fb{background-image:none!important}
+html[data-gt="qing"] .gf-fb{background-image:none!important}
 
 /* v108：素笺气泡——米白纸、一圈细边、方角；你的那张右上角折一个小角 */
 html[data-gt][data-bubble="plain"] body .card:not(.sk){
@@ -2548,9 +2548,9 @@ html[data-gt] body .l4-card.sel{border-color:var(--accent)!important;background:
 html[data-gt] body .l4-new{border-radius:3px!important;letter-spacing:.5em!important;font-family:inherit!important;background:color-mix(in srgb,var(--accent) 12%,#fffdf8)!important;color:var(--accent)!important;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent)!important;box-shadow:none!important}
 
 /* ── 信箱：信封换成秋千那张，跟设色换色 ── */
-html[data-gt] body .env{position:relative!important;display:block!important;width:100%!important;height:150px!important;margin:0 0 14px!important;padding:0!important;overflow:hidden!important;border-radius:3px!important;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)!important;box-shadow:0 2px 6px rgba(80,60,60,.1)!important;background:#fffdfa url("mail/env_fen.jpg?v=109") center 46%/cover no-repeat!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transform:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif;text-align:center}
-html[data-gt="zi"] body .env{background-image:url("mail/env_zi.jpg?v=109")!important}
-html[data-gt="qing"] body .env{background-image:url("mail/env_qing.jpg?v=109")!important}
+html[data-gt] body .env{position:relative!important;display:block!important;width:100%!important;height:150px!important;margin:0 0 14px!important;padding:0!important;overflow:hidden!important;border-radius:3px!important;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)!important;box-shadow:0 2px 6px rgba(80,60,60,.1)!important;background:#fffdfa none center 46%/cover no-repeat!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transform:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif;text-align:center}
+html[data-gt="zi"] body .env{background-image:none!important}
+html[data-gt="qing"] body .env{background-image:none!important}
 html[data-gt] body .env .env-slip,html[data-gt] body .env .env-flap,html[data-gt] body .env .env-hill{display:none!important}
 html[data-gt] body .env .env-face{position:absolute!important;left:36%!important;right:22%!important;top:22%!important;bottom:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:6px!important;margin:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;transform:none!important}
 html[data-gt] body .env .env-t{font-size:16px!important;font-weight:400!important;letter-spacing:.3em!important;color:var(--ink)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -2563,9 +2563,9 @@ html[data-gt] body .env .env-wax::after{content:"\672A\542F";writing-mode:vertic
 
 /* ── 拆信：信纸用荷花那张，正文只在中间那块白纸里 ── */
 html[data-gt] body .reader{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(40,30,36,.38)!important;padding:22px 10px!important}
-html[data-gt] body .letter{position:relative!important;width:100%!important;max-width:460px!important;height:auto!important;max-height:none!important;aspect-ratio:1179/876;padding:10.5% 17% 9% 23%!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;background:url("mail/paper_fen.jpg?v=109") center/100% 100% no-repeat!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif;color:#4a3e44}
-html[data-gt="zi"] body .letter{background-image:url("mail/paper_zi.jpg?v=109")!important}
-html[data-gt="qing"] body .letter{background-image:url("mail/paper_qing.jpg?v=109")!important}
+html[data-gt] body .letter{position:relative!important;width:100%!important;max-width:460px!important;height:auto!important;max-height:none!important;aspect-ratio:1179/876;padding:10.5% 17% 9% 23%!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;background:none center/100% 100% no-repeat!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif;color:#4a3e44}
+html[data-gt="zi"] body .letter{background-image:none!important}
+html[data-gt="qing"] body .letter{background-image:none!important}
 html[data-gt] body .letter::before,html[data-gt] body .letter::after{display:none!important}
 html[data-gt] body .letter-head{position:static!important;justify-content:center!important;flex:0 0 auto}
 html[data-gt] body .letter-head h3{font-size:15px!important;letter-spacing:.3em!important;color:var(--ink)!important;text-align:center}

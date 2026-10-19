@@ -9462,9 +9462,9 @@ try{
   var R=document.documentElement;
   R.classList.remove('lk-on');R.classList.add('gh-on');if(sb)R.classList.add('gs-on');
 
-  var BG=['bg/1040g3k0325j620rgkc3g5pmmebmne18vfi5h6go.jpeg','bg/1040g3k0325j620rgkc405pmmebmne18vs8q79ag.jpeg','bg/1040g3k0325j620rgkc605pmmebmne18vj5g5qng.jpeg'];
-  var PET=['raw/1040g34o325qjgns4l82g5otdlisq3abgd48s5u0.jpeg','raw/1040g34o325qjgns4l8205otdlisq3abgla5p9oo.jpeg'];
-  var VINE='side/1040g34o31os5air7gs3g5otdlisq3abg53ccl8o.jpeg';
+  var BG=['home/bg-fen.jpg','','home/bg-zi.jpg'];
+  var PET=['home/petal-1.jpg','home/petal-2.jpg'];
+  var VINE='side/vine.jpg';
   var CN='\u3007\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d';
   function cn(x){if(x<=10)return x===10?'\u5341':CN[x];if(x<20)return '\u5341'+CN[x-10];return CN[Math.floor(x/10)]+'\u5341'+(x%10?CN[x%10]:'')}
   var EN=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
@@ -9557,7 +9557,7 @@ try{
   function setBg(bi){
     if(bi===BGI)return;BGI=bi;var el=document.getElementById('gbg')||q('.gh-bg');el.classList.remove('ld');
     var put=function(u){if(BGI!==bi)return;el.style.backgroundImage='url("'+u+'")';el.classList.add('ld');R.style.setProperty('--gbgu','url("'+u+'")')};
-    if(window.GIMG)GIMG('bg'+bi).then(function(u){put(u||BG[bi]||'bg/qing.jpg')});else put(BG[bi]);
+    if(window.GIMG)GIMG('bg'+bi).then(function(u){put(u||BG[bi]||'home/bg-qing.jpg')});else put(BG[bi]);
   }
   function tone(){
     var p=S.prefs||{},cus=!!(p.pal&&p.pal.on),th=S.theme;
