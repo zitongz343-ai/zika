@@ -1,0 +1,84 @@
+/* v99：古风主页 + 侧栏。主页：日子、每日一句、日历、四个入口；侧栏：绿枝换色，九个入口沿枝两侧排开。不带红点 */
+html{--hink:#5a4a52;--hsub:#a08890;--hac:#c27a86;--hline:rgba(120,90,100,.25);--hvf:hue-rotate(255deg) saturate(1.05);--hpet:none;--hbgf:none}
+html[data-gt="zi"]{--hink:#4e4766;--hsub:#9590b0;--hac:#7f78b4;--hline:rgba(90,85,130,.25);--hvf:hue-rotate(185deg) saturate(.95);--hpet:hue-rotate(-40deg)}
+html[data-gt="su"]{--hink:#45464a;--hsub:#8e8c88;--hac:#6d6d72;--hline:rgba(70,70,70,.22);--hvf:grayscale(1) contrast(1.05);--hpet:grayscale(1);--hbgf:grayscale(.9)}
+html[data-gt="dk"]{--hink:#ece2e5;--hsub:#b3a5ab;--hac:#d39aa4;--hline:rgba(255,255,255,.2)}
+
+/* ── 主页 ── */
+html.gh-on section[data-view="home"]{padding:0!important;overflow:hidden!important}
+html.gh-on section[data-view="home"]>:not(#gh){display:none!important}
+#gh{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;color:var(--hink);font-family:"Songti SC","STSong","Noto Serif SC",serif;font-weight:400}
+#gh::-webkit-scrollbar{display:none}
+#gh button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#gh .gh-bg{position:fixed;inset:0;z-index:0;background:#fbf6f6 center top/cover no-repeat;filter:var(--hbgf);pointer-events:none}
+html[data-gt="dk"] #gh .gh-bg::after{content:"";position:absolute;inset:0;background:rgba(26,22,30,.76)}
+#gh .gh-in{position:relative;z-index:1;padding:calc(env(safe-area-inset-top) + 82px) 0 calc(env(safe-area-inset-bottom) + 20px)}
+
+#gh .gh-top{display:flex;align-items:stretch;justify-content:space-between;gap:12px;margin:0 22px}
+#gh .gh-dl{display:flex;align-items:flex-end;gap:12px;flex:0 0 auto}
+#gh .gh-day{font-family:"Cormorant Garamond",Georgia,serif;font-size:56px;line-height:.82}
+#gh .gh-meta b{display:block;font-weight:400;font-size:13.5px;letter-spacing:.28em;white-space:nowrap}
+#gh .gh-meta span{display:block;margin-top:5px;font-size:11px;letter-spacing:.26em;color:var(--hsub);white-space:nowrap}
+#gh .gh-qt{flex:1 1 auto;min-width:0;max-width:170px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;text-align:right;padding-left:12px;border-left:1px solid var(--hline);transition:opacity .3s}
+#gh .gh-qt small{font-size:9.5px;letter-spacing:.24em;color:var(--hsub)}
+#gh .gh-en{margin:3px 0 0;font-family:"Great Vibes","Snell Roundhand",cursive;font-size:14px;line-height:1.2}
+#gh .gh-en:empty{display:none}
+#gh .gh-zh{margin:2px 0 0;font-size:12.5px;line-height:1.55;letter-spacing:.1em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#gh .gh-alm{margin:14px 22px 0;display:flex;gap:18px;font-size:12.5px;letter-spacing:.18em}
+#gh .gh-alm em{font-style:normal}
+#gh .gh-alm i{font-style:normal;display:inline-block;width:18px;height:18px;line-height:16px;text-align:center;border:1px solid var(--hac);color:var(--hac);border-radius:3px;margin-right:7px;font-size:10.5px;letter-spacing:0}
+
+#gh .gh-hd{display:flex;align-items:baseline;gap:12px;margin:0 22px 10px}
+#gh .gh-hd b{font-weight:400;font-size:15.5px;letter-spacing:.35em}
+#gh .gh-hd span{font-family:"Cormorant Garamond",Georgia,serif;font-size:11px;letter-spacing:.32em;color:var(--hsub)}
+#gh .gh-hd i{flex:1;height:1px;background:var(--hline);transform:translateY(-4px)}
+#gh .gh-nav{margin-left:auto;display:flex;gap:4px}
+#gh .gh-nav button{width:30px;height:24px;font-size:16px;line-height:24px;color:var(--hsub)}
+
+#gh .gh-cal{padding-top:24px}
+#gh .gh-grid{display:grid;grid-template-columns:repeat(7,1fr);row-gap:7px;margin:0 16px;text-align:center}
+#gh .gh-w{font-size:11px;color:var(--hsub);padding-bottom:2px}
+#gh .gh-d{display:block;width:32px;height:32px;line-height:32px;margin:0 auto;border-radius:50%;font-family:"Cormorant Garamond",Georgia,serif;font-size:15px;transition:box-shadow .2s}
+#gh .gh-d.l1{background:color-mix(in srgb,var(--hac) 14%,rgba(255,255,255,.4))}
+#gh .gh-d.l2{background:color-mix(in srgb,var(--hac) 30%,rgba(255,255,255,.3))}
+#gh .gh-d.l3{background:color-mix(in srgb,var(--hac) 48%,rgba(255,255,255,.2))}
+#gh .gh-d.to{background:var(--hac);color:#fff}
+#gh .gh-d.sel{box-shadow:0 0 0 1.5px var(--hink)}
+
+#gh .gh-also{padding-top:26px}
+#gh .gh-pond{position:relative;height:200px;margin:0 6px}
+#gh .gh-wd{position:absolute;width:96px;margin-left:-48px;text-align:center;animation:ghBob 6s ease-in-out infinite;z-index:2}
+#gh .gh-wd b{display:block;font-weight:400;font-size:19px;letter-spacing:.3em;padding-left:.3em;line-height:1.1}
+#gh .gh-rf{display:block;font-size:19px;letter-spacing:.3em;padding-left:.3em;line-height:1;transform:scaleY(-1);opacity:.22;-webkit-mask-image:linear-gradient(transparent 20%,#000);mask-image:linear-gradient(transparent 20%,#000);height:11px;overflow:hidden}
+#gh .gh-wd em{display:block;margin-top:3px;font-style:italic;font-family:"Cormorant Garamond",Georgia,serif;font-size:11.5px;color:var(--hsub)}
+#gh .gh-rip{position:absolute;width:100px;height:30px;margin:-15px 0 0 -50px;border:1px solid rgba(255,255,255,.9);border-radius:50%;animation:ghRp 5s ease-out infinite;opacity:0;pointer-events:none}
+#gh .gh-rip.once{animation:ghRp 1.6s ease-out forwards}
+#gh .gh-pimg{position:absolute;background:center/contain no-repeat;mix-blend-mode:multiply;filter:var(--hpet);pointer-events:none;animation:ghDrift 9s ease-in-out infinite}
+html[data-gt="dk"] #gh .gh-pimg{display:none}
+#gh .gh-pts{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+#gh .gh-pt{position:absolute;top:-4%;border-radius:80% 0 80% 0;background:color-mix(in srgb,var(--hac) 45%,#fff);animation:ghFall linear infinite}
+@keyframes ghRp{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.3);opacity:0}}
+@keyframes ghBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes ghDrift{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(8px,4px) rotate(8deg)}}
+@keyframes ghFall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+
+/* 主页左上的侧栏按钮：去掉圆玻璃，留三根细线 */
+html body.on-home #navBtn{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:var(--hink)!important}
+html body.on-home #navBtn span,html body.on-home #navBtn span::before,html body.on-home #navBtn span::after{height:1px!important;width:20px!important;opacity:.8}
+html body.on-home #navBtn span{width:14px!important}
+
+/* ── 侧栏 ── */
+html.gs-on body #sidebar{width:300px!important;max-width:82vw!important;padding:0!important;border:0!important;border-radius:0!important;background:color-mix(in srgb,var(--hac) 5%,#fbf9f6)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overflow:hidden}
+html.gs-on #sidebar>:not(#gside){display:none!important}
+#gside{position:absolute;inset:0;font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt="dk"] #gside{--hink:#5a4a52;--hsub:#a08890;--hac:#c27a86}
+#gside .gs-stage{position:absolute;left:0;top:50%;width:300px;height:720px;transform-origin:0 50%;transform:translateY(-50%)}
+#gside .gs-vine{position:absolute;left:-60px;top:70px;width:372px;height:624px;background:center/100% 100% no-repeat;mix-blend-mode:multiply;filter:var(--hvf);pointer-events:none}
+#gside .gs-it{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;padding:8px 10px;border:0;background:none;font:inherit;color:var(--hink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+#gside .gs-it b{font-weight:400;font-size:15.5px;line-height:1;letter-spacing:.3em;padding-left:.3em;white-space:nowrap}
+#gside .gs-it small{margin-top:5px;font-family:"Cormorant Garamond",Georgia,serif;font-size:9px;letter-spacing:.2em;color:var(--hsub);white-space:nowrap}
+#gside .gs-it u{display:block;width:16px;height:1px;margin-top:6px;background:var(--hsub);opacity:.5;text-decoration:none;transition:width .25s}
+#gside .gs-it.on b,#gside .gs-it.on small{color:var(--hac)}
+#gside .gs-it.on u{width:26px;background:var(--hac);opacity:1}
+
+@media (prefers-reduced-motion:reduce){#gh *{animation:none!important}}
