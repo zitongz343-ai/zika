@@ -4,7 +4,7 @@
 #gfsp{--ga:#fdf6f4;--gb:#f6e3e6;--gink:#7a4652;--gsub:#b48a92;--gpetal:#f3b3c0;--gseal:#c4565f;--gtone:none;
   position:fixed;inset:0;z-index:300;overflow:hidden;cursor:pointer;
   background:linear-gradient(172deg,var(--ga) 0%,var(--gb) 100%);color:var(--gink);
-  font-family:"Noto Serif SC","Songti SC","STSong",serif;-webkit-tap-highlight-color:transparent;
+  font-family:"GF Song","Songti SC","STSong",serif;-webkit-tap-highlight-color:transparent;
   transition:opacity .6s ease,transform .6s ease}
 #gfsp[data-tone="zi"]{--ga:#f9f5fc;--gb:#ebe1f4;--gink:#5c4870;--gsub:#9b88b0;--gpetal:#d6bdf0;--gseal:#8a5fb0;--gtone:hue-rotate(-50deg) saturate(.92)}
 #gfsp[data-tone="su"]{--ga:#f7f6f3;--gb:#e8e6e1;--gink:#45464a;--gsub:#8c8a86;--gpetal:#e4d8d8;--gseal:#a2463f;--gtone:grayscale(.85) contrast(1.05)}

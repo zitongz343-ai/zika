@@ -1,3 +1,4 @@
+// v98：字体改用内嵌的截字宋体 GF Song，不再从网上加载。
 // v97：正式开屏。页面一打开就先显示这一屏，app 在后面照常加载
 // 名字等 app 跑完、宋体到了再开始浮现：app.js 执行那一两秒手机主线程是满的，
 // 这时候开始的动画会被跳帧，看着就是直接蹦出来（原来右边江亭晚排在最前面，正好撞上）
@@ -46,8 +47,8 @@
   try{
     var txt='江亭晚长相思'+(document.getElementById('gfTa').textContent||'');
     if(document.fonts&&document.fonts.load){
-      document.fonts.load('50px "Noto Serif SC"',txt).then(function(){
-        try{fontOk=document.fonts.check('50px "Noto Serif SC"',txt)}catch(e){fontOk=true}
+      document.fonts.load('50px "GF Song"',txt).then(function(){
+        try{fontOk=document.fonts.check('50px "GF Song"',txt)}catch(e){fontOk=true}
       },function(){});
     }
   }catch(e){}
