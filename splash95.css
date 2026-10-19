@@ -16,7 +16,7 @@
 #gfsp .gf-nm{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);display:grid;grid-template-columns:64px 30px 64px;justify-items:center;align-items:start}
 #gfsp .gf-nm b,#gfsp .gf-nm i{display:flex;flex-direction:column;align-items:center;font-style:normal}
 #gfsp .gf-nm b{font-weight:400;font-size:50px;line-height:1;gap:8px;color:var(--gink);text-shadow:0 2px 14px rgba(255,255,255,.9)}
-#gfsp .gf-nm b span{display:block;animation:gf-ink 1.3s ease both}
+#gfsp .gf-nm b span{display:block;will-change:opacity,transform;animation:gf-ink 1.5s cubic-bezier(.25,.6,.3,1) both}
 #gfsp .gf-nm .gf-me{grid-column:3;grid-row:1}
 #gfsp .gf-nm .gf-ta{grid-column:1;grid-row:1;margin-top:58px}
 #gfsp .gf-nm i{grid-column:2;grid-row:1;font-size:12px;line-height:1;gap:9px;color:var(--gsub);margin-top:85px;animation:gf-fade 1.6s ease 1.6s both}
@@ -27,10 +27,12 @@
 #gfsp .gf-ft em{display:block;margin-top:14px;font-style:normal;font-size:12px;letter-spacing:.6em;color:var(--gsub);opacity:.75;padding-left:.6em;animation:gf-breath 2.6s ease-in-out infinite}
 #gfsp .gf-pt{position:absolute;top:-6%;border-radius:80% 0 80% 0;background:var(--gpetal);pointer-events:none;animation:gf-fall linear infinite}
 @keyframes gf-fade{from{opacity:0}}
+/* 字体到了再开始浮现，不然先显示系统宋体再一换，看着像蹦出来 */
+#gfsp:not(.rd) .gf-nm b span,#gfsp:not(.rd) .gf-nm i,#gfsp:not(.rd) .gf-seal,#gfsp:not(.rd) .gf-ft{animation-play-state:paused}
 @keyframes gf-drop{from{opacity:0;transform:translateY(-40px) rotate(-3deg)}}
 @keyframes gf-sway{0%,100%{transform:rotate(0)}50%{transform:rotate(2.2deg)}}
 @keyframes gf-drift{to{transform:translateX(-7%)}}
-@keyframes gf-ink{from{opacity:0;filter:blur(7px);transform:translateY(-8px)}}
+@keyframes gf-ink{0%{opacity:0;transform:translateY(-12px) scale(1.08)}45%{opacity:.55}100%{opacity:1;transform:none}}
 @keyframes gf-stamp{from{opacity:0;transform:rotate(-6deg) scale(1.8)}}
 @keyframes gf-breath{0%,100%{opacity:.35}50%{opacity:.85}}
 @keyframes gf-fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),112vh) rotate(var(--r))}}

@@ -1,5 +1,5 @@
 // v95：正式开屏。页面一打开就先显示这一屏，app 在后面照常加载
-// 点一下进入，不点的话 6.5 秒后自己淡出
+// 点一下进入，不点的话 7.5 秒后自己淡出
 (function(){
   var sp=document.getElementById('gfsp');if(!sp)return;
   var S=null;try{S=JSON.parse(localStorage.getItem('mj_zika_v2')||'null')}catch(e){}
@@ -22,7 +22,7 @@
   function cn(x){if(x<=10)return x===10?'十':D[x];if(x<20)return '十'+D[x-10];return D[Math.floor(x/10)]+'十'+(x%10?D[x%10]:'')}
   var d=new Date(),sc='子丑寅卯辰巳午未申酉戌亥'[Math.floor((d.getHours()+1)/2)%12];
   var day=document.getElementById('gfDay');if(day)day.textContent=cn(d.getMonth()+1)+'月'+cn(d.getDate())+' · '+sc+'时';
-  // 白底变透明
+  // 白底变透明：分成一小段一小段算，每段之间把主线程让出来，不卡住名字的浮现
   function key(img,maxW){
     return new Promise(function(res){
       function go(){
@@ -30,24 +30,44 @@
           var s=Math.min(1,maxW/img.naturalWidth),w=Math.round(img.naturalWidth*s),h=Math.round(img.naturalHeight*s);
           var c=document.createElement('canvas');c.width=w;c.height=h;
           var x=c.getContext('2d');x.drawImage(img,0,0,w,h);
-          var dd=x.getImageData(0,0,w,h),p=dd.data;
-          for(var i=0;i<p.length;i+=4){
-            var r=Math.min(255,p[i]*255/246),g=Math.min(255,p[i+1]*255/246),bl=Math.min(255,p[i+2]*255/246);
-            var a=(255-Math.min(r,g,bl))/255;
-            if(a<0.015){p[i+3]=0;continue}
-            var k=255*(1-a);
-            p[i]=(r-k)/a;p[i+1]=(g-k)/a;p[i+2]=(bl-k)/a;p[i+3]=a*255;
-          }
-          x.putImageData(dd,0,0);
-          c.toBlob(function(blob){res(blob?URL.createObjectURL(blob):null)},'image/png');
+          var dd=x.getImageData(0,0,w,h),p=dd.data,n=p.length,i=0,STEP=4*50000;
+          (function slice(){
+            try{
+              var e=Math.min(n,i+STEP);
+              for(;i<e;i+=4){
+                var r=Math.min(255,p[i]*255/246),g=Math.min(255,p[i+1]*255/246),bl=Math.min(255,p[i+2]*255/246);
+                var a=(255-Math.min(r,g,bl))/255;
+                if(a<0.015){p[i+3]=0;continue}
+                var k=255*(1-a);
+                p[i]=(r-k)/a;p[i+1]=(g-k)/a;p[i+2]=(bl-k)/a;p[i+3]=a*255;
+              }
+              if(i<n){setTimeout(slice,0);return}
+              x.putImageData(dd,0,0);
+              c.toBlob(function(blob){res(blob?URL.createObjectURL(blob):null)},'image/png');
+            }catch(err){res(null)}
+          })();
         }catch(e){res(null)}
       }
       if(img.complete&&img.naturalWidth)go();else img.addEventListener('load',go,{once:true});
     });
   }
-  sp.querySelectorAll('.gf-art').forEach(function(img){
-    key(img,1200).then(function(u){if(!u)return;img.src=u;img.classList.add('keyed')});
-  });
+  function keyAll(){
+    sp.querySelectorAll('.gf-art').forEach(function(img){
+      key(img,1200).then(function(u){if(!u||!sp.parentNode)return;img.src=u;img.classList.add('keyed')});
+    });
+  }
+  // 等宋体加载好再让名字开始浮现，最多等 1.5 秒；名字浮完再去抠图
+  var started=false;
+  function start(){
+    if(started)return;started=true;
+    sp.classList.add('rd');
+    setTimeout(keyAll,3800);
+  }
+  try{
+    var txt='江亭晚长相思'+(document.getElementById('gfTa').textContent||'');
+    if(document.fonts&&document.fonts.load)document.fonts.load('50px "Noto Serif SC"',txt).then(start,start);else start();
+  }catch(e){start()}
+  setTimeout(start,1500);
   // 花瓣
   for(var i=0;i<18;i++){
     var p=document.createElement('span');p.className='gf-pt';
@@ -62,5 +82,5 @@
     setTimeout(function(){if(sp.parentNode)sp.parentNode.removeChild(sp)},650);
   }
   sp.addEventListener('click',end);
-  setTimeout(end,6500);
+  setTimeout(end,7500);
 })();
