@@ -2,16 +2,16 @@
 // 第一次打开时在手机上把大图缩到屏幕大小，花瓣和绿枝顺手把白底抠成透明，存进浏览器缓存；以后打开直接读缓存
 // 绿枝按三种配色各转一份颜色存起来，侧栏打开时不用再现算滤镜
 (function(){
-  var CK='zika-gimg-v1';
+  var CK='zika-gimg-v2';try{if(window.caches)caches.delete('zika-gimg-v1')}catch(e){}
   var VI='side/1040g34o31os5air7gs3g5otdlisq3abg53ccl8o.jpeg';
   var A={
     bg0:['bg/1040g3k0325j620rgkc3g5pmmebmne18vfi5h6go.jpeg',900,0],
     bg1:['bg/1040g3k0325j620rgkc405pmmebmne18vs8q79ag.jpeg',900,0],
     bg2:['bg/1040g3k0325j620rgkc605pmmebmne18vj5g5qng.jpeg',900,0],
     bg3:['bg/qing.jpg',900,0],
-    vine_fen:[VI,640,236,255,1.05],
-    vine_zi:[VI,640,236,185,.95],
-    vine_qing:[VI,640,236,105,.9],
+    vine_fen:[VI,640,236,255,.68],
+    vine_zi:[VI,640,236,185,.62],
+    vine_qing:[VI,640,236,105,.58],
     p1:['raw/1040g34o325qjgns4l82g5otdlisq3abgd48s5u0.jpeg',320,246],
     p2:['raw/1040g34o325qjgns4l8205otdlisq3abgla5p9oo.jpeg',320,246]
   };
