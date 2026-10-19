@@ -9,7 +9,7 @@ try{
   var R=document.documentElement;
   var ICON={btnPlus:'zhuchuang',btnEmo:'meiping',btnPic:'niaolong',btnSend:'pingfeng'};
   function tone(){var t=R.dataset.gt;return t==='zi'||t==='qing'?t:'fen'}
-  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=104'}
+  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=117'}
 
   // ── 顶栏、底栏底图：插一层真的 div，不占用别处已经在用的 ::before ──
   function layer(host,cls){
@@ -126,7 +126,7 @@ try{
 (function(){
   var R=document.documentElement;
   function tone(){var t=R.dataset.gt;return t==='zi'||t==='qing'?t:'fen'}
-  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=104'}
+  function src(n){return 'chat/ic/'+n+'_'+tone()+'.png?v=117'}
   var MAP={'语音通话':['ruyi','传音'],'传音':['ruyi','传音'],'听歌':['zhuping','听曲'],'听曲':['zhuping','听曲']};
   function paint(){
     var pp=document.getElementById('plusp');if(!pp)return;
