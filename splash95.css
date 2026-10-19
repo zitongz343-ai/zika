@@ -37,3 +37,9 @@
 @keyframes gf-breath{0%,100%{opacity:.35}50%{opacity:.85}}
 @keyframes gf-fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),112vh) rotate(var(--r))}}
 @media (prefers-reduced-motion:reduce){#gfsp,#gfsp *{animation:none!important}}
+
+/* 字体等不到就用手机自带宋体，动画中途不再换字 */
+#gfsp.nofont{font-family:"Songti SC","STSong",serif}
+/* 开屏单独一层，不跟后面 app 的重绘搅在一起 */
+#gfsp{transform:translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+#gfsp.out{transform:translateZ(0) scale(1.04)}
