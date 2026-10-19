@@ -26,16 +26,15 @@ try{
 
   var GROUPS=[
     ['同心','US',[
-      ['openProfile','称谓与小像','传讯页上的名字和头像',function(){return (S.me.name||'我')+' × '+taName()}],
-      ['openDays','岁时','纪念日',function(){return S.days&&S.days.length?S.days.length+' 个':'还没有'}]]],
+      ['openProfile','称谓与小像','传讯页上的名字和头像',function(){return (S.me.name||'我')+' × '+taName()}]]],
     ['鱼雁','REPLIES',[
       ['openReplySet','尺素往来','回信快慢、已读不回、拍一拍、主动找你',function(){return '概率 · 时长'}]]],
     ['檐铃','CHIME',[
-      ['openSndSet','提示音','他来信时响一声',function(){if(!S.prefs.snd)return '关';var k=(typeof SND==='object')&&(SND[S.prefs.sndKind]||SND.bell);return k&&k.n||'开'}]]],
+      ['openBanSet','通知','应用外的系统通知、应用内的横幅',function(){var a=[];if(S.prefs.sysOn&&typeof ntGranted==='function'&&ntGranted())a.push('应用外');if(S.prefs.banOn)a.push('应用内');return a.join(' · ')||'关'}],
+      ['openKaSet','长明','后台保活，切出去也接得到',function(){return S.prefs.keepAlive?'开':'关'}]]],
     ['丝竹','MUSIC',[
       ['openMuSet','曲库','QQ 音乐',function(){return typeof muOk==='function'&&muOk()?'已填':'没填'}]]],
     ['锦匣','STORAGE',[
-      ['openKaSet','长明','后台保活',function(){return S.prefs.keepAlive?'开':'关'}],
       ['openData','封存与启封','数据备份与导入',function(){return '也认 milk'}]]]
   ];
   function e2(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -76,7 +75,7 @@ try{
   };
 
   // 子页面的标题换成古风的名字
-  var TT={'名字和头像':'称谓与小像','纪念日':'岁时','回复与通话':'尺素往来','回复 · 回信 · 通话':'尺素往来','提示音':'提示音','后台保活':'长明','数据备份与导入':'封存与启封','QQ 音乐':'曲库'};
+  var TT={'名字和头像':'称谓与小像','纪念日':'岁时','回复与通话':'尺素往来','回复 · 回信 · 通话':'尺素往来','提示音':'提示音','后台保活':'长明','通知':'檐铃','数据备份与导入':'封存与启封','QQ 音乐':'曲库'};
   var _shG=openSheet;
   openSheet=function(t,n){return _shG.call(this,TT[t]||t,n)};
 })();
