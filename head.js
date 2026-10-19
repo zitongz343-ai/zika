@@ -28,6 +28,14 @@
   var d=new Date(),sc='子丑寅卯辰巳午未申酉戌亥'[Math.floor((d.getHours()+1)/2)%12];
   var day=document.getElementById('gfDay');if(day)day.textContent=cn(d.getMonth()+1)+'月'+cn(d.getDate())+' · '+sc+'时';
 
+  // v122：两张图解码好了才开始淡入，不会画到一半突然蹦出来
+  sp.querySelectorAll('.gf-art').forEach(function(im){
+    function ok(){im.classList.add('ok')}
+    if(im.complete&&im.naturalWidth){if(im.decode)im.decode().then(ok,ok);else ok()}
+    else{im.addEventListener('load',function(){if(im.decode)im.decode().then(ok,ok);else ok()});im.addEventListener('error',ok)}
+    setTimeout(ok,2500);
+  });
+
   // 花瓣
   for(var i=0;i<10;i++){
     var p=document.createElement('span');p.className='gf-pt';
@@ -58,13 +66,13 @@
   function tick(){
     if(started||done)return;
     var ok=fontOk&&appOk();
-    if(ok||Date.now()-t0>3200){
+    if(ok||Date.now()-t0>1600){
       started=true;
       if(!fontOk)sp.classList.add('nofont');
       // 再让出两帧，确认主线程空下来
       setTimeout(function(){requestAnimationFrame(function(){requestAnimationFrame(function(){
         sp.classList.add('rd');
-        setTimeout(end,5200);
+        setTimeout(end,4300);
       })})},120);
       return;
     }
@@ -72,7 +80,7 @@
   }
   tick();
   // 兜底：什么都没等到也不会一直停在开屏
-  setTimeout(end,9500);
+  setTimeout(end,7000);
 })();
 ;
 /* ===== almanac.js ===== */
