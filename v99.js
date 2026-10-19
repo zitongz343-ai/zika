@@ -63,6 +63,7 @@ try{
     +ENT.map(function(e,i){return '<button type="button" class="gh-wd" data-go="'+e[0]+'" style="left:'+e[3]+'%;top:'+e[4]+'px;animation-delay:-'+(i+1)+'s"><b>'+e[1]+'</b><span class="gh-rf" aria-hidden="true">'+e[1]+'</span><em>'+e[2]+'</em></button>'}).join('')
     +'</div></section></div><div class="gh-pts"></div>';
   home.appendChild(gh);
+  (function(){var b=gh.querySelector('.gh-bg');if(b){b.id='gbg';document.body.insertBefore(b,document.body.firstChild)}})();
   var q=function(s){return gh.querySelector(s)};
   var pond=q('.gh-pond'),grid=q('.gh-grid'),qt=q('.gh-qt');
 
@@ -87,18 +88,18 @@ try{
     pts.appendChild(p);
   }
 
-  // 配色：雾蓝用藕紫底图，玫瑰用绯霞底图，青草素墨，夜间压暗，其余樱粉
+  // 配色：桃夭、天青用粉底图（天青在样式里转色），紫藤用紫底图
   var BGI=-1;
   function setBg(bi){
-    if(bi===BGI)return;BGI=bi;var el=q('.gh-bg');el.classList.remove('ld');
-    var put=function(u){if(BGI!==bi)return;el.style.backgroundImage='url("'+u+'")';el.classList.add('ld')};
+    if(bi===BGI)return;BGI=bi;var el=document.getElementById('gbg')||q('.gh-bg');el.classList.remove('ld');
+    var put=function(u){if(BGI!==bi)return;el.style.backgroundImage='url("'+u+'")';el.classList.add('ld');R.style.setProperty('--gbgu','url("'+u+'")')};
     if(window.GIMG)GIMG('bg'+bi).then(function(u){put(u||BG[bi])});else put(BG[bi]);
   }
   function tone(){
     var p=S.prefs||{},cus=!!(p.pal&&p.pal.on),th=S.theme;
-    var t=cus?'fen':(th==='mist'?'zi':(th==='sage'?'su':'fen'));
-    var bi=t==='zi'?2:(!cus&&th==='rose'?1:0);
-    R.dataset.gt=p.dark?'dk':t;
+    var t=p.gfTone||(cus?'fen':(th==='mist'?'zi':(th==='sage'?'su':'fen')));
+    var bi=t==='zi'?2:0;
+    R.dataset.gt=t;if(window.gsVine)gsVine();
     setBg(bi);
   }
 
@@ -175,7 +176,8 @@ try{
   gs.innerHTML='<div class="gs-stage"><div class="gs-vine"><\/div>'
     +IT.map(function(t){return '<button type="button" class="gs-it" data-sv="'+t[0]+'" style="left:'+(t[1]/3).toFixed(2)+'%;top:'+(t[2]/7.2).toFixed(2)+'%"><b>'+t[3]+'</b><small>'+t[4]+'</small><u></u></button>'}).join('')+'</div>';
   sb.appendChild(gs);
-  if(window.GIMG)GIMG('vine').then(function(u){if(u)gs.querySelector('.gs-vine').style.backgroundImage='url("'+u+'")'});
+  window.gsVine=function(){var t=(S.prefs&&S.prefs.gfTone)||'fen';if(window.GIMG)GIMG('vine_'+t).then(function(u){if(u)gs.querySelector('.gs-vine').style.backgroundImage='url("'+u+'")'})};
+  gsVine();
   var stage=gs.querySelector('.gs-stage');
   function fit(){}
   function paintSide(){
