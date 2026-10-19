@@ -2785,3 +2785,13 @@ html[data-gt] body .l4-ib,html[data-gt] body .l4-seg,html[data-gt] body .view bu
 #gfsp .gf-art:not(.ok){animation-play-state:paused}
 /* 传讯页：切进来时不再整页重画，气泡各自算布局 */
 #stream>.card{contain:layout style}
+
+
+/* ===== v123 ===== */
+/* 传讯页离开时不 display:none，只是藏起来，下次点进来不用把几百张气泡重新排一遍 */
+.view[data-view="chat"]:not(.on){display:flex!important;flex-direction:column;height:100%;visibility:hidden!important;pointer-events:none!important;z-index:-1;animation:none!important}
+.view[data-view="chat"]:not(.on) *{visibility:hidden!important;pointer-events:none!important}
+/* 屏幕外的气泡先不画，滚到了再画 */
+#stream>.card{content-visibility:auto;contain-intrinsic-size:auto 90px}
+/* 进传讯页不要再淡入上移那一下 */
+.view[data-view="chat"].on{animation:none!important}

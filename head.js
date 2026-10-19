@@ -65,22 +65,22 @@
   function appOk(){return !!document.getElementById('gh')}
   function tick(){
     if(started||done)return;
-    var ok=fontOk&&appOk();
-    if(ok||Date.now()-t0>1600){
+    var ok=fontOk;
+    if(ok||Date.now()-t0>500){
       started=true;
       if(!fontOk)sp.classList.add('nofont');
       // 再让出两帧，确认主线程空下来
-      setTimeout(function(){requestAnimationFrame(function(){requestAnimationFrame(function(){
+      requestAnimationFrame(function(){requestAnimationFrame(function(){
         sp.classList.add('rd');
-        setTimeout(end,4300);
-      })})},120);
+        setTimeout(end,4000);
+      })});
       return;
     }
     setTimeout(tick,80);
   }
   tick();
   // 兜底：什么都没等到也不会一直停在开屏
-  setTimeout(end,7000);
+  setTimeout(end,6000);
 })();
 ;
 /* ===== almanac.js ===== */
