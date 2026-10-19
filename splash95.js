@@ -52,7 +52,7 @@
       },function(){});
     }
   }catch(e){}
-  function appOk(){return typeof window.lkRender==='function'||!!document.getElementById('lk')}
+  function appOk(){return !!document.getElementById('gh')}
   function tick(){
     if(started||done)return;
     var ok=fontOk&&appOk();

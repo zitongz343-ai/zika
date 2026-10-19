@@ -74,8 +74,11 @@ try{
   [['27%','62px'],['69%','74px'],['30%','156px'],['73%','168px']].forEach(function(p,k){rip(p[0],p[1],false,k*1.2)});
   [[0,'3%',80,60,-2],[1,'47%',8,66,-5],[0,'82%',96,54,-1],[1,'48%',160,56,-6]].forEach(function(p){
     var e=document.createElement('div');e.className='gh-pimg';
-    e.style.cssText='background-image:url("'+PET[p[0]]+'");left:'+p[1]+';top:'+p[2]+'px;width:'+p[3]+'px;height:'+Math.round(p[3]*0.63)+'px;animation-delay:'+p[4]+'s';
+    e.style.cssText='left:'+p[1]+';top:'+p[2]+'px;width:'+p[3]+'px;height:'+Math.round(p[3]*0.63)+'px;animation-delay:'+p[4]+'s';
     pond.appendChild(e);
+  });
+  pond.querySelectorAll('.gh-pimg').forEach(function(e,i){
+    if(window.GIMG)GIMG(i%2?'p2':'p1').then(function(u){if(u)e.style.backgroundImage='url("'+u+'")'});
   });
   var pts=q('.gh-pts');
   for(var j=0;j<10;j++){
@@ -85,12 +88,18 @@ try{
   }
 
   // 配色：雾蓝用藕紫底图，玫瑰用绯霞底图，青草素墨，夜间压暗，其余樱粉
+  var BGI=-1;
+  function setBg(bi){
+    if(bi===BGI)return;BGI=bi;var el=q('.gh-bg');el.classList.remove('ld');
+    var put=function(u){if(BGI!==bi)return;el.style.backgroundImage='url("'+u+'")';el.classList.add('ld')};
+    if(window.GIMG)GIMG('bg'+bi).then(function(u){put(u||BG[bi])});else put(BG[bi]);
+  }
   function tone(){
     var p=S.prefs||{},cus=!!(p.pal&&p.pal.on),th=S.theme;
     var t=cus?'fen':(th==='mist'?'zi':(th==='sage'?'su':'fen'));
     var bi=t==='zi'?2:(!cus&&th==='rose'?1:0);
     R.dataset.gt=p.dark?'dk':t;
-    q('.gh-bg').style.backgroundImage='url("'+BG[bi]+'")';
+    setBg(bi);
   }
 
   var now=new Date(),VY=now.getFullYear(),VM=now.getMonth(),SEL=null,CUR={};
@@ -163,14 +172,12 @@ try{
   var IT=[['home',158,108,'主页','HOME'],['chat',104,190,'传讯','LETTERS'],['mail',70,272,'信箱','MAILBOX'],['moments',50,354,'朋友圈','MOMENTS'],['lib',46,436,'字卡库','CARDS'],
           ['fav',254,366,'收藏','KEEPSAKE'],['tarot',226,448,'塔罗','TAROT'],['music',198,530,'音乐','MUSIC'],['set',170,612,'设置','SETTINGS']];
   var gs=document.createElement('div');gs.id='gside';
-  gs.innerHTML='<div class="gs-stage"><div class="gs-vine" style="background-image:url(\''+VINE+'\')"></div>'
-    +IT.map(function(t){return '<button type="button" class="gs-it" data-sv="'+t[0]+'" style="left:'+t[1]+'px;top:'+t[2]+'px"><b>'+t[3]+'</b><small>'+t[4]+'</small><u></u></button>'}).join('')+'</div>';
+  gs.innerHTML='<div class="gs-stage"><div class="gs-vine"><\/div>'
+    +IT.map(function(t){return '<button type="button" class="gs-it" data-sv="'+t[0]+'" style="left:'+(t[1]/3).toFixed(2)+'%;top:'+(t[2]/7.2).toFixed(2)+'%"><b>'+t[3]+'</b><small>'+t[4]+'</small><u></u></button>'}).join('')+'</div>';
   sb.appendChild(gs);
+  if(window.GIMG)GIMG('vine').then(function(u){if(u)gs.querySelector('.gs-vine').style.backgroundImage='url("'+u+'")'});
   var stage=gs.querySelector('.gs-stage');
-  function fit(){
-    var s=Math.min(sb.clientHeight/720,sb.clientWidth/300)||1;
-    stage.style.transform='translateY(-50%) scale('+s.toFixed(4)+')';
-  }
+  function fit(){}
   function paintSide(){
     var v=document.querySelector('.view.on'),cur=v?v.dataset.view:'home';
     gs.querySelectorAll('[data-sv]').forEach(function(b){b.classList.toggle('on',b.dataset.sv===cur)});
