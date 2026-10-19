@@ -169,7 +169,7 @@ function boot(list){
       (document.body||document.documentElement).appendChild(el);
     })(0);
   }
-  var guard=setTimeout(function(){console.error('[zika] 图片仓打开太慢，先起页面');load()},8000);
+  var guard=setTimeout(function(){console.error('[zika] 图片仓打开太慢，先起页面');load()},4000);
   openDB().then(function(d){
     db=d;
     return readAll(d).then(function(){

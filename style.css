@@ -1,3 +1,5 @@
+/* 字卡传讯 · style.css：按原来 index.html 的顺序合成，每段开头写着原来的文件名 */
+/* ===== app.css ===== */
 /* 字卡传讯 · app.css。按原来的加载顺序合成一个文件，每段开头的 ===== 写着它原来是哪个文件 */
 
 /* ===== css/style.css ===== */
@@ -1998,3 +2000,778 @@ html body #stream .card.sk{
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
 }
+
+/* ===== v91.css ===== */
+/* v91：设置页分块。板块标题、设置项、提示字三种样子分开 */
+
+/* 板块标题：大一号、加粗，左边一道色条，右边一条细线把板块隔开 */
+html body #sheetBody .sec{
+  display:flex!important;align-items:center;gap:10px;
+  margin:34px 2px 14px!important;
+  font-family:var(--serif);font-size:15px!important;font-weight:700;letter-spacing:.28em!important;
+  color:var(--tx-sec,var(--deep))!important;opacity:1!important;
+}
+html body #sheetBody .sec::before{display:block!important;content:"";flex:0 0 4px;height:17px;border-radius:2px;background:var(--accent)}
+html body #sheetBody .sec::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--ink) 14%,transparent)}
+html body #sheetBody .sec:first-child,html body #sheetBody > div:first-child > .sec:first-child{margin-top:6px!important}
+
+/* 每个设置项：一张圆角小卡片 */
+html body #sheetBody .field:has(.rg),
+html body #sheetBody .l4-swrow,
+html body #sheetBody .chk{
+  background:var(--surface-2);
+  border:1px solid color-mix(in srgb,var(--ink) 9%,transparent);
+  border-radius:16px;
+  padding:14px 16px 10px;
+  margin:0 0 10px;
+  box-sizing:border-box;
+}
+html body #sheetBody .l4-swrow{padding:14px 16px}
+html body #sheetBody .field:has(.rg)>label{
+  font-size:14px!important;font-weight:500;letter-spacing:.06em;
+  color:var(--tx-flabel,var(--ink))!important;margin:0 0 6px!important;
+}
+html body #sheetBody .field:has(.rg) .rg b{font-size:14px;font-weight:600;color:var(--accent);min-width:56px;text-align:right}
+
+/* 提示字：小一号、浅色，放进淡色底的小框里，前面一个 i，跟设置项一眼分开 */
+html body #sheetBody .hint:not(.mu-wait){
+  position:relative;
+  font-size:12px!important;line-height:1.75;font-weight:400;letter-spacing:.02em;
+  color:var(--tx-hint,var(--sub))!important;
+  background:color-mix(in srgb,var(--accent) 7%,transparent);
+  border-radius:12px;
+  padding:10px 12px 10px 32px;
+  margin:2px 0 16px;
+}
+html body #sheetBody .hint:not(.mu-wait)::before{
+  content:"i";position:absolute;left:11px;top:12px;
+  width:13px;height:13px;border-radius:50%;
+  border:1px solid currentColor;box-sizing:border-box;
+  font:italic 600 9px/11px Georgia,serif;text-align:center;opacity:.75;
+}
+
+/* ===== v92.css ===== */
+/* v92：设置页顶栏固定。返回、板块名、关闭放一排，下面怎么滑顶栏都不动 */
+html body .sheet.full .inner{padding-top:0!important}
+html body .sheet.full .sh{
+  position:sticky;top:0;z-index:30;
+  display:flex!important;align-items:center!important;gap:10px;
+  margin:0 -18px 14px!important;
+  padding:calc(env(safe-area-inset-top) + 12px) 18px 12px!important;
+  background:color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 84%,transparent);
+  -webkit-backdrop-filter:saturate(160%) blur(18px);backdrop-filter:saturate(160%) blur(18px);
+  border-bottom:1px solid color-mix(in srgb,var(--ink) 10%,transparent)!important;
+}
+html[data-style="glass"] body .sheet.full .sh{background:color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 58%,transparent)}
+html body .sheet.full .sh h2{flex:1;min-width:0;margin:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body .sheet.full.v92-bk .sh h2{text-align:center;font-size:17px!important}
+html body .sheet.full .sh .x{margin:0 -8px 0 0!important}
+
+/* 顶栏上的返回键，样子照原来那颗 */
+html body .sheet .v92-back{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+  padding:9px 15px 9px 12px;border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--ink) 14%,transparent);
+  background:color-mix(in srgb,var(--solid,#fff) 70%,transparent);
+  color:var(--deep);font-family:var(--sans);font-size:14px;line-height:1;letter-spacing:.08em;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+html body .sheet .v92-back:active{transform:scale(.97)}
+html body .sheet .v92-back[hidden]{display:none!important}
+
+/* 页面里原来那颗藏起来 */
+html body #sheetBody .sh-back.v92-hide{display:none!important}
+
+/* ===== v93.css ===== */
+/* v93：顶栏底下不要硬线，往下渐渐淡掉；字号预览卡 */
+
+/* 顶栏：去掉底线，底色往下延一截渐变，跟下面的内容化开 */
+html body .sheet.full .sh{
+  border-bottom:0!important;
+  margin-bottom:0!important;
+  background:color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 84%,transparent);
+}
+html[data-style="glass"] body .sheet.full .sh{background:color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 62%,transparent)}
+html body .sheet.full .sh::after{
+  content:"";position:absolute;left:0;right:0;top:100%;height:26px;pointer-events:none;
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 84%,transparent),transparent);
+  -webkit-backdrop-filter:saturate(160%) blur(10px);backdrop-filter:saturate(160%) blur(10px);
+  -webkit-mask-image:linear-gradient(to bottom,#000,transparent);mask-image:linear-gradient(to bottom,#000,transparent);
+}
+html[data-style="glass"] body .sheet.full .sh::after{
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--bg-a,var(--solid,#f4efe6)) 62%,transparent),transparent);
+}
+/* 渐变那一截占了位置，正文往下让一点，第一行不被盖住 */
+html body .sheet.full #sheetBody{padding-top:18px}
+
+/* 字号预览卡 */
+html body #sheetBody .v93-fzprev{
+  margin:4px 0 14px;padding:14px 16px;border-radius:16px;
+  background:var(--surface-2);
+  border:1px solid color-mix(in srgb,var(--ink) 9%,transparent);
+}
+html body #sheetBody .v93-fzprev .v93-fz-l{display:block;margin-bottom:8px;font-family:var(--sans);font-size:11px;letter-spacing:.18em;color:var(--accent)}
+html body #sheetBody .v93-fzprev p{margin:0;color:var(--ink);line-height:1.6}
+html body #sheetBody .v93-fzprev .v93-fz-a{font-size:calc(17px * var(--fz,1));font-weight:600;letter-spacing:.06em}
+html body #sheetBody .v93-fzprev .v93-fz-b{margin-top:4px;font-size:calc(15px * var(--fz,1))}
+html body #sheetBody .v93-fzprev .v93-fz-c{margin-top:8px;font-size:calc(11.5px * var(--fz,1));color:var(--sub)}
+
+/* ===== gffont.css ===== */
+/* v98：开屏用的宋体，只截了开屏要用的几十个字，直接写进这个文件里，不用再去网上下载字体 */
+@font-face{font-family:"GF Song";font-style:normal;font-weight:400;font-display:block;src:url(data:font/woff;base64,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) format("woff")}
+
+/* ===== splash95.css ===== */
+/* v95：正式开屏换成江亭晚。原来那个开屏（#splash）直接藏掉不再出现。
+   所有选择器都挂在 #gfsp 下面，变量和动画名也带 gf 前缀，不跟 app 里的样式撞 */
+#splash{display:none!important}
+#gfsp{--ga:#fdf6f4;--gb:#f6e3e6;--gink:#7a4652;--gsub:#b48a92;--gpetal:#f3b3c0;--gseal:#c4565f;--gtone:none;
+  position:fixed;inset:0;z-index:300;overflow:hidden;cursor:pointer;
+  background:linear-gradient(172deg,var(--ga) 0%,var(--gb) 100%);color:var(--gink);
+  font-family:"GF Song","Songti SC","STSong",serif;-webkit-tap-highlight-color:transparent;
+  transition:opacity .6s ease,transform .6s ease}
+#gfsp[data-tone="zi"]{--ga:#f9f5fc;--gb:#ebe1f4;--gink:#5c4870;--gsub:#9b88b0;--gpetal:#d6bdf0;--gseal:#8a5fb0;--gtone:hue-rotate(-50deg) saturate(.92)}
+#gfsp[data-tone="su"]{--ga:#f7f6f3;--gb:#e8e6e1;--gink:#45464a;--gsub:#8c8a86;--gpetal:#e4d8d8;--gseal:#a2463f;--gtone:grayscale(.85) contrast(1.05)}
+#gfsp.out{opacity:0;transform:scale(1.04);pointer-events:none}
+#gfsp .gf-art{position:absolute;display:block;max-width:none;mix-blend-mode:multiply;filter:var(--gtone);pointer-events:none;user-select:none;-webkit-user-drag:none}
+#gfsp .gf-art.keyed{mix-blend-mode:normal}
+#gfsp .gf-mist{left:-12%;bottom:-4%;width:130%;opacity:.5;animation:gf-fade 2.6s ease both,gf-drift 28s ease-in-out 2.6s infinite alternate}
+#gfsp .gf-vine{top:-2%;right:-10%;width:118%;max-width:620px;transform-origin:60% 0;-webkit-mask-image:linear-gradient(180deg,#000 58%,transparent 92%);mask-image:linear-gradient(180deg,#000 58%,transparent 92%);animation:gf-drop 1.7s cubic-bezier(.2,.8,.3,1) both,gf-sway 7s ease-in-out 1.7s infinite}
+#gfsp .gf-nm{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);display:grid;grid-template-columns:64px 30px 64px;justify-items:center;align-items:start}
+#gfsp .gf-nm b,#gfsp .gf-nm i{display:flex;flex-direction:column;align-items:center;font-style:normal}
+#gfsp .gf-nm b{font-weight:400;font-size:50px;line-height:1;gap:8px;color:var(--gink);text-shadow:0 2px 14px rgba(255,255,255,.9)}
+#gfsp .gf-nm b span{display:block;will-change:opacity,transform;animation:gf-ink 1.5s cubic-bezier(.25,.6,.3,1) both}
+#gfsp .gf-nm .gf-me{grid-column:3;grid-row:1}
+#gfsp .gf-nm .gf-ta{grid-column:1;grid-row:1;margin-top:58px}
+#gfsp .gf-nm i{grid-column:2;grid-row:1;font-size:12px;line-height:1;gap:9px;color:var(--gsub);margin-top:85px;animation:gf-fade 1.6s ease 1.6s both}
+#gfsp .gf-nm i span{display:block}
+#gfsp .gf-seal{position:absolute;left:-30px;bottom:-34px;width:26px;height:26px;border:1.5px solid var(--gseal);border-radius:3px;color:var(--gseal);font-size:17px;line-height:23px;text-align:center;opacity:.85;transform:rotate(-6deg);animation:gf-stamp .5s cubic-bezier(.3,1.6,.5,1) 3s both}
+#gfsp .gf-ft{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 56px);text-align:center;animation:gf-fade 2s ease 2.4s both}
+#gfsp .gf-ft p{margin:0;font-size:14px;letter-spacing:.4em;color:var(--gsub);padding-left:.4em}
+#gfsp .gf-ft em{display:block;margin-top:14px;font-style:normal;font-size:12px;letter-spacing:.6em;color:var(--gsub);opacity:.75;padding-left:.6em;animation:gf-breath 2.6s ease-in-out infinite}
+#gfsp .gf-pt{position:absolute;top:-6%;border-radius:80% 0 80% 0;background:var(--gpetal);pointer-events:none;animation:gf-fall linear infinite}
+@keyframes gf-fade{from{opacity:0}}
+/* 字体到了再开始浮现，不然先显示系统宋体再一换，看着像蹦出来 */
+#gfsp:not(.rd) .gf-nm b span,#gfsp:not(.rd) .gf-nm i,#gfsp:not(.rd) .gf-seal,#gfsp:not(.rd) .gf-ft{animation-play-state:paused}
+@keyframes gf-drop{from{opacity:0;transform:translateY(-40px) rotate(-3deg)}}
+@keyframes gf-sway{0%,100%{transform:rotate(0)}50%{transform:rotate(2.2deg)}}
+@keyframes gf-drift{to{transform:translateX(-7%)}}
+@keyframes gf-ink{0%{opacity:0;transform:translateY(-12px) scale(1.08)}45%{opacity:.55}100%{opacity:1;transform:none}}
+@keyframes gf-stamp{from{opacity:0;transform:rotate(-6deg) scale(1.8)}}
+@keyframes gf-breath{0%,100%{opacity:.35}50%{opacity:.85}}
+@keyframes gf-fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),112vh) rotate(var(--r))}}
+@media (prefers-reduced-motion:reduce){#gfsp,#gfsp *{animation:none!important}}
+
+/* 字体等不到就用手机自带宋体，动画中途不再换字 */
+#gfsp.nofont{font-family:"Songti SC","STSong",serif}
+/* 开屏单独一层，不跟后面 app 的重绘搅在一起 */
+#gfsp{transform:translateZ(0);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+#gfsp.out{transform:translateZ(0) scale(1.04)}
+
+/* v101：天青 */
+#gfsp[data-tone="qing"]{--ga:#f3f7fa;--gb:#dfe8ef;--gink:#3f5160;--gsub:#8597a6;--gpetal:#bcd0e0;--gseal:#5f86a6;--gtone:saturate(.6) hue-rotate(-140deg)}
+
+/* ===== v99.css ===== */
+/* v99：古风主页 + 侧栏。主页：日子、每日一句、日历、四个入口；侧栏：绿枝换色，九个入口沿枝两侧排开。不带红点 */
+html{--hink:#5a4a52;--hsub:#a08890;--hac:#c27a86;--hline:rgba(120,90,100,.25);--hvf:hue-rotate(255deg) saturate(1.05);--hpet:none;--hbgf:none}
+html[data-gt="zi"]{--hink:#4e4766;--hsub:#9590b0;--hac:#7f78b4;--hline:rgba(90,85,130,.25);--hvf:hue-rotate(185deg) saturate(.95);--hpet:hue-rotate(-40deg)}
+html[data-gt="su"]{--hink:#45464a;--hsub:#8e8c88;--hac:#6d6d72;--hline:rgba(70,70,70,.22);--hvf:grayscale(1) contrast(1.05);--hpet:grayscale(1);--hbgf:grayscale(.9)}
+html[data-gt="dk"]{--hink:#ece2e5;--hsub:#b3a5ab;--hac:#d39aa4;--hline:rgba(255,255,255,.2)}
+
+/* ── 主页 ── */
+section[data-view="home"]{padding:0!important;overflow:hidden!important}
+section[data-view="home"]>:not(#gh){display:none!important}
+#gh{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;color:var(--hink);font-family:"Songti SC","STSong","Noto Serif SC",serif;font-weight:400}
+#gh::-webkit-scrollbar{display:none}
+#gh button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#gh .gh-bg{position:fixed;inset:0;z-index:0;background:#fbf6f6 center top/cover no-repeat;filter:var(--hbgf);pointer-events:none}
+html[data-gt="dk"] #gh .gh-bg::after{content:"";position:absolute;inset:0;background:rgba(26,22,30,.76)}
+#gh .gh-in{position:relative;z-index:1;padding:calc(env(safe-area-inset-top) + 82px) 0 calc(env(safe-area-inset-bottom) + 20px)}
+
+#gh .gh-top{display:flex;align-items:stretch;justify-content:space-between;gap:12px;margin:0 22px}
+#gh .gh-dl{display:flex;align-items:flex-end;gap:12px;flex:0 0 auto}
+#gh .gh-day{font-family:"Cormorant Garamond",Georgia,serif;font-size:56px;line-height:.82}
+#gh .gh-meta b{display:block;font-weight:400;font-size:13.5px;letter-spacing:.28em;white-space:nowrap}
+#gh .gh-meta span{display:block;margin-top:5px;font-size:11px;letter-spacing:.26em;color:var(--hsub);white-space:nowrap}
+#gh .gh-qt{flex:1 1 auto;min-width:0;max-width:170px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;text-align:right;padding-left:12px;border-left:1px solid var(--hline);transition:opacity .3s}
+#gh .gh-qt small{font-size:9.5px;letter-spacing:.24em;color:var(--hsub)}
+#gh .gh-en{margin:3px 0 0;font-family:"Great Vibes","Snell Roundhand",cursive;font-size:14px;line-height:1.2}
+#gh .gh-en:empty{display:none}
+#gh .gh-zh{margin:2px 0 0;font-size:12.5px;line-height:1.55;letter-spacing:.1em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#gh .gh-alm{margin:14px 22px 0;display:flex;gap:18px;font-size:12.5px;letter-spacing:.18em}
+#gh .gh-alm em{font-style:normal}
+#gh .gh-alm i{font-style:normal;display:inline-block;width:18px;height:18px;line-height:16px;text-align:center;border:1px solid var(--hac);color:var(--hac);border-radius:3px;margin-right:7px;font-size:10.5px;letter-spacing:0}
+
+#gh .gh-hd{display:flex;align-items:baseline;gap:12px;margin:0 22px 10px}
+#gh .gh-hd b{font-weight:400;font-size:15.5px;letter-spacing:.35em}
+#gh .gh-hd span{font-family:"Cormorant Garamond",Georgia,serif;font-size:11px;letter-spacing:.32em;color:var(--hsub)}
+#gh .gh-hd i{flex:1;height:1px;background:var(--hline);transform:translateY(-4px)}
+#gh .gh-nav{margin-left:auto;display:flex;gap:4px}
+#gh .gh-nav button{width:30px;height:24px;font-size:16px;line-height:24px;color:var(--hsub)}
+
+#gh .gh-cal{padding-top:24px}
+#gh .gh-grid{display:grid;grid-template-columns:repeat(7,1fr);row-gap:7px;margin:0 16px;text-align:center}
+#gh .gh-w{font-size:11px;color:var(--hsub);padding-bottom:2px}
+#gh .gh-d{display:block;width:32px;height:32px;line-height:32px;margin:0 auto;border-radius:50%;font-family:"Cormorant Garamond",Georgia,serif;font-size:15px;transition:box-shadow .2s}
+#gh .gh-d.l1{background:color-mix(in srgb,var(--hac) 14%,rgba(255,255,255,.4))}
+#gh .gh-d.l2{background:color-mix(in srgb,var(--hac) 30%,rgba(255,255,255,.3))}
+#gh .gh-d.l3{background:color-mix(in srgb,var(--hac) 48%,rgba(255,255,255,.2))}
+#gh .gh-d.to{background:var(--hac);color:#fff}
+#gh .gh-d.sel{box-shadow:0 0 0 1.5px var(--hink)}
+
+#gh .gh-also{padding-top:26px}
+#gh .gh-pond{position:relative;height:200px;margin:0 6px}
+#gh .gh-wd{position:absolute;width:96px;margin-left:-48px;text-align:center;animation:ghBob 6s ease-in-out infinite;z-index:2}
+#gh .gh-wd b{display:block;font-weight:400;font-size:19px;letter-spacing:.3em;padding-left:.3em;line-height:1.1}
+#gh .gh-rf{display:block;font-size:19px;letter-spacing:.3em;padding-left:.3em;line-height:1;transform:scaleY(-1);opacity:.22;-webkit-mask-image:linear-gradient(transparent 20%,#000);mask-image:linear-gradient(transparent 20%,#000);height:11px;overflow:hidden}
+#gh .gh-wd em{display:block;margin-top:3px;font-style:italic;font-family:"Cormorant Garamond",Georgia,serif;font-size:11.5px;color:var(--hsub)}
+#gh .gh-rip{position:absolute;width:100px;height:30px;margin:-15px 0 0 -50px;border:1px solid rgba(255,255,255,.9);border-radius:50%;animation:ghRp 5s ease-out infinite;opacity:0;pointer-events:none}
+#gh .gh-rip.once{animation:ghRp 1.6s ease-out forwards}
+#gh .gh-pimg{position:absolute;background:center/contain no-repeat;filter:var(--hpet);pointer-events:none;animation:ghDrift 9s ease-in-out infinite}
+html[data-gt="dk"] #gh .gh-pimg{display:none}
+#gh .gh-pts{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+#gh .gh-pt{position:absolute;top:-4%;border-radius:80% 0 80% 0;background:color-mix(in srgb,var(--hac) 45%,#fff);animation:ghFall linear infinite}
+@keyframes ghRp{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.3);opacity:0}}
+@keyframes ghBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes ghDrift{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(8px,4px) rotate(8deg)}}
+@keyframes ghFall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+
+/* 主页左上的侧栏按钮：去掉圆玻璃，留三根细线 */
+html body.on-home #navBtn{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:var(--hink)!important}
+html body.on-home #navBtn span,html body.on-home #navBtn span::before,html body.on-home #navBtn span::after{height:1px!important;width:20px!important;opacity:.8}
+html body.on-home #navBtn span{width:14px!important}
+
+/* ── 侧栏 ── */
+html body #sidebar{width:300px!important;max-width:82vw!important;padding:0!important;border:0!important;border-radius:0!important;background:color-mix(in srgb,var(--hac) 5%,#fbf9f6)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overflow:hidden}
+#sidebar>:not(#gside){display:none!important}
+#gside{position:absolute;inset:0;font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt="dk"] #gside{--hink:#5a4a52;--hsub:#a08890;--hac:#c27a86}
+#gside .gs-stage{position:absolute;inset:0}
+#gside .gs-vine{position:absolute;left:-20%;top:9.7%;width:124%;height:86.7%;background:center/100% 100% no-repeat;filter:var(--hvf);pointer-events:none}
+#gside .gs-it{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;padding:8px 10px;border:0;background:none;font:inherit;color:var(--hink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+#gside .gs-it b{font-weight:400;font-size:15.5px;line-height:1;letter-spacing:.3em;padding-left:.3em;white-space:nowrap}
+#gside .gs-it small{margin-top:5px;font-family:"Cormorant Garamond",Georgia,serif;font-size:9px;letter-spacing:.2em;color:var(--hsub);white-space:nowrap}
+#gside .gs-it u{display:block;width:16px;height:1px;margin-top:6px;background:var(--hsub);opacity:.5;text-decoration:none;transition:width .25s}
+#gside .gs-it.on b,#gside .gs-it.on small{color:var(--hac)}
+#gside .gs-it.on u{width:26px;background:var(--hac);opacity:1}
+
+@media (prefers-reduced-motion:reduce){#gh *{animation:none!important}}
+
+/* v100：底图先藏着，读到了再淡入，不闪白；底色铺满整页 */
+#gh{background:#fbf6f6}
+html[data-gt="dk"] #gh{background:#1c1920}
+#gh .gh-bg{opacity:0;transition:opacity .45s ease}
+#gh .gh-bg.ld{opacity:1}
+
+/* ===== v101.css ===== */
+/* v101：每一页都铺主页底图；设置和子页面改成古风；侧栏去掉会拖慢打开的滤镜和模糊 */
+html[data-gt]{--deep:var(--ink)}
+html[data-gt="qing"]{--hink:#3f5160;--hsub:#8597a6;--hac:#5f86a6;--hline:rgba(70,100,130,.22);--hpet:hue-rotate(-130deg);--hbgf:hue-rotate(215deg) saturate(.85)}
+
+/* ── 全局底图 ── */
+#gbg{position:fixed;inset:0;z-index:0;background:#fbf6f6 center top/cover no-repeat;filter:var(--hbgf);pointer-events:none;opacity:0;transition:opacity .45s ease}
+#gbg.ld{opacity:1}
+#gbg::after{content:"";position:absolute;inset:0;background:rgba(255,252,252,.38);opacity:0;transition:opacity .3s}
+body:not(.on-home) #gbg::after{opacity:1}
+html[data-gt] body{background:#fbf6f6!important}
+html[data-gt] body::before{display:none!important}
+#wall{display:none!important}
+#gh{background:transparent!important}
+
+/* ── 设置弹层：底下也是那张底图，盖一层薄白 ── */
+html[data-gt] body .sheet.full{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body .sheet.full::before{content:"";position:absolute;inset:0;background:#fbf6f6 var(--gbgu,none) center top/cover no-repeat;filter:var(--hbgf);pointer-events:none}
+html[data-gt] body .sheet.full .inner{position:relative;z-index:1;background:rgba(255,252,252,.46)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body .sheet.full .sh{background:rgba(255,251,251,.86)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-bottom:0!important}
+html[data-gt] body .sheet.full .sh::after{background:linear-gradient(rgba(255,251,251,.86),rgba(255,251,251,0))!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;-webkit-mask-image:none!important;mask-image:none!important}
+
+/* 字：一律宋体 */
+html[data-gt] body .sheet{font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .sheet *:not(input):not(textarea){font-family:inherit}
+html[data-gt] body .sheet input,html[data-gt] body .sheet textarea{font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .sheet .sh h2{font-weight:400!important;letter-spacing:.45em!important;color:var(--ink)!important}
+html[data-gt] body .sheet .v92-back{background:none!important;border:0!important;box-shadow:none!important;padding:8px 4px!important;color:var(--sub)!important;letter-spacing:.2em}
+
+/* 板块标题：小菱形 + 细线 */
+html[data-gt] body #sheetBody .sec{font-weight:400!important;font-size:15px!important;letter-spacing:.35em!important;color:var(--ink)!important;margin:28px 2px 12px!important}
+html[data-gt] body #sheetBody .sec:first-child{margin-top:6px!important}
+html[data-gt] body #sheetBody .sec::before{flex:0 0 6px!important;width:6px!important;height:6px!important;border:1px solid var(--accent);background:none!important;border-radius:0!important;transform:rotate(45deg)}
+html[data-gt] body #sheetBody .sec::after{background:color-mix(in srgb,var(--ink) 12%,transparent)!important}
+
+/* 设置项：浅色实底小卡，不要毛玻璃 */
+html[data-gt] body #sheetBody .field:has(.rg),html[data-gt] body #sheetBody .l4-swrow,html[data-gt] body #sheetBody .chk,html[data-gt] body #sheetBody .v23-card{background:rgba(255,252,252,.82)!important;border:1px solid color-mix(in srgb,var(--ink) 10%,transparent)!important;border-radius:10px!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body #sheetBody .field>label{letter-spacing:.14em!important}
+
+/* 说明小字：左边一道淡色竖线 */
+html[data-gt] body #sheetBody .hint:not(.mu-wait){background:none!important;border-left:2px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:0!important;padding:2px 0 2px 12px!important;letter-spacing:.06em!important}
+html[data-gt] body #sheetBody .hint:not(.mu-wait)::before{display:none!important}
+
+/* 输入框、按钮 */
+html[data-gt] body #sheetBody .field input:not([type=range]):not([type=color]):not([type=checkbox]),html[data-gt] body #sheetBody textarea{background:rgba(255,255,255,.78)!important;border:1px solid color-mix(in srgb,var(--ink) 14%,transparent)!important;border-radius:8px!important}
+html[data-gt] body #sheetBody .primary{background:var(--accent)!important;color:#fff!important;border:0!important;border-radius:6px!important;letter-spacing:.3em;box-shadow:none!important}
+html[data-gt] body #sheetBody .ghost{background:rgba(255,255,255,.72)!important;color:var(--accent)!important;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent)!important;border-radius:6px!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body #sheetBody .seg{border-radius:8px!important}
+html[data-gt] body #sheetBody .seg button{border-radius:6px!important}
+
+/* ── 设置首页 ── */
+#sheetBody .gfs{padding-bottom:36px}
+#sheetBody .gfs-sec{margin:18px 0 0}
+#sheetBody .gfs-sec:first-child{margin-top:4px}
+#sheetBody .gfs-hd{display:flex;align-items:baseline;gap:10px;margin:0 4px 9px}
+#sheetBody .gfs-hd b{font-weight:400;font-size:15px;letter-spacing:.32em;color:var(--ink)}
+html[data-gt] body .sheet .gfs-hd span{font-family:"Cormorant Garamond",Georgia,serif;font-size:10.5px;letter-spacing:.3em;color:var(--sub)}
+#sheetBody .gfs-hd i{flex:1;height:1px;background:color-mix(in srgb,var(--ink) 12%,transparent);transform:translateY(-4px)}
+#sheetBody .gfs-box{background:rgba(255,252,252,.84);border:1px solid color-mix(in srgb,var(--ink) 10%,transparent);border-radius:14px;overflow:hidden}
+#sheetBody .gfs-row{display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;border:0;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#sheetBody .gfs-row+.gfs-row{border-top:1px solid color-mix(in srgb,var(--ink) 9%,transparent)}
+#sheetBody .gfs-row:active{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+#sheetBody .gfs-row .t{flex:1;min-width:0}
+#sheetBody .gfs-row .t b{display:block;font-weight:400;font-size:14.5px;letter-spacing:.14em}
+#sheetBody .gfs-row .t small{display:block;margin-top:3px;font-size:10.5px;letter-spacing:.08em;color:var(--sub)}
+#sheetBody .gfs-row em{font-style:normal;font-size:11.5px;color:var(--sub);white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis}
+#sheetBody .gfs-row em::after{content:" \203A"}
+#sheetBody .gfs-sw{display:flex;gap:10px;padding:14px 12px}
+#sheetBody .gfs-sw button{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px 10px;border-radius:12px;border:1px solid transparent;background:rgba(255,255,255,.5);font:inherit;color:var(--ink);cursor:pointer;position:relative;transition:border-color .3s;-webkit-tap-highlight-color:transparent}
+#sheetBody .gfs-sw button.on{border-color:var(--accent)}
+#sheetBody .gfs-sw .dot{width:34px;height:34px;border-radius:50%;box-shadow:inset 0 0 0 3px rgba(255,255,255,.7)}
+#sheetBody .gfs-sw b{font-weight:400;font-size:14px;letter-spacing:.2em;padding-left:.2em}
+#sheetBody .gfs-sw small{font-size:9.5px;color:var(--sub);letter-spacing:.1em}
+#sheetBody .gfs-sw .seal{position:absolute;top:-7px;right:-5px;width:18px;height:18px;border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:3px;font-size:10px;line-height:16px;text-align:center;transform:rotate(-6deg);display:none}
+#sheetBody .gfs-sw button.on .seal{display:block}
+
+/* ── 侧栏：绿枝的颜色已经提前转好，不再现算滤镜；遮罩不做模糊 ── */
+#gside .gs-vine{filter:none!important}
+html body #navMask{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #sidebar{will-change:transform}
+
+/* ===== v102.css ===== */
+/* v102：古风传讯页 */
+html[data-gt]{--gfcf:none}
+html[data-gt="zi"]{--gfcf:hue-rotate(-60deg) saturate(.9)}
+html[data-gt="qing"]{--gfcf:hue-rotate(-150deg) saturate(.7)}
+
+/* 顶栏、底栏底图 */
+.view[data-view="chat"] .chat-top,.chat-foot{isolation:isolate}
+.gf-tb,.gf-fb{position:absolute;inset:0;z-index:-1;pointer-events:none;background-repeat:no-repeat;background-size:cover;filter:var(--gfcf);transition:filter .3s}
+.gf-tb{background-image:url("chat/top.jpg?v=102");background-position:center 30%;opacity:.42}
+.gf-fb{background-image:url("chat/foot.jpg?v=102");background-position:center 42%;opacity:.9}
+
+/* 名字下面一行：小菱形 + 在侧 · 状态 */
+html[data-gt] body .chat-top .ts{position:absolute!important;left:50%!important;top:100%!important;transform:translateX(-50%)!important;margin:2px 0 0!important;max-width:230px!important;padding:0!important;background:none!important;border:0!important;border-radius:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-family:inherit!important;font-size:10.5px!important;line-height:1.5!important;letter-spacing:.18em!important;text-indent:0!important;color:var(--sub)!important;cursor:default}
+html[data-gt] body .chat-top .ts::before{content:"";display:inline-block;width:5px;height:5px;margin-right:6px;transform:rotate(45deg);background:var(--accent);opacity:.7;vertical-align:1px}
+html[data-gt] body .view[data-view="chat"] .chat-top{padding-bottom:19px!important}
+#btnChats{display:none!important}
+
+/* 正提笔：三笔墨线一笔一笔描出来 */
+@keyframes gfink{0%{transform:scaleX(.1);opacity:.3}60%{transform:scaleX(1);opacity:.9}100%{transform:scaleX(1);opacity:0}}
+html[data-gt] body .chat-foot #typing{letter-spacing:.16em}
+html[data-gt] body .chat-foot #typing i{width:13px!important;height:1.3px!important;margin-left:3px!important;border-radius:0!important;opacity:1!important;transform-origin:left center;animation:gfink 1.4s ease-in-out infinite!important}
+html[data-gt] body .chat-foot #typing i:nth-of-type(2){animation-delay:.25s!important}
+html[data-gt] body .chat-foot #typing i:nth-of-type(3){animation-delay:.5s!important}
+
+/* 底栏图标 */
+html[data-gt] body .chat-foot .send-row .bi{width:40px!important}
+html[data-gt] body .chat-foot .send-row img.gfic{width:36px;height:36px;display:block;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1px 1.5px rgba(60,40,50,.22));transition:transform .15s}
+html[data-gt] body .chat-foot .send-row .bi.on img.gfic{transform:scale(1.12)}
+html[data-gt] body .chat-foot .send-row #btnSend{width:46px!important;background:none!important;box-shadow:none!important;border-radius:10px!important}
+html[data-gt] body .chat-foot .send-row #btnSend img.gfic{width:42px;height:42px;margin:0}
+
+/* 输入条：方一点、白一点 */
+html[data-gt] body .chat-foot .send-row #input{border-radius:10px!important;background:rgba(255,255,255,.8)!important;border:1px solid color-mix(in srgb,var(--ink) 14%,transparent)!important;letter-spacing:.04em}
+
+/* 加号里的「另起一页」 */
+#gfNew i img{width:40px;height:40px;object-fit:contain;display:block}
+
+/* v103：顶栏加高，把名字和「在侧」那一行整个包住，气泡不再从名字底下露出来 */
+html[data-gt] body .view[data-view="chat"] .chat-top{min-height:90px!important;box-sizing:border-box!important}
+
+/* 时间和已阅：宋体；已阅放到时间后面，用主题色 */
+html[data-gt] body .pmeta{font-family:"Songti SC","STSong","Noto Serif SC",serif!important;letter-spacing:.1em!important}
+html[data-gt] body .pmeta .tm{order:1;color:var(--sub)!important}
+html[data-gt] body .pmeta .rd2{order:2;color:var(--accent)!important;font-family:inherit!important}
+html[data-gt] body .pmeta .fv{order:3}
+html[data-gt] body .card .head .rd{color:var(--accent)!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important}
+
+/* v104：正提笔不再浮在气泡上面，在输入条上方占一行，把气泡区顶上去 */
+html[data-gt] body .chat-foot #typing{position:relative!important;left:auto!important;bottom:auto!important;display:flex!important;width:auto!important;max-width:none!important;margin:0 0 6px!important;padding:2px 4px!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:12px!important;color:var(--sub)!important}
+html[data-gt] body .chat-foot #typing[hidden]{display:none!important}
+html[data-gt] body .chat-foot #typing .ty-av{display:none!important}
+html[data-gt] body .chat-foot #typing i{background:var(--accent)!important}
+
+/* 加号里的格子：去掉方块底，直接放古风图标，字改宋体 */
+html[data-gt] body .plusp button i{width:50px!important;height:50px!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+html[data-gt] body .plusp button i img{width:48px!important;height:48px!important;object-fit:contain;display:block;filter:drop-shadow(0 1px 1.5px rgba(60,40,50,.2))}
+html[data-gt] body .plusp button span{font-family:"Songti SC","STSong","Noto Serif SC",serif!important;letter-spacing:.12em!important}
+
+/* v105：整个顶部往上提，顶栏底图铺进状态栏那块；顶栏、底栏和气泡区之间改成渐变，不再一刀切 */
+html[data-gt] body:has(.view[data-view="chat"].on) #app{padding-top:0!important}
+html[data-gt] body:has(.view[data-view="chat"].on) #navBtn{top:calc(env(safe-area-inset-top) + 4px)!important}
+html[data-gt] body .view[data-view="chat"] .chat-top{padding-top:calc(env(safe-area-inset-top) + 4px)!important;min-height:calc(env(safe-area-inset-top) + 66px)!important;border-bottom:0!important;background:linear-gradient(to bottom,rgba(255,252,252,.6) 0%,rgba(255,252,252,.4) 62%,rgba(255,252,252,0) 100%)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-gt] body .view[data-view="chat"] .chat-top .pair{top:calc(env(safe-area-inset-top) + 4px)!important}
+.gf-tb{-webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);mask-image:linear-gradient(to bottom,#000 50%,transparent 100%)}
+html[data-gt] body .view[data-view="chat"] .chat-foot{border-top:0!important;background:linear-gradient(to bottom,rgba(255,252,252,0) 0%,rgba(255,252,252,.45) 38%,rgba(255,252,252,.6) 100%)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.gf-fb{-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 42%);mask-image:linear-gradient(to bottom,transparent 0%,#000 42%)}
+/* 气泡滚到顶栏、底栏边上时淡出去 */
+html[data-gt] body .view[data-view="chat"] #stream{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22px,#000 calc(100% - 12px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 22px,#000 calc(100% - 12px),transparent 100%)}
+
+/* 正提笔：挪出底栏，放在底栏上方单独一行；后面换成三点墨一点一点洇开 */
+@keyframes gfyun{0%{transform:scale(.4);opacity:0}35%{transform:scale(1);opacity:.95}100%{transform:scale(1.7);opacity:0}}
+html[data-gt] body .view[data-view="chat"]>#typing{position:relative!important;left:auto!important;bottom:auto!important;flex:0 0 auto;display:flex!important;align-items:center;gap:0!important;width:auto!important;max-width:none!important;margin:0!important;padding:2px 22px 6px!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:12px!important;letter-spacing:.16em!important;color:var(--sub)!important;animation:none!important}
+html[data-gt] body .view[data-view="chat"]>#typing[hidden]{display:none!important}
+html[data-gt] body #typing .ty-av{display:none!important}
+html[data-gt] body #typing i{display:inline-block!important;width:6px!important;height:6px!important;margin:0 0 0 5px!important;border-radius:50%!important;background:radial-gradient(circle,var(--accent) 0%,var(--accent) 38%,transparent 72%)!important;opacity:0;animation:gfyun 1.6s ease-out infinite!important}
+html[data-gt] body #typing i:nth-of-type(1){margin-left:8px!important}
+html[data-gt] body #typing i:nth-of-type(2){animation-delay:.3s!important}
+html[data-gt] body #typing i:nth-of-type(3){animation-delay:.6s!important}
+
+/* v106：底栏裁矮；降温——去掉每个气泡各自开的实时模糊、去掉气泡区滚动遮罩，不在主页时停掉花瓣涟漪动画 */
+html[data-gt] body .view[data-view="chat"] .chat-foot{padding:4px 10px calc(4px + env(safe-area-inset-bottom))!important}
+html[data-gt] body .chat-foot .send-row #input{min-height:40px!important;padding:8px 14px!important;line-height:22px!important}
+html[data-gt] body .chat-foot .send-row .bi{height:40px!important}
+html[data-gt] body .chat-foot .send-row img.gfic{width:32px!important;height:32px!important}
+html[data-gt] body .chat-foot .send-row #btnSend{height:40px!important}
+html[data-gt] body .chat-foot .send-row #btnSend img.gfic{width:38px!important;height:38px!important}
+html[data-gt] body .plusp{padding:2px 6px 6px!important}
+.gf-fb{background-position:center 55%!important}
+
+/* 气泡区：滚动时整块遮罩每一帧都要重算，最费电，去掉 */
+html[data-gt] body .view[data-view="chat"] #stream{-webkit-mask-image:none!important;mask-image:none!important;contain:layout paint}
+
+/* 气泡：每个气泡一层实时模糊，几十个叠在会动的底图上，手机一直在重算。换成半透明实底，看着差不多 */
+html[data-gt] body .card,html[data-gt][data-bubglass="1"] body .card,html[data-gt] body .pcol .card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt][data-bubglass="1"] .card.ta{background:rgba(255,255,255,.72)!important}
+html[data-gt][data-bubglass="1"] .card.me{background:color-mix(in srgb,var(--accent) 14%,rgba(255,255,255,.8))!important}
+
+/* 顶栏、底栏底图只画一次，单独一层 */
+.gf-tb,.gf-fb{transition:none!important;will-change:auto;contain:strict}
+
+/* 不在主页时，主页的落花、涟漪、浮动全部停下 */
+body:not(.on-home) #gh,body:not(.on-home) #gh *{animation-play-state:paused!important}
+body:not(.on-home) #gh .gh-pts{display:none!important}
+
+/* v107：省电——底图不再用滤镜现场转色，三种设色各用一张提前转好的图 */
+html[data-gt="qing"]{--hbgf:none!important}
+.gf-tb,.gf-fb{filter:none!important}
+html[data-gt="zi"] .gf-tb{background-image:url("chat/top_zi.jpg?v=107")!important}
+html[data-gt="qing"] .gf-tb{background-image:url("chat/top_qing.jpg?v=107")!important}
+html[data-gt="zi"] .gf-fb{background-image:url("chat/foot_zi.jpg?v=107")!important}
+html[data-gt="qing"] .gf-fb{background-image:url("chat/foot_qing.jpg?v=107")!important}
+
+/* v108：素笺气泡——米白纸、一圈细边、方角；你的那张右上角折一个小角 */
+html[data-gt][data-bubble="plain"] body .card:not(.sk){
+  --tilt:0deg;
+  background:#fffdf8!important;
+  color:var(--ink)!important;
+  border:1px solid color-mix(in srgb,var(--accent) 26%,transparent)!important;
+  border-radius:3px!important;
+  box-shadow:0 1px 3px rgba(80,60,60,.08)!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  padding:8px 13px!important;
+  font-family:"Songti SC","STSong","Noto Serif SC",serif;
+}
+html[data-gt][data-bubble="plain"] body .card.me:not(.sk){
+  position:relative;
+  background:color-mix(in srgb,var(--accent) 10%,#fffdf8)!important;
+  padding-right:18px!important;
+  -webkit-clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+}
+/* 折过来的那一角：比纸深一点 */
+html[data-gt][data-bubble="plain"] body .card.me:not(.sk)::after{
+  content:"";position:absolute;top:-1px;right:-1px;width:11px;height:11px;pointer-events:none;
+  background:linear-gradient(225deg,transparent 50%,color-mix(in srgb,var(--accent) 32%,#fff) 50%);
+  box-shadow:-1px 1px 1px rgba(80,60,60,.08);
+}
+html[data-gt][data-bubble="plain"] body .card:not(.sk) .body{color:inherit!important;line-height:1.7}
+html[data-gt][data-bubble="plain"] body .card:not(.sk) .qt{background:color-mix(in srgb,var(--accent) 8%,transparent)!important;border-left:2px solid color-mix(in srgb,var(--accent) 50%,transparent)!important;border-radius:2px!important;color:var(--sub)!important}
+
+/* ===== v109.css ===== */
+/* v109：音乐条、称谓与小像、字卡库（素笺匣）改古风 */
+
+/* ── 音乐条：一张素笺，左右两道细线，小像变成圆唱片 ── */
+html[data-gt] body #muNow{margin:4px 14px 0!important;padding:5px 9px 8px 8px!important;gap:5px!important;background:rgba(255,253,248,.93)!important;border:1px solid color-mix(in srgb,var(--accent) 24%,transparent)!important;border-radius:3px!important;box-shadow:0 1px 3px rgba(80,60,60,.07)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body #muNow::before,html[data-gt] body #muNow::after{content:"";position:absolute;top:3px;bottom:3px;width:1px;background:color-mix(in srgb,var(--accent) 30%,transparent);pointer-events:none}
+html[data-gt] body #muNow::before{left:3px}
+html[data-gt] body #muNow::after{right:3px}
+html[data-gt] body #muNow img{flex:0 0 30px!important;width:30px!important;height:30px!important;border-radius:50%!important;box-shadow:0 0 0 2px #fffdf8,0 0 0 3px color-mix(in srgb,var(--accent) 40%,transparent)}
+html[data-gt] body #muNow .mu-st b{font-weight:400!important;font-size:13px!important;letter-spacing:.1em;color:var(--ink)}
+html[data-gt] body #muNow .mu-st b:not(:empty)::before{content:"\300C"}
+html[data-gt] body #muNow .mu-st b:not(:empty)::after{content:"\300D"}
+html[data-gt] body #muNow .mu-st em{font-style:normal!important;font-size:10px!important;letter-spacing:.14em;color:var(--sub)!important}
+html[data-gt] body #muNow .mu-st em:not(:empty)::before{content:"\542C\66F2 \00B7 "}
+html[data-gt] body #muNow button{width:28px!important;height:28px!important;color:var(--ink)!important;background:none!important}
+html[data-gt] body #muNow button svg{width:16px!important;height:16px!important}
+html[data-gt] body #muNow [data-mu="toggle"]{width:30px!important;height:30px!important;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent)!important;color:var(--accent)!important}
+html[data-gt] body #muNow .mu-x{width:22px!important;height:22px!important;flex-basis:22px!important;color:var(--sub)!important;font-size:15px!important}
+html[data-gt] body #muNow .pg{left:0!important;bottom:2px!important;height:1px!important;background:var(--accent)!important;opacity:.9!important;overflow:visible}
+html[data-gt] body #muNow .pg::after{content:"";position:absolute;right:-3px;top:-2px;width:5px;height:5px;transform:rotate(45deg);background:var(--accent);border-radius:1px 50%}
+
+/* ── 称谓与小像：两张名帖 ── */
+.gfpf-tie{display:flex;align-items:stretch;margin-top:6px}
+.gfpf-card{flex:1;min-width:0;position:relative;padding:18px 10px 14px;text-align:center;background:rgba(255,253,248,.93);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:3px;box-shadow:0 1px 4px rgba(80,60,60,.07)}
+.gfpf-card::before{content:"";position:absolute;inset:4px;border:1px solid color-mix(in srgb,var(--accent) 14%,transparent);pointer-events:none}
+.gfpf-card .who{font-size:10px;letter-spacing:.4em;color:var(--sub);margin-bottom:12px}
+.gfpf-card .av{width:68px;height:68px;margin:0 auto;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--accent) 14%,#fff);color:var(--accent);box-shadow:0 0 0 3px #fffdf8,0 0 0 4px color-mix(in srgb,var(--accent) 45%,transparent)}
+.gfpf-card .av img{width:100%;height:100%;object-fit:cover;display:block}
+.gfpf-card .pick{position:relative;margin-top:10px;border:0;background:none;font:inherit;font-size:11px;letter-spacing:.2em;color:var(--accent);cursor:pointer}
+.gfpf-card .fld{position:relative;margin-top:12px}
+.gfpf-card .fld label{display:block;font-size:9.5px;letter-spacing:.3em;color:var(--sub)}
+.gfpf-card .fld input{width:100%;margin-top:3px;border:0!important;border-bottom:1px solid color-mix(in srgb,var(--ink) 18%,transparent)!important;border-radius:0!important;background:none!important;box-shadow:none!important;font:inherit;font-size:15px;letter-spacing:.2em;text-align:center;color:var(--ink);padding:3px 0!important;outline:none}
+.gfpf-card .fld.s input{font-size:13px}
+.gfpf-knot{flex:0 0 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.gfpf-knot i{width:1px;flex:1;background:color-mix(in srgb,var(--accent) 35%,transparent)}
+.gfpf-knot span{width:24px;height:24px;display:grid;place-items:center;font-size:10px;line-height:1.05;color:#fff;background:var(--accent);border-radius:3px;transform:rotate(-4deg);writing-mode:vertical-rl}
+.gfpf-ok{display:block;width:100%;margin-top:20px;padding:11px;border:1px solid color-mix(in srgb,var(--accent) 55%,transparent);background:color-mix(in srgb,var(--accent) 10%,#fffdf8);font:inherit;font-size:15px;letter-spacing:.6em;color:var(--accent);border-radius:3px;cursor:pointer}
+.gfpf-lnk{display:block;margin:12px auto 0;border:0;background:none;font:inherit;font-size:11px;letter-spacing:.15em;color:var(--sub);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* ── 字卡库：素笺匣 ── */
+html[data-gt] body .view[data-view="lib"]{font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .l4-seg button{font-family:inherit!important;letter-spacing:.3em!important}
+html[data-gt] body .l4-ib{background:none!important;border:0!important;box-shadow:none!important;color:var(--ink)!important}
+html[data-gt] body .l4-search input{border-radius:3px!important;background:rgba(255,253,248,.9)!important;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)!important;font-family:inherit!important;letter-spacing:.1em}
+html[data-gt] body .lb-pill{border-radius:3px!important;font-family:inherit!important;letter-spacing:.15em!important;background:rgba(255,253,248,.85)!important;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)!important;box-shadow:none!important}
+html[data-gt] body .lb-pill.on{background:color-mix(in srgb,var(--accent) 16%,#fffdf8)!important;border-color:color-mix(in srgb,var(--accent) 55%,transparent)!important;color:var(--accent)!important}
+html[data-gt] body .l4-grp{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-gt] body .l4-gh{background:none!important;border:0!important}
+html[data-gt] body .l4-gh>i{width:3px!important;height:15px!important;border-radius:1px!important}
+html[data-gt] body .l4-gh b{font-weight:400!important;letter-spacing:.25em!important}
+html[data-gt] body .l4-gh .c{color:var(--sub)!important;font-size:11px!important}
+html[data-gt] body .l4-cards{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;padding:8px 2px 6px!important;border-top:0!important}
+html[data-gt] body .l4-card{position:relative;flex-direction:column!important;align-items:stretch!important;gap:0!important;margin:0!important;padding:9px 11px 3px!important;border-radius:3px!important;background:#fffdf8!important;border:1px solid color-mix(in srgb,var(--accent) 24%,transparent)!important;box-shadow:0 1px 3px rgba(80,60,60,.07)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;-webkit-clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%);clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%)}
+html[data-gt] body .l4-card::after{content:"";position:absolute;top:0;right:0;width:9px;height:9px;pointer-events:none;background:linear-gradient(225deg,transparent 50%,color-mix(in srgb,var(--accent) 30%,#fff) 50%)}
+html[data-gt] body .l4-card .t{font-family:inherit!important;font-size:13.5px!important;line-height:1.75!important;padding-top:0!important;color:var(--ink)}
+html[data-gt] body .l4-ops{justify-content:flex-end;opacity:.65}
+html[data-gt] body .l4-ops button{width:24px!important;height:24px!important}
+html[data-gt] body .l4-ops svg{width:14px!important;height:14px!important}
+html[data-gt] body .l4-card.off .tx{text-decoration:none!important;opacity:.45!important}
+html[data-gt] body .l4-card.off .t::after{content:"\3014\85CF\3015";margin-left:3px;font-size:11px;color:var(--sub)}
+html[data-gt] body .l4-card.sel{border-color:var(--accent)!important;background:color-mix(in srgb,var(--accent) 9%,#fffdf8)!important}
+html[data-gt] body .l4-new{border-radius:3px!important;letter-spacing:.5em!important;font-family:inherit!important;background:color-mix(in srgb,var(--accent) 12%,#fffdf8)!important;color:var(--accent)!important;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent)!important;box-shadow:none!important}
+
+/* ── 信箱：信封换成秋千那张，跟设色换色 ── */
+html[data-gt] body .env{position:relative!important;display:block!important;width:100%!important;height:150px!important;margin:0 0 14px!important;padding:0!important;overflow:hidden!important;border-radius:3px!important;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)!important;box-shadow:0 2px 6px rgba(80,60,60,.1)!important;background:#fffdfa url("mail/env_fen.jpg?v=109") center 46%/cover no-repeat!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transform:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif;text-align:center}
+html[data-gt="zi"] body .env{background-image:url("mail/env_zi.jpg?v=109")!important}
+html[data-gt="qing"] body .env{background-image:url("mail/env_qing.jpg?v=109")!important}
+html[data-gt] body .env .env-slip,html[data-gt] body .env .env-flap,html[data-gt] body .env .env-hill{display:none!important}
+html[data-gt] body .env .env-face{position:absolute!important;left:36%!important;right:22%!important;top:22%!important;bottom:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:6px!important;margin:0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;transform:none!important}
+html[data-gt] body .env .env-t{font-size:16px!important;font-weight:400!important;letter-spacing:.3em!important;color:var(--ink)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+html[data-gt] body .env .env-f{font-size:10.5px!important;letter-spacing:.2em!important;color:var(--sub)!important}
+html[data-gt] body .env .env-foot{display:flex!important;flex-direction:column!important;align-items:center!important;gap:2px!important;margin:0!important;padding:0!important;border:0!important;background:none!important}
+html[data-gt] body .env .env-d,html[data-gt] body .env .env-st{font-size:10px!important;letter-spacing:.15em!important;color:var(--sub)!important;background:none!important;border:0!important;padding:0!important}
+html[data-gt] body .env .env-st.wait{color:var(--accent)!important}
+html[data-gt] body .env .env-wax{position:absolute!important;left:auto!important;top:auto!important;right:10px!important;bottom:10px!important;width:22px!important;height:22px!important;display:grid!important;place-items:center!important;margin:0!important;font-size:0!important;color:#fff!important;background:var(--accent)!important;border-radius:3px!important;box-shadow:none!important;transform:rotate(5deg)!important;opacity:.9}
+html[data-gt] body .env .env-wax::after{content:"\672A\542F";writing-mode:vertical-rl;font-size:9.5px;line-height:1.05}
+
+/* ── 拆信：信纸用荷花那张，正文只在中间那块白纸里 ── */
+html[data-gt] body .reader{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(40,30,36,.38)!important;padding:22px 10px!important}
+html[data-gt] body .letter{position:relative!important;width:100%!important;max-width:460px!important;height:auto!important;max-height:none!important;aspect-ratio:1179/876;padding:10.5% 17% 9% 23%!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;background:url("mail/paper_fen.jpg?v=109") center/100% 100% no-repeat!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif;color:#4a3e44}
+html[data-gt="zi"] body .letter{background-image:url("mail/paper_zi.jpg?v=109")!important}
+html[data-gt="qing"] body .letter{background-image:url("mail/paper_qing.jpg?v=109")!important}
+html[data-gt] body .letter::before,html[data-gt] body .letter::after{display:none!important}
+html[data-gt] body .letter-head{position:static!important;justify-content:center!important;flex:0 0 auto}
+html[data-gt] body .letter-head h3{font-size:15px!important;letter-spacing:.3em!important;color:var(--ink)!important;text-align:center}
+html[data-gt] body #rClose{position:absolute!important;right:2px!important;top:-40px!important;width:30px!important;height:30px!important;border-radius:50%!important;border:0!important;background:rgba(255,253,248,.92)!important;color:var(--ink)!important;box-shadow:none!important}
+html[data-gt] body .letter-body{margin:6px 0 0!important;min-height:0;flex:1 1 auto;overflow-y:auto!important;font-size:12.5px!important;line-height:1.95!important;letter-spacing:.05em;color:#4a3e44!important;scrollbar-width:none}
+html[data-gt] body .letter-body::-webkit-scrollbar{display:none}
+html[data-gt] body .letter-foot{position:absolute!important;left:0;right:0;top:calc(100% + 8px);margin:0!important;padding:0!important;border:0!important;flex-direction:column;gap:8px;justify-content:center!important}
+html[data-gt] body .letter-foot .from{color:#fffdf8!important;font-family:inherit!important;letter-spacing:.2em!important;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+html[data-gt] body .letter-foot .acts{justify-content:center;gap:14px!important}
+html[data-gt] body .letter-foot .acts button{border:1px solid rgba(255,255,255,.6)!important;background:rgba(255,253,248,.92)!important;font-family:inherit!important;font-size:13px!important;letter-spacing:.3em!important;color:var(--accent)!important;border-radius:3px!important;box-shadow:none!important;padding:7px 18px!important}
+
+/* ===== v110.css ===== */
+/* v110：图片走缓存；侧栏按钮统一成主页那三根细线；字卡库顶上固定；名帖点小像换图；点气泡浮出的小条改成素笺 */
+
+/* ── 图片：用 gfimg.js 从缓存里取出来的那张 ── */
+html[data-gt] body .gf-tb{background-image:var(--gf-tb,none)!important}
+html[data-gt] body .gf-fb{background-image:var(--gf-fb,none)!important}
+html[data-gt] body .env{background-image:var(--gf-env,none)!important}
+html[data-gt] body .letter{background-image:var(--gf-paper,none)!important}
+
+/* ── 侧栏绿枝：再淡一点 ── */
+#gside .gs-vine{opacity:.82}
+
+/* ── 每一页左上角都是主页那样的三根细线，不要圆底 ── */
+html[data-gt] body #navBtn{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;color:var(--hink,var(--ink))!important}
+html[data-gt] body #navBtn span,html[data-gt] body #navBtn span::before,html[data-gt] body #navBtn span::after{height:1px!important;width:20px!important;opacity:.8}
+html[data-gt] body #navBtn span{width:14px!important}
+
+/* ── 字卡库：标题、主字卡/氛围感、工具、分组按钮都固定在顶上，只有下面的字卡在滑 ── */
+html[data-gt] body .view[data-view="lib"].on{display:flex!important;flex-direction:column;overflow:hidden!important;padding-bottom:0!important}
+html[data-gt] body .view[data-view="lib"]>.mo-bar{flex:0 0 auto}
+html[data-gt] body .view[data-view="lib"] #libPage{flex:1 1 0;min-height:0;display:flex;flex-direction:column;padding-bottom:0!important}
+html[data-gt] body #libPage>*{flex:0 0 auto}
+html[data-gt] body #libPage>#l4List{flex:1 1 0;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none;margin:0 -16px;padding:2px 16px calc(96px + env(safe-area-inset-bottom))}
+html[data-gt] body #libPage>#l4List::-webkit-scrollbar{display:none}
+html[data-gt] body #libPage>.lb-pills{margin-bottom:2px}
+
+/* ── 名帖：不要「换小像」，点小像就换 ── */
+.gfpf-card .av{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s}
+.gfpf-card .av:active{transform:scale(.95)}
+.gfpf-card .av+.fld{margin-top:16px}
+
+/* ── 点气泡浮出的「引用 收藏 删除」：素笺小条 ── */
+html[data-gt] body #bpop{filter:drop-shadow(0 4px 12px rgba(80,60,60,.16))!important}
+html[data-gt] body #bpop .bp-in{background:#fffdf8!important;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)!important;border-radius:3px!important;padding:3px!important;gap:0!important}
+html[data-gt] body #bpop button{min-width:52px!important;padding:6px 6px 5px!important;border-radius:2px!important;color:var(--ink)!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:11.5px!important;letter-spacing:.2em!important;text-indent:.2em}
+html[data-gt] body #bpop button+button{border-left:1px solid color-mix(in srgb,var(--accent) 18%,transparent)!important}
+html[data-gt] body #bpop button:active{background:color-mix(in srgb,var(--accent) 10%,transparent)!important}
+html[data-gt] body #bpop svg{width:18px!important;height:18px!important;color:var(--accent)}
+html[data-gt] body #bpop .bp-ar{width:9px!important;height:9px!important;margin-left:-4.5px!important;bottom:-5px!important;background:#fffdf8!important;border-radius:0!important;border-right:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+html[data-gt] body #bpop.below .bp-ar{bottom:auto!important;top:-5px!important;border:0;border-left:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-top:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+
+/* ── 信封：像一只真信封——左上邮编格、右上邮票框、中间收信人红框、四边一道内框 ── */
+html[data-gt] body .env{box-shadow:0 2px 6px rgba(80,60,60,.12),inset 0 0 0 5px rgba(255,253,248,.55),inset 0 0 0 6px color-mix(in srgb,var(--accent) 22%,transparent)!important}
+html[data-gt] body .env::before{content:""!important;display:block!important;position:absolute!important;left:14px!important;top:12px!important;width:85px!important;height:13px!important;margin:0!important;transform:none!important;box-sizing:border-box;border:1px solid color-mix(in srgb,var(--accent) 60%,transparent)!important;border-left:0!important;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--accent) 60%,transparent) 0 1px,transparent 1px 14px)!important;opacity:.85;pointer-events:none;z-index:1}
+html[data-gt] body .env::after{content:"\90AE"!important;display:grid!important;place-items:center;position:absolute!important;right:14px!important;top:12px!important;left:auto!important;bottom:auto!important;width:30px!important;height:36px!important;margin:0!important;transform:rotate(3deg)!important;border:1px dashed color-mix(in srgb,var(--accent) 65%,transparent)!important;background:color-mix(in srgb,var(--accent) 12%,rgba(255,253,248,.85))!important;font-family:"Songti SC","STSong",serif;font-size:12px;color:var(--accent);pointer-events:none;z-index:1}
+html[data-gt] body .env .env-face{padding:8px 6px!important;border:1px solid color-mix(in srgb,var(--accent) 50%,transparent)!important;background:rgba(255,253,248,.55)!important;box-shadow:inset 0 0 0 2px rgba(255,253,248,.6),inset 0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)!important;border-radius:1px!important}
+html[data-gt] body .env .env-wax{z-index:2}
+
+/* ===== v111.css ===== */
+/* v111：拆信正文挪进信纸中间那块白纸；收藏标记换「藏」字小印；收藏页素笺；加号面板和底栏分开 */
+
+/* ── 拆信：白纸在图上的位置量过，左右各约 25.6%，上 18%、下 38%（按高） ── */
+html[data-gt] body .letter{padding:15.5% 28.3% 30% 28%!important;display:flex!important;flex-direction:column!important}
+html[data-gt] body .letter-head h3{font-size:14px!important;letter-spacing:.25em!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+html[data-gt] body .letter-body{margin:4px 0 0!important;font-size:12px!important;line-height:1.8!important;letter-spacing:.04em}
+
+/* ── 气泡上的收藏标记：★ 换成「藏」字小印 ── */
+html[data-gt] body .fv,html[data-gt] body .tafv{font-size:0!important;line-height:0!important;display:inline-flex!important;align-items:center}
+html[data-gt] body .fv::after,html[data-gt] body .tafv::after{content:"\85CF";display:inline-grid;place-items:center;width:14px;height:14px;font-size:9px;line-height:1;font-family:"Songti SC","STSong","Noto Serif SC",serif;color:#fff;background:var(--tx-fav,var(--accent));border-radius:2px;transform:rotate(-4deg);opacity:.9}
+
+/* ── 收藏页：素笺 ── */
+html[data-gt] body .view[data-view="fav"] .fav{position:relative;margin:14px 0!important;padding:16px 34px 10px 24px!important;border-radius:2px!important;background:#fffdf8!important;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)!important;box-shadow:0 2px 6px rgba(80,60,60,.08)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .view[data-view="fav"] .fav::before{content:"";position:absolute;left:12px;top:16px;bottom:16px;width:1px;background:var(--accent);opacity:.45}
+html[data-gt] body .view[data-view="fav"] .fav::after{content:"\85CF";position:absolute;right:10px;top:12px;width:18px;height:18px;display:grid;place-items:center;font-size:10.5px;color:var(--accent);border:1px solid var(--accent);border-radius:2px;transform:rotate(6deg);opacity:.7}
+html[data-gt] body .view[data-view="fav"] .fav p{font-family:inherit!important;font-size:14.5px!important;line-height:2!important;letter-spacing:.06em;color:var(--ink)}
+html[data-gt] body .view[data-view="fav"] .fav .fm{margin-top:10px!important;padding-top:8px;border-top:1px dashed color-mix(in srgb,var(--accent) 28%,transparent);font-family:inherit!important;font-size:10.5px!important;letter-spacing:.15em!important}
+html[data-gt] body .view[data-view="fav"] .fav .fm span{color:var(--sub)!important}
+html[data-gt] body .view[data-view="fav"] .fav .fm button{font-family:inherit!important;font-size:11.5px!important;letter-spacing:.25em!important;color:var(--accent)!important;padding:3px 2px 3px 8px!important}
+html[data-gt] body .view[data-view="fav"] .fav .fm button+button{border-left:1px solid color-mix(in srgb,var(--accent) 25%,transparent);margin-left:4px}
+html[data-gt] body .view[data-view="fav"] .empty{font-family:"Songti SC","STSong","Noto Serif SC",serif;letter-spacing:.12em}
+
+/* ── 加号面板：垫一张素笺，和底栏的图分开 ── */
+html[data-gt] body .plusp.on{margin:0 0 6px!important;padding:12px 10px 10px!important;background:rgba(255,253,248,.95)!important;border:1px solid color-mix(in srgb,var(--accent) 24%,transparent)!important;border-radius:4px!important;box-shadow:0 2px 8px rgba(80,60,60,.08)!important}
+html[data-gt] body #gfNew i{color:var(--accent)}
+html[data-gt] body #gfNew i svg{width:44px;height:44px;display:block}
+
+/* 信纸高度锁死在图片比例上，不让正文把纸撑长（撑长后白纸会被拉伸、字跑出白纸） */
+html[data-gt] body .letter{min-height:0!important;height:auto!important;aspect-ratio:1179/876!important;box-sizing:border-box!important;padding:15% 28.3% 30.5% 28%!important}
+html[data-gt] body .letter-body{flex:1 1 0!important;min-height:0!important}
+
+/* ===== v112.css ===== */
+/* v112：加号面板浮在底栏上方；朋友圈古风；信封去掉信封符号、日期名字换宋体；天青的开屏和侧栏调蓝 */
+
+/* ── 加号面板：单独浮在输入条上方，底栏高度不变 ── */
+html[data-gt] body .chat-foot .plusp.on{position:absolute!important;left:10px!important;right:10px!important;bottom:calc(100% + 8px)!important;z-index:30!important;margin:0!important;box-shadow:0 6px 18px rgba(50,60,80,.14)!important}
+html[data-gt] body .plusp #gfNew i svg{width:44px!important;height:44px!important;display:block!important}
+
+/* ── 信封 ── */
+html[data-gt] body .env .env-f::before{content:none!important;display:none!important}
+html[data-gt] body .env .env-t,html[data-gt] body .env .env-f,html[data-gt] body .env .env-d,html[data-gt] body .env .env-st{font-family:"Songti SC","STSong","Noto Serif SC",serif!important}
+html[data-gt] body .env .env-f{font-size:11px!important;letter-spacing:.3em!important;padding-left:.3em;color:var(--ink)!important;opacity:.8}
+html[data-gt] body .env .env-d{display:inline-flex!important;align-items:center;gap:6px;font-size:11px!important;letter-spacing:.35em!important;padding-left:.35em!important;color:var(--accent)!important}
+html[data-gt] body .env .env-d::before,html[data-gt] body .env .env-d::after{content:"";width:12px;height:1px;background:currentColor;opacity:.45}
+
+/* ── 天青：开屏不再发灰，侧栏底色偏蓝 ── */
+#gfsp[data-tone="qing"]{--ga:#f1f6fb;--gb:#d6e6f3;--gpetal:#b2cde5;--gtone:hue-rotate(-148deg) saturate(1.05)}
+html[data-gt="qing"] body #sidebar{background:linear-gradient(180deg,#f3f8fc,#e6eff7)!important}
+
+/* ── 朋友圈 ── */
+html[data-gt] body .view[data-view="moments"]{--gfl:color-mix(in srgb,var(--accent) 24%,transparent);font-family:"Songti SC","STSong","Noto Serif SC",serif}
+html[data-gt] body .view[data-view="moments"] *{font-family:inherit}
+html[data-gt] body .m2-cover::before{content:"朋友圈";position:absolute;left:18px;top:18px;z-index:2;writing-mode:vertical-rl;letter-spacing:.5em;font-size:13px;line-height:1;color:#fff;background:var(--accent);padding:8px 5px 3px;border-radius:2px;opacity:.85}
+html[data-gt] body .m2-nm{letter-spacing:.35em!important;font-size:17px!important}
+html[data-gt] body .m2-av{border-radius:0!important;padding:4px!important;background:#fffdf8!important;border:1px solid var(--accent)!important;box-shadow:0 3px 10px rgba(60,60,80,.15)!important}
+html[data-gt] body .m2-av img{border-radius:0!important}
+html[data-gt] body .m2-sign{letter-spacing:.3em!important;font-size:12px!important}
+html[data-gt] body .m2-sign::before{content:"— ";opacity:.5}
+html[data-gt] body .m2-day{gap:12px!important;padding:20px 0 18px!important;border-top:1px solid var(--gfl)!important}
+html[data-gt] body .m2-day:first-child{border-top:0!important}
+html[data-gt] body .m2-dl{flex:0 0 40px!important;display:flex;flex-direction:column;align-items:center;gap:6px}
+html[data-gt] body .m2-dl b,html[data-gt] body .m2-dl b.w{writing-mode:vertical-rl;font-weight:400!important;font-size:19px!important;letter-spacing:.3em!important;color:var(--ink)}
+html[data-gt] body .m2-dl small{writing-mode:vertical-rl;font-size:10px;letter-spacing:.2em;color:var(--sub)}
+html[data-gt] body .m2-dl em{margin:0!important;font-size:9px!important;letter-spacing:.05em}
+html[data-gt] body .m2-pubs{gap:10px!important}
+html[data-gt] body .m2-pub{position:relative;width:88px!important;height:96px!important;gap:8px!important;border-radius:0!important;background:#fffdf8!important;border:1px solid var(--gfl)!important;box-shadow:0 2px 6px rgba(60,60,80,.07)!important;color:var(--accent)!important;font-size:12.5px!important;letter-spacing:.3em!important}
+html[data-gt] body .m2-pub::before{content:"";position:absolute;inset:4px;border:1px dashed var(--gfl);pointer-events:none}
+html[data-gt] body .m2-pub svg{width:24px!important;height:24px!important}
+html[data-gt] body .m2-by{font-size:13px!important;letter-spacing:.15em}
+html[data-gt] body .m2-bav{border-radius:0!important;border-color:var(--accent)!important}
+html[data-gt] body .m2-text{line-height:2!important;letter-spacing:.06em}
+html[data-gt] body .m2-imgs img{border-radius:2px!important}
+html[data-gt] body .m2-meta{margin-top:6px!important;font-size:11px!important;letter-spacing:.15em}
+html[data-gt] body .m2-meta button{display:inline-flex!important;align-items:center;gap:4px;font-size:12px!important;letter-spacing:.2em}
+html[data-gt] body .gf-mei{width:13px;height:13px;flex:0 0 auto}
+html[data-gt] body .gf-tag{display:inline-block;margin-left:6px;padding:0 4px;font-style:normal;font-size:9.5px;line-height:1.6;color:#fff;background:var(--accent);border-radius:2px;letter-spacing:.1em;opacity:.85}
+html[data-gt] body .m2-ia{position:relative;margin-top:8px!important;padding:9px 12px 9px 18px!important;border-radius:0!important;background:#fffdf8!important;border:1px solid var(--gfl)!important;font-size:13px!important;line-height:1.9!important;letter-spacing:.04em}
+html[data-gt] body .m2-ia::before{content:"";position:absolute;left:8px;top:10px;bottom:10px;width:1px;background:var(--accent);opacity:.45}
+html[data-gt] body .m2-lk{display:flex;align-items:center;gap:5px;padding-bottom:4px;margin-bottom:4px;border-bottom:1px dashed var(--gfl)}
+html[data-gt] body .m2-lk+.m2-c{border-top:0!important;margin-top:0!important;padding-top:0!important}
+html[data-gt] body .m2-cbox input{border-radius:2px!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important}
+html[data-gt] body .m2-cbox button{border-radius:2px!important;letter-spacing:.2em}
+
+/* ===== v113.css ===== */
+/* v113：拆信、写信铺满整张信纸图，白纸占屏宽八成多，四周露出画；字只写在白纸里，横排 */
+
+/* 白纸在图上的位置：左 25.58%、上 18.15%、宽 48.6%、高 43.49%，略斜 1 度 */
+html[data-gt] body .gfbox{position:absolute;left:25.58%;top:18.15%;width:48.6%;height:43.49%;transform:rotate(1deg);box-sizing:border-box;padding:12px 14px 10px;display:flex;flex-direction:column;min-height:0}
+
+/* ── 拆信 ── */
+html[data-gt] body #reader{padding:0!important;overflow:hidden!important}
+html[data-gt] body #reader .letter{flex:0 0 auto!important;width:min(177vw,880px)!important;max-width:none!important;height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:1179/876!important;padding:0!important;display:block!important;overflow:visible!important}
+html[data-gt] body #reader .letter-head{flex:0 0 auto!important;margin:0 0 5px!important;padding:0 0 5px!important;border-bottom:1px dashed color-mix(in srgb,var(--accent) 35%,transparent)!important}
+html[data-gt] body #reader .letter-head h3{font-size:12px!important;font-weight:400!important;letter-spacing:.3em!important;color:var(--sub)!important}
+html[data-gt] body #reader .letter-body{flex:1 1 0!important;min-height:0!important;margin:0!important;overflow-x:hidden!important;overflow-y:auto!important;white-space:normal!important;font-size:13px!important;line-height:1.95!important;letter-spacing:.06em!important;color:var(--ink)!important;-webkit-overflow-scrolling:touch}
+html[data-gt] body #reader .letter-body.gfl p{margin:0}
+html[data-gt] body #reader .letter-body.gfl .to{font-size:14.5px;letter-spacing:.15em;margin-bottom:2px}
+html[data-gt] body #reader .letter-body.gfl .bd{text-indent:2em;word-break:break-word}
+html[data-gt] body #reader .letter-body.gfl .sg{margin-top:8px;text-align:right;letter-spacing:.2em}
+html[data-gt] body #reader .letter-body.gfl .seal{display:inline-block;margin-left:6px;padding:1px 4px;font-size:10px;line-height:1.5;letter-spacing:0;text-indent:0;color:#fff;background:#b54a4a;border-radius:2px;opacity:.85;transform:rotate(4deg);vertical-align:1px}
+html[data-gt] body #reader .letter-body.gfl .dt{text-align:right;font-size:11.5px;letter-spacing:.25em;color:var(--sub)}
+html[data-gt] body #reader .letter-foot .from{display:none!important}
+
+/* ── 写信 ── */
+html[data-gt] body #sheetBody .wl{overflow:hidden}
+html[data-gt] body #sheetBody .wl-paper{position:relative!important;width:170%!important;margin:0 0 10px -35%!important;aspect-ratio:1179/876;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;background:var(--gf-paper,none) center/100% 100% no-repeat!important}
+html[data-gt] body #sheetBody .wl-paper::before,html[data-gt] body #sheetBody .wl-hill{display:none!important}
+html[data-gt] body #sheetBody .wl-paper input.wl-t{flex:0 0 auto;width:100%!important;padding:0 0 6px!important;border:0!important;border-bottom:1px dashed color-mix(in srgb,var(--accent) 50%,transparent)!important;background:none!important;text-align:center;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:14px!important;letter-spacing:.3em!important;color:var(--ink)!important}
+html[data-gt] body #sheetBody .wl-paper textarea.wl-b{flex:1 1 0!important;min-height:0!important;width:100%!important;margin:6px 0 0!important;padding:0!important;border:0!important;background:none!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:13.5px!important;line-height:1.95!important;letter-spacing:.05em!important;color:var(--ink)!important}
+html[data-gt] body #sheetBody .wl-paper .wl-t::placeholder,html[data-gt] body #sheetBody .wl-paper .wl-b::placeholder{color:color-mix(in srgb,var(--sub) 70%,transparent)}
+html[data-gt] body #sheetBody .wl-paper .wl-sign{flex:0 0 auto;margin:2px 0 0!important;text-align:right;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:12px!important;letter-spacing:.25em!important;color:var(--sub)!important}
+html[data-gt] body #sheetBody .wl #mSend{display:flex!important;align-items:center;justify-content:center;gap:10px;width:min(78%,300px)!important;margin:4px auto 0!important;padding:11px 0 11px .5em!important;border:0!important;border-radius:2px!important;background:var(--accent)!important;color:#fff!important;font-family:"Songti SC","STSong","Noto Serif SC",serif!important;font-size:14px!important;letter-spacing:.5em!important}
+html[data-gt] body #sheetBody .wl #mSend i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid rgba(255,255,255,.8);font-size:10px;letter-spacing:0;transform:rotate(-6deg)}
+html[data-gt] body #sheetBody .wl .hint{display:none!important}
+
+/* ===== v114.css ===== */
+/* v114：拆信、写信的字区往下拉到白纸底部那道撕边；去掉落款旁的小印；正文加横线，线跟着字一起滑 */
+
+/* 白纸能写字的地方：上 18.15%，往下一直到 79%（撕边上方） */
+html[data-gt] body .gfbox{height:60.8%!important;padding-bottom:6px!important}
+
+/* ── 拆信 ── */
+html[data-gt] body #reader .letter-body.gfl .seal{display:none!important}
+html[data-gt] body #reader .letter-body{line-height:26px!important;background-image:repeating-linear-gradient(180deg,transparent 0 25px,color-mix(in srgb,var(--accent) 30%,transparent) 25px 26px)!important;background-attachment:local!important;background-position:0 0!important}
+html[data-gt] body #reader .letter-body.gfl p{line-height:26px!important;margin:0!important}
+html[data-gt] body #reader .letter-body.gfl .to{margin-bottom:0!important}
+html[data-gt] body #reader .letter-body.gfl .sg{margin-top:0!important}
+
+/* ── 写信 ── */
+html[data-gt] body #sheetBody .wl-paper textarea.wl-b{line-height:26px!important;background-image:repeating-linear-gradient(180deg,transparent 0 25px,color-mix(in srgb,var(--accent) 30%,transparent) 25px 26px)!important;background-attachment:local!important;background-position:0 0!important}
+
+/* ===== v118.css ===== */
+/* v119：宜忌只放一两个词，宜和忌并排一行 */
+#gh .gh-alm em{white-space:nowrap}
+
+/* ===== v115.css ===== */
+/* v115：朋友圈封面左上角那块「朋友圈」竖条删掉 */
+html[data-gt] body .m2-cover::before{content:none!important;display:none!important}
+
+/* ===== v121：省电 ===== */
+/* 不在主页、侧栏打开时，主页一直循环的动画停下 */
+body:not(.on-home) #gh .gh-wd,body:not(.on-home) #gh .gh-rip,body:not(.on-home) #gh .gh-pimg,body:not(.on-home) #gh .gh-pt,
+.nav-open #gh .gh-wd,.nav-open #gh .gh-rip,.nav-open #gh .gh-pimg,.nav-open #gh .gh-pt{animation-play-state:paused!important}
+/* 开屏退场时里面的动画也停 */
+#gfsp.out *{animation-play-state:paused!important}
+/* 小按钮、空状态不要毛玻璃，最吃显卡 */
+html[data-gt] body .l4-ib,html[data-gt] body .l4-seg,html[data-gt] body .view button.ghost,html[data-gt] body .m2-pub,html[data-gt] body .view .empty{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+/* 飘的花瓣单独一层 */
+#gh .gh-pt,#gfsp .gf-pt{will-change:transform}

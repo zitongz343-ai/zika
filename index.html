@@ -11,28 +11,12 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <title>字卡传讯</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.3.1/300.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.3.1/900.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ma-shan-zheng@5.3.1/index.css">
-<link rel="stylesheet" href="app.css?v=89">
-<link rel="stylesheet" href="v91.css?v=91">
-<link rel="stylesheet" href="v92.css?v=92">
-<link rel="stylesheet" href="v93.css?v=93">
-<link rel="stylesheet" href="gffont.css?v=98">
-<link rel="stylesheet" href="splash95.css?v=101">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/great-vibes@5.2.5/index.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5.2.5/400.css">
-<link rel="stylesheet" href="v99.css?v=100">
-<link rel="stylesheet" href="v101.css?v=101">
-<link rel="stylesheet" href="v102.css?v=108">
-<link rel="stylesheet" href="v109.css?v=110">
-<link rel="stylesheet" href="v110.css?v=110">
-<link rel="stylesheet" href="v111.css?v=112">
-<link rel="stylesheet" href="v112.css?v=112">
-<link rel="stylesheet" href="v113.css?v=113">
-<link rel="stylesheet" href="v114.css?v=114">
-<link rel="stylesheet" href="v118.css?v=119">
-<link rel="stylesheet" href="v115.css?v=115">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.3.1/300.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@5.3.1/900.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ma-shan-zheng@5.3.1/index.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="style.css?v=121">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/great-vibes@5.2.5/index.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5.2.5/400.css" media="print" onload="this.media='all'">
 </head>
 <body>
 <div id="gfsp" role="button" aria-label="进入江亭晚">
@@ -41,10 +25,7 @@
   <div class="gf-nm"><b class="gf-me">江亭晚</b><i>长相思</i><b class="gf-ta" id="gfTa">顾时夜</b><span class="gf-seal">晚</span></div>
   <div class="gf-ft"><p id="gfDay"></p><em>轻 触 入 内</em></div>
 </div>
-<script src="splash95.js?v=101"></script>
-<script src="almanac.js?v=118"></script>
-<script src="gimg.js?v=112"></script>
-<script src="gfimg.js?v=110"></script>
+<script src="head.js?v=121"></script>
 <div id="app">
   <div id="views">
     <section class="view on" data-view="home">
@@ -121,11 +102,11 @@
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 <input type="file" id="avIn" accept="image/*" hidden>
 <style id="bubbleCustom"></style>
-<script src="media.js?v=90"></script>
+<script src="media.js?v=121"></script>
 <script>
 // 先把图片大仓打开，再跑 app.js；media.js 要是没加载上就直接按顺序跑，页面照旧能用
 (function(){
-  var list=['app.js?v=89','v89.js?v=90','v92.js?v=92','v93.js?v=93','v99.js?v=120','v101.js?v=109','v102.js?v=117','v109.js?v=110','v111.js?v=116','v112.js?v=116','v113.js?v=113'];
+  var list=['main.js?v=121'];
   if(window.ZikaMedia&&ZikaMedia.boot){ZikaMedia.boot(list);return}
   (function next(i){
     if(i>=list.length)return;
