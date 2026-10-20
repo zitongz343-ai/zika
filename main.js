@@ -531,7 +531,7 @@ cardEl=function(c){
   var el=_cardEl(c);
   if(c.quote){
     var q=document.createElement('div');q.className='qt';
-    q.innerHTML='<b>'+esc(c.quote.name)+'</b>'+esc(c.quote.text);
+    q.innerHTML='<b>'+esc(c.quote.name)+'</b>'+(c.quote.img?'<img class="qt-img" src="'+esc(c.quote.img)+'" alt="表情包">':esc(c.quote.text||'[表情包]'));
     el.insertBefore(q,el.querySelector('.body'));
   }
   if(c.from==='me'&&c.read){
@@ -1775,7 +1775,7 @@ toggleFav=function(c){
 setQuote=function(q){
   QUOTE=q;qBar.hidden=!q;
   if(!q){qBar.innerHTML='';return}
-  qBar.innerHTML='<span><b>'+esc(q.name)+'</b>'+esc(q.text)+'</span><button type="button" aria-label="不引用了">×</button>';
+  qBar.innerHTML='<span><b>'+esc(q.name)+'</b>'+(q.img?'<img class="qt-img" src="'+esc(q.img)+'" alt="表情包">':esc(q.text||'[表情包]'))+'</span><button type="button" aria-label="不引用了">×</button>';
   qBar.querySelector('button').addEventListener('click',function(){setQuote(null)});
   input.focus();
 };
@@ -1932,7 +1932,7 @@ cardEl=function(c){
   var acts=document.createElement('div');acts.className='acts';
   if(c.from==='ta'){
     paintStar(el,isFav(c.id));
-    acts.appendChild(actBtn('引用',function(){setQuote({name:taName(),text:c.text});el.classList.remove('show-del')}));
+    acts.appendChild(actBtn('引用',function(){setQuote(c.type==='sticker'&&c.img?{name:taName(),text:c.photo?'[图片]':'[表情包]',img:c.img}:{name:taName(),text:c.text});el.classList.remove('show-del')}));
     acts.appendChild(actBtn(isFav(c.id)?'取消收藏':'收藏',function(b){toggleFav(c);var on=isFav(c.id);b.textContent=on?'取消收藏':'收藏';paintStar(el,on)}));
   }
   var del=el.querySelector('.del');if(del)acts.appendChild(del);
