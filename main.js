@@ -3300,7 +3300,7 @@ simulateReply=function(token){
 
 // 照 milk 的回信：8~12 句连成一段，句尾 20% 感叹号、再 20% 省略号、其余句号
 composeMail=function(src){
-  var pool=libPool().concat(tagPool('信')),n=8+Math.floor(Math.random()*5),s='';
+  var pool=libPool().filter(function(t){return !/^(data:image|https?:\/\/)/.test(String(t||''))}),n=8+Math.floor(Math.random()*5),s='';
   for(var i=0;i<n&&pool.length;i++){
     var t=pickOne(pool);
     if(!/[。！？!?…~～.」』）)]$/.test(t))t+=Math.random()<0.2?'！':(Math.random()<0.2?'...':'。');
@@ -10209,3 +10209,42 @@ try{
   };
 })();
 }catch(e){console.error('[zika] v124.js',e)}
+
+
+/* ===== v129.js ===== */
+try{
+// v129：拼字卡开关放进「回复 · 回信 · 通话」，跟别的开关一样，关着藏起拉条；拼几句可以选
+// 回信只从主字卡里挑，不带「信」分组，也不会挑到表情包图片
+(function(){
+  for(var i=SET_GROUPS.length-1;i>=0;i--){
+    SET_GROUPS[i][1]=SET_GROUPS[i][1].filter(function(it){return it[0]!=='openComboSet'});
+    if(!SET_GROUPS[i][1].length)SET_GROUPS.splice(i,1);
+  }
+})();
+var _fmtV129=fmtPref;
+fmtPref=function(k,v){if(k==='comboMin'||k==='comboMax')return v+' 句';return _fmtV129(k,v)};
+var _orsV129=openReplySet;
+openReplySet=function(){
+  _orsV129.apply(this,arguments);
+  if(typeof sheetBody==='undefined'||!sheetBody||document.getElementById('v129cb'))return;
+  var box=document.createElement('div');box.id='v129cb';
+  box.innerHTML='<div class="sec">拼字卡</div>';
+  var row=swRow58('把几句字卡拼成一句'),inp=row.querySelector('input');
+  box.appendChild(row);
+  var inner=document.createElement('div');
+  inner.innerHTML=rr('拼句概率','comboRate',0,100)+rr('最少拼几句','comboMin',2,6)+rr('最多拼几句','comboMax',2,6)
+    +'<p class="hint">开着的时候，'+esc(taName())+'回你的每张字卡按概率从主字卡里挑几句拼成一句，中间随机加逗号、句号、省略号。颜文字、表情包、拍一拍、状态、每日一句都不会拼进来。</p>'
+    +'<button type="button" class="ghost" id="v129try" style="width:100%;margin-top:6px">拼一句看看</button><p class="hint" id="v129demo" hidden></p>';
+  box.appendChild(inner);
+  bindRanges(inner);
+  inner.querySelector('#v129try').addEventListener('click',function(){
+    var d=inner.querySelector('#v129demo'),t=comboText(libPool(),true);
+    d.hidden=false;d.textContent=t||'主字卡是空的，先加几句。';
+  });
+  function paint(){inp.checked=!!S.prefs.comboOn;inner.classList.toggle('v58-off',!S.prefs.comboOn)}
+  inp.addEventListener('change',function(){S.prefs.comboOn=inp.checked;save();paint()});
+  paint();
+  var pro=document.getElementById('v58pro');
+  if(pro)pro.parentNode.insertBefore(box,pro);else sheetBody.appendChild(box);
+};
+}catch(e){console.error('[zika] v129.js',e)}
