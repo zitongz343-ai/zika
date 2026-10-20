@@ -2805,3 +2805,11 @@ html[data-gt] body .l4-ib,html[data-gt] body .l4-seg,html[data-gt] body .view bu
 /* 每张气泡原来都带一个弹出动画，几百张一起播。现在只给最后一张 */
 #stream>.card:not(:last-child){animation:none!important}
 
+
+
+/* ===== v128 ===== */
+/* 引用条跟着字卡正文的字体走，不再单独用黑体 */
+.card .qt,.card .qt b,#qBar,#qBar b{font-family:inherit!important}
+/* 引用表情包：显示一张小图 */
+.qt-img{display:inline-block;vertical-align:middle;height:42px;width:auto;max-width:72px;object-fit:contain;border-radius:4px}
+#qBar .qt-img{height:26px;max-width:44px}
